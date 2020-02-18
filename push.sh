@@ -1,5 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/sh
-gdt=date '+%A %W %Y %X'
+git config --global gui.encoding utf-8git remote -vgit add --all
+gdt=date
 git config --global user.name "dimaslanjaka"
 git config --global user.email "dimaslanjaka@gmail.com"
 git config --global github.user dimaslanjaka
