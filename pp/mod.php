@@ -154,7 +154,7 @@ function twd_to_usd($cookie, $csrf)
   return json_decode($x, true);
 }
 /**
- * JPY to USD.
+ * JPY to TWD.
  *
  * @param string $cookie
  * @param string $csrf
