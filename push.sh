@@ -1,11 +1,16 @@
 #!/data/data/com.termux/files/usr/bin/sh
-git config --global gui.encoding utf-8git remote -vgit add --all
+git config --global gui.encoding utf-8
+git remote -v
+git add --all
+git config --global credential.helper store
 gdt=date
 git config --global user.name "dimaslanjaka"
 git config --global user.email "dimaslanjaka@gmail.com"
 git config --global github.user dimaslanjaka
+git config --global user.signingkey 1DEDA67CD4106FF5
 t=`cat key.txt`
 git config --global github.token $t
-git add *
 git commit -m "Changes ${gdt}"
-git push
+git rebase origin/master
+git pull
+git push -u origin master
