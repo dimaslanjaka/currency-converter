@@ -29,3 +29,36 @@ function includeWV($filePath, $variables = array(), $print = true)
   }
   return $output;
 }
+
+/**
+ * echo print_r in pretext.
+ *
+ * @param mixed $str
+ */
+function printr($str, $str1 = 0, $str2 = 0)
+{
+  echo '<pre>';
+  print_r($str);
+  if ($str1) {
+    print_r($str1);
+  }
+  if ($str2) {
+    print_r($str2);
+  }
+  echo '</pre>';
+}
+
+/**
+ * echo json_encode in pretext.
+ */
+function precom(...$str)
+{
+  $D = json_encode($str, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+  if (headers_sent()) {
+    echo '<pre class="notranslate">';
+    echo $D;
+    echo '</pre>';
+  } else {
+    return $D;
+  }
+}

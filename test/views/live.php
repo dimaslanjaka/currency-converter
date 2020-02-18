@@ -16,7 +16,7 @@
     </div>
     <div class="col-md-9">
       <div class="text-center">
-        <h4>Available Currency For USD</h4>
+        <h4>Available Currency For <?= $c->from() ?></h4>
         <?= $c->available()->n2s()->pre() ?>
       </div>
     </div>
@@ -26,29 +26,20 @@
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">USD</th>
-            <th scope="col">Handle</th>
+            <th scope="col"><?= $c->from() ?></th>
+            <th scope="col">Conversion</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-          </tr>
+          <?php
+          $v = $c->available();
+          foreach ($v->available as $key => $value) {
+            echo '<tr>
+            <td>' . $c->convert(1, 'IDR')->suffix('1 USD to IDR is')->__toString() . '</td>
+            <td>' . $key . '</td>
+            </tr>';
+          }
+          ?>
         </tbody>
       </table>
     </div>

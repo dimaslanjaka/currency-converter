@@ -11,6 +11,7 @@ class CC extends Curl
   private $ccDIR = __DIR__ . '/json';
   public $to;
   public $from;
+  public $available = [];
   /**
    * Endpoint.
    *
@@ -82,6 +83,7 @@ class CC extends Curl
     $this->string = '';
     foreach ($this->result->rates as $key => $value) {
       $this->string .= "$key\n";
+      $this->available[] = $key;
     }
 
     return $this;
@@ -154,7 +156,11 @@ class CC extends Curl
   public function pre($str = null)
   {
     if ($str) {
-      $this->string = $str;
+      if (is_string($str)) {
+        $this->string = $str;
+      } else {
+        $this->gjson($str);
+      }
     }
 
     return '<pre>' . $this->__toString() . '</pre>';
@@ -162,9 +168,9 @@ class CC extends Curl
 
   public function gjson($x)
   {
-    $this->result = ($this->isOA($x)) ? json_encode($x, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : $x;
+    $this->json = ($this->isOA($x)) ? json_encode($x, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : $x;
     if ($this->isOA($x) && JSON_ERROR_NONE == json_last_error()) {
-      $this->string = $this->result;
+      $this->string = $this->json;
     }
 
     return $this;
