@@ -29,7 +29,10 @@
     "autoload": {
         "psr-4": {
             "Curl\\": "src/Curl/"
-        }
+        },
+        "files": [
+            "test/theme/function.php"
+        ]
     },
     "version": "1.0.0"
 }

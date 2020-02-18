@@ -14,14 +14,14 @@
   <link rel="shortcut icon" href="https://www.webmanajemen.com/favicon.ico" />
   <meta name="description" content="<?= $desc ?>." />
   <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-  <link rel="canonical" href="https://git.webmanajemen.com/Web-Manajemen/mlbb.html" />
+  <link rel="canonical" href="<?= $canonical ?>" />
   <meta property="og:type" content="website" />
   <meta content='182383652179465' property='fb:app_id' />
   <meta content='100001995776790' property='fb:admins' />
   <meta property="og:locale" content="en_US" />
   <meta property="og:title" content="<?= $title ?> - WMI" />
   <meta property="og:description" content="<?= $desc ?>" />
-  <meta property="og:url" content="https://git.webmanajemen.com/Web-Manajemen/mlbb.html" />
+  <meta property="og:url" content="<?= $canonical ?>" />
   <meta property="og:site_name" content="WMI GitLabs" />
   <meta property="og:image" content="https://git.webmanajemen.com/Web-Manajemen/img/mlbb/selena.png" />
   <meta property="og:image:secure_url" content="https://git.webmanajemen.com/Web-Manajemen/img/mlbb/selena.png" />
@@ -71,7 +71,7 @@
       "@context": "http://schema.org",
       "@type": "Website",
       "name": "<?= $title ?> - WMI GitLabs",
-      "url": "https://git.webmanajemen.com/Web-Manajemen/mlbb.html",
+      "url": "<?= $canonical ?>",
       "sameAs": [
         "https://www.facebook.com/dimaslanjaka1",
         "https://twitter.com/WManajemen",
@@ -92,7 +92,7 @@
       "@type": "BlogPosting",
       "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://git.webmanajemen.com/Web-Manajemen/mlbb.html"
+        "@id": "<?= $canonical ?>"
       },
       "headline": "<?= $title ?> All Version",
       "description": "Download <?= $title ?> 1.4.22, 1.4.28, 1.4.44, 1.4.45.",
@@ -145,7 +145,7 @@
           "@type": "ListItem",
           "position": 3,
           "item": {
-            "@id": "https://git.webmanajemen.com/Web-Manajemen/mlbb.html",
+            "@id": "<?= $canonical ?>",
             "name": "<?= $title ?>"
           }
         }
@@ -562,7 +562,7 @@
       <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7975270895217217" data-ad-slot="1983408237" data-ad-format="auto" data-full-width-responsive="true"></ins>
     </div>
     <div class="container">
-      <div class="fb-comments" data-href="https://git.webmanajemen.com/Web-Manajemen/mlbb.html" data-numposts="10" data-width="100%" data-colorscheme="light" data-order-by="reverse_time"></div>
+      <div class="fb-comments" data-href="<?= $canonical ?>" data-numposts="10" data-width="100%" data-colorscheme="light" data-order-by="reverse_time"></div>
     </div>
   </main>
   <!-- End your project here-->

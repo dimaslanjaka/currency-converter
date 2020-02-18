@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-12">
       <div class="text-center">
-        <h1>USD</h1>
+        <h1><?= $c->from() ?></h1>
       </div>
       <?= $c->get_data()->pre() ?>
     </div>

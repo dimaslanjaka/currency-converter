@@ -45,6 +45,11 @@ class CC extends Curl
     }
   }
 
+  public function from()
+  {
+    return $this->cur;
+  }
+
   public function set($cur)
   {
     if (!is_string($cur)) {
@@ -66,8 +71,9 @@ class CC extends Curl
 
     return $this->ccPATH . $this->cur;
   }
+
   /**
-   * Get Available Currencies for Source Currency
+   * Get Available Currencies for Source Currency.
    *
    * @return $this
    */
@@ -403,5 +409,10 @@ class CC extends Curl
     $oldmask = umask(0);
     mkdir($x, 0777);
     umask($oldmask);
+  }
+
+  public function isreq($str)
+  {
+    return isset($_REQUEST[$str]) && !empty($_REQUEST[$str]) ? $_REQUEST[$str] : false;
   }
 }
