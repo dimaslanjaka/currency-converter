@@ -36,6 +36,12 @@ $c->get_data();
 //Converting to available Currency
 $c->convert(1, 'EUR'); //convert 1 USD to EUR
 
+//Refresh Repo
+$c->refresh();
+
+//Get Available Currency Converter For Source Currency
+$c->available();
+
 //Get Result
 echo $c->__toString();
 ```

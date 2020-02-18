@@ -66,13 +66,37 @@ class CC extends Curl
 
     return $this->ccPATH . $this->cur;
   }
-
+  /**
+   * Get Available Currencies for Source Currency
+   *
+   * @return $this
+   */
   public function available()
   {
     $this->string = '';
     foreach ($this->result->rates as $key => $value) {
       $this->string .= "$key\n";
     }
+
+    return $this;
+  }
+
+  /**
+   * Refresh Repo.
+   *
+   * @param string|null $cur
+   *
+   * @return $this
+   */
+  public function refresh($cur = null)
+  {
+    if ($cur) {
+      $this->set($cur);
+    }
+    if (!$this->cur) {
+      throw new Exception('Currency source must be defined, set() first');
+    }
+    $this->build(null, true);
 
     return $this;
   }
@@ -89,6 +113,14 @@ class CC extends Curl
     return $this;
   }
 
+  /**
+   * Build Currency Converter.
+   *
+   * @param string|null $cur
+   * @param bool        $force
+   *
+   * @return $this
+   */
   public function build($cur = null, $force = false)
   {
     if ($cur) {
