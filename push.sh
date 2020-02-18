@@ -1,5 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/sh
 git config --global gui.encoding utf-8
+git remote add origin https://github.com/dimaslanjaka/currency-converter.git
 git remote -v
 git add --all
 git config --global credential.helper store
