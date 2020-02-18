@@ -61,7 +61,7 @@ class CC extends Curl
   public function query()
   {
     if (!$this->ccPATH && !$this->cur) {
-      throw new th('CURRENCY must inserted');
+      throw new Exception('CURRENCY must inserted');
     }
 
     return $this->ccPATH . $this->cur;

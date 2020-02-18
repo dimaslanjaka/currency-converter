@@ -61,7 +61,7 @@ echo $c->__toString();
 # Install Currency-Converter On termux
 
 ```sh
-#!/system/bin/sh
+#!/data/data/com.termux/files/usr/bin/sh
 pkg up -y
 pkg install curl php git -y
 #begin install Composer
