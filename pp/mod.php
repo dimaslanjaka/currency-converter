@@ -15,7 +15,7 @@ if (defined('STDIN')) {
       isi file rumus.txt dengan nama fungsi yang akan dijalankan\n
       rumus.txt separated with space\n
       Example : usd2twd twd2usd jpy2twd\n
-      Overflow (alur) Example : usd ke twd > twd ke usd > jpy ke usd\n
+      Overflow (alur) Example : usd ke twd > twd ke usd > jpy ke twd\n
       usd2twd (USD to TWD)\n
       twd2usd (TWD to USD)\n
       jpy2twd (JPY to USD)\n\n
