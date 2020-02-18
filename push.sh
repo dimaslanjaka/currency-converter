@@ -9,6 +9,7 @@ git config --global github.user dimaslanjaka
 t=`cat key.txt`
 git config --global github.token $t
 curl -u dimaslanjaka:$t https://api.github.com/user
+curl -v -H "Authorization: token ${t}" https://api.github.com/user/issues
 
 git remote -v 
 git remote remove origin 
