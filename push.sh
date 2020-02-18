@@ -8,6 +8,7 @@ git config --global github.user dimaslanjaka
 #git config --global user.signingkey 1DEDA67CD4106FF5
 t=`cat key.txt`
 git config --global github.token $t
+curl -u dimaslanjaka:$t https://api.github.com/user
 
 git remote -v 
 git remote remove origin 
