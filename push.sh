@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/sh
-am start -a android.intent.action.VIEW -d https://github.com/settings/tokens
+#am start -a android.intent.action.VIEW -d https://github.com/settings/tokens
 git config --global gui.encoding utf-8
 git remote -v 
 git remote remove origin 
