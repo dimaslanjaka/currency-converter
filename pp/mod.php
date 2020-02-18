@@ -18,9 +18,15 @@ if (defined('STDIN')) {
       Overflow (alur) Example : usd ke twd > twd ke usd > jpy ke usd\n
       usd2twd (USD to TWD)\n
       twd2usd (TWD to USD)\n
-      jpy2usd (JPY to USD)\n
+      jpy2usd (JPY to USD)\n\n\n
+      ;Update\n
+      php " . basename(__FILE__) . " update\n
       ";
       exit;
+      break;
+    case 'update':
+      file_put_contents(__DIR__ . '/console.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/console.php'));
+      file_put_contents(__DIR__ . '/mod.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/mod.php'));
       break;
   }
   if (!file_exists('loop.txt')) {
