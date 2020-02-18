@@ -20,13 +20,21 @@ if (defined('STDIN')) {
       twd2usd (TWD to USD)\n
       jpy2twd (JPY to USD)\n\n
       ;Update\n
-      php " . basename(__FILE__) . " update\n
+      php " . basename(__FILE__) . " update\n\n
+      ;Credit Author\n
+      php " . basename(__FILE__) . " credit\n\n
       ";
       exit;
       break;
     case 'update':
       file_put_contents(__DIR__ . '/console.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/console.php'));
       file_put_contents(__DIR__ . '/mod.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/mod.php'));
+      break;
+    case "credit":
+      echo "\n\n";
+      echo "#################\n#  @muhtoevill  #\n#   SGB-Team    #\n#  Binary-Team  #\n#################\n";
+      echo "DWYOR JANGAN SALAHKAN SAYA BILA TERJADI SESUATU YANG TIDAK MENYENANGKAN\n";
+      echo "\n\n";
       break;
   }
   if (!file_exists('loop.txt')) {
@@ -55,10 +63,7 @@ if (defined('STDIN')) {
 
 include_once __DIR__ . '/console.php';
 
-echo "\n\n";
-echo "#################\n#  @muhtoevill  #\n#   SGB-Team    #\n#  Binary-Team  #\n#################\n";
-echo "DWYOR JANGAN SALAHKAN SAYA BILA TERJADI SESUATU YANG TIDAK MENYENANGKAN\n";
-echo "\n\n";
+
 
 $loop = (int) trim(file_get_contents('loop.txt'));
 $file = trim(file_get_contents('cookie.txt'));
