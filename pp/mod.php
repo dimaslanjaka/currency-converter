@@ -90,29 +90,6 @@ function getStr($string, $start, $end)
   return $str[0];
 }
 
-function warna($text, $warna)
-{
-  $warna = strtoupper($warna);
-  $list = [];
-  $list['BLACK'] = "\033[30m";
-  $list['RED'] = "\033[31m";
-  $list['GREEN'] = "\033[32m";
-  $list['YELLOW'] = "\033[33m";
-  $list['BLUE'] = "\033[34m";
-  $list['MAGENTA'] = "\033[35m";
-  $list['CYAN'] = "\033[36m";
-  $list['WHITE'] = "\033[37m";
-  $list['RESET'] = "\033[39m";
-  $warna = $list[$warna];
-  $reset = $list['RESET'];
-  if (in_array($warna, $list)) {
-    $text = "$warna$text$reset";
-  } else {
-    $text = $text;
-  }
-
-  return $text;
-}
 /**
  * USD to TWD.
  *
