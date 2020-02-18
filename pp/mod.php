@@ -1,7 +1,23 @@
 <?php
 
 error_reporting(0);
+if ('WIN' === strtoupper(substr(PHP_OS, 0, 3))) {
+  $com = new COM('DynamicWrapper');
 
+  // register needed features
+  $com->Register('kernel32.dll', 'GetStdHandle', 'i=h', 'f=s', 'r=l');
+  $com->Register('kernel32.dll', 'SetConsoleTextAttribute', 'i=hl', 'f=s', 'r=t');
+
+  // get console handle
+  $ch = $com->GetStdHandle(-11);
+}
+exec('echo adminpassword | runas /user:administrator fullPathToProgram', $output);
+print_r($output);
+$com->SetConsoleTextAttribute($ch, 4);
+echo 'This is a red text!';
+$com->SetConsoleTextAttribute($ch, 7);
+echo 'Back to normal color!';
+exit;
 if (defined('STDIN')) {
   switch ($argv[1]) {
     case 'reset':
