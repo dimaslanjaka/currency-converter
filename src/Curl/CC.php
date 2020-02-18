@@ -9,6 +9,8 @@ class CC extends Curl
   private $ccURL = 'https://api.exchangerate-api.com';
   private $ccPATH = '/v4/latest/';
   private $ccDIR = __DIR__ . '/json';
+  public $to;
+  public $from;
   /**
    * Endpoint.
    *
@@ -65,16 +67,22 @@ class CC extends Curl
     return $this->ccPATH . $this->cur;
   }
 
-  public function build($cur = null)
+  public function build($cur = null, $force = false)
   {
     if ($cur) {
       $this->set($cur);
     }
     $this->instance = new Curl($this->ccURL);
-    $this->instance->get($this->query());
-    if (!$this->instance->error) {
-      if (is_object($this->instance->response)) {
-        $this->_file_($this->ccDIR . $this->ccPATH . $this->cur . '.json', $this->gjson($this->instance->response));
+    $f = $this->ccFile = $this->ccDIR . $this->ccPATH . $this->cur . '.json';
+    if (file_exists($f)) {
+      $this->get_data();
+    }
+    if ($force) {
+      $this->instance->get($this->query());
+      if (!$this->instance->error) {
+        if (is_object($this->instance->response)) {
+          $this->_file_($f, $this->gjson($this->instance->response));
+        }
       }
     }
 
@@ -102,13 +110,18 @@ class CC extends Curl
   {
     return $this->string;
   }
-
+  /**
+   * Get Data Currencies
+   *
+   * @param string|null $cur
+   * @return $this
+   */
   public function get_data($cur = null)
   {
     if ($cur) {
       $this->set($cur);
     }
-    $this->result = $this->read($this->ccDIR . $this->ccPATH . $this->cur . '.json');
+    $this->result = $this->read($this->ccFile);
     if (is_iterable($this->result)) {
       $this->string = json_encode($this->result);
     } elseif (is_string($this->result)) {
@@ -121,7 +134,7 @@ class CC extends Curl
 
   public function read($path)
   {
-    if (!file_exists($path)) {
+    if (!file_exists($path) || !$path) {
       throw new Exception('Requested cache file is not found, try run build() first');
     }
 
@@ -140,12 +153,35 @@ class CC extends Curl
 
     return round($bytes, $precision) . ' ' . $units[$pow];
   }
-
-  public function convert()
+  /**
+   * Convert Currency
+   *
+   * @param integer $n
+   * @param string $to
+   * @return $this
+   */
+  public function convert($n = 1, $to = 'EUR')
   {
-    //$response_object = json_decode($response_json);
-    $base_price = r('usd') or 12; // Your price in USD
-    $EUR_price = round(($base_price * $this->result->rates->EUR), 2);
+    $this->to = $to;
+    $this->from = $this->cur;
+    $this->string = round(((int) $n * $this->result->rates->{$to}), 2);
+    return $this;
+  }
+  /**
+   * Give Suffix to string
+   *
+   * @param string $s
+   * @return $this
+   */
+  function suffix($s)
+  {
+    $this->string = $s . ' ' . $this->string;
+    return $this;
+  }
+
+  function get_result()
+  {
+    return $this->__toString();
   }
 
   /**
