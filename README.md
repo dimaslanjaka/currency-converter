@@ -7,6 +7,10 @@ Currency Converter Tools
 git clone https://github.com/dimaslanjaka/currency-converter.git
 ```
 
+### Requirement Build
+
+[Composer](https://getcomposer.org/download/)
+
 ### Build
 ```sh
 composer install
