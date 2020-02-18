@@ -222,7 +222,7 @@ function usd2twd($cookie, $csrf, $max)
   sleep(1);
 }
 /**
- * JPY to USD Executor.
+ * JPY to TWD Executor.
  *
  * @param string $cookie
  * @param string $csrf
