@@ -1,6 +1,6 @@
 {
     "name": "dimaslanjaka/currency-converter",
-    "description": "PHP Currency Converter tools.",
+    "description": "PHP Currency Converter tools, based extending of php-curl-class.",
     "homepage": "https://github.com/dimaslanjaka/currency-converter",
     "license": "MIT",
     "keywords": [
