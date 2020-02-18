@@ -57,3 +57,34 @@ $c->available();
 //Get Result
 echo $c->__toString();
 ```
+
+# Install Currency-Converter On termux
+
+```sh
+#!/system/bin/sh
+pkg up -y
+pkg install curl php git -y
+#begin install Composer
+
+curl -sS https://getcomposer.org/installer | php -- --install-dir=/data/data/com.termux/files/usr/bin --filename=composer
+
+#verify Composer
+composer
+
+#Clone Currency Converter
+
+git clone https://github.com/dimaslanjaka/currency-converter.git
+
+#cd folder currency-converter
+cd currency-converter
+
+#memasak library
+composer install
+
+#menjalankan currency Converter
+php -S localhost:8000
+
+#buka browser http://localhost:8000/test
+#untuk menonaktifkan server
+#CTRL+C
+```
