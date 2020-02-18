@@ -16,6 +16,8 @@ git clone https://github.com/dimaslanjaka/currency-converter.git
 composer install
 ```
 
+### EXAMPLE -> Access Folder Test
+
 ### Usage
 ```php
 require __DIR__.'/vendor/autoload.php'; //your vendor autoload.php
