@@ -27,6 +27,12 @@ $content = <<<EOF
     <li>{$c->convert(1, 'IDR')->suffix('1 USD to IDR is')->__toString()};</li>
     </ul>
   </div>
+  <div class="col-md-9">
+    <div class="text-center">
+    <h4>Available Currency For USD</h4>
+    {$c->available()->n2s()->pre()}
+    </div>
+  </div>
 </div>
 </main>
 EOF;

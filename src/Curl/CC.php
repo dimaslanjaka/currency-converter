@@ -67,6 +67,28 @@ class CC extends Curl
     return $this->ccPATH . $this->cur;
   }
 
+  public function available()
+  {
+    $this->string = '';
+    foreach ($this->result->rates as $key => $value) {
+      $this->string .= "$key\n";
+    }
+
+    return $this;
+  }
+
+  /**
+   * Convert New Line to Space.
+   *
+   * @return $this
+   */
+  public function n2s()
+  {
+    $this->string = str_replace("\n", ' ', $this->string);
+
+    return $this;
+  }
+
   public function build($cur = null, $force = false)
   {
     if ($cur) {
@@ -76,6 +98,8 @@ class CC extends Curl
     $f = $this->ccFile = $this->ccDIR . $this->ccPATH . $this->cur . '.json';
     if (file_exists($f)) {
       $this->get_data();
+    } else {
+      $force = true;
     }
     if ($force) {
       $this->instance->get($this->query());
@@ -100,20 +124,36 @@ class CC extends Curl
 
   public function gjson($x)
   {
-    $this->result = (is_iterable($x)) ? json_encode($x, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : $x;
-    if (is_iterable($x) && JSON_ERROR_NONE == json_last_error()) {
+    $this->result = ($this->isOA($x)) ? json_encode($x, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : $x;
+    if ($this->isOA($x) && JSON_ERROR_NONE == json_last_error()) {
       $this->string = $this->result;
     }
+
+    return $this;
+  }
+
+  /**
+   * Is Object Or Array ?
+   *
+   * @param array|object $a
+   *
+   * @return bool
+   */
+  public function isOA($a)
+  {
+    return is_object($a) || is_array($a);
   }
 
   public function __toString()
   {
     return $this->string;
   }
+
   /**
-   * Get Data Currencies
+   * Get Data Currencies.
    *
    * @param string|null $cur
+   *
    * @return $this
    */
   public function get_data($cur = null)
@@ -153,11 +193,13 @@ class CC extends Curl
 
     return round($bytes, $precision) . ' ' . $units[$pow];
   }
+
   /**
-   * Convert Currency
+   * Convert Currency.
    *
-   * @param integer $n
+   * @param int    $n
    * @param string $to
+   *
    * @return $this
    */
   public function convert($n = 1, $to = 'EUR')
@@ -165,21 +207,25 @@ class CC extends Curl
     $this->to = $to;
     $this->from = $this->cur;
     $this->string = round(((int) $n * $this->result->rates->{$to}), 2);
-    return $this;
-  }
-  /**
-   * Give Suffix to string
-   *
-   * @param string $s
-   * @return $this
-   */
-  function suffix($s)
-  {
-    $this->string = $s . ' ' . $this->string;
+
     return $this;
   }
 
-  function get_result()
+  /**
+   * Give Suffix to string.
+   *
+   * @param string $s
+   *
+   * @return $this
+   */
+  public function suffix($s)
+  {
+    $this->string = $s . ' ' . $this->string;
+
+    return $this;
+  }
+
+  public function get_result()
   {
     return $this->__toString();
   }
