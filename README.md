@@ -1,6 +1,12 @@
 # currency-converter
 Currency Converter Tools
 
+# Get Script Project
+
+```sh
+git clone https://github.com/dimaslanjaka/currency-converter.git
+```
+
 ### Build
 ```sh
 composer install
