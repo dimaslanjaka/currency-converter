@@ -63,8 +63,6 @@ if (defined('STDIN')) {
 
 include_once __DIR__ . '/console.php';
 
-
-
 $loop = (int) trim(file_get_contents('loop.txt'));
 $file = trim(file_get_contents('cookie.txt'));
 $cookie = $file;
@@ -111,7 +109,7 @@ function getStr($string, $start, $end)
  */
 function usd_to_twd($cookie, $csrf)
 {
-  $arr = ["\r", '	'];
+  $arr = ["\r", ' '];
   $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
   $h = explode("\n", str_replace($arr, '', "Cookie: $cookie
 	Content-Type: application/json
