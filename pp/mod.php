@@ -27,8 +27,8 @@ if (defined('STDIN')) {
       exit;
       break;
     case 'update':
-      file_put_contents(__DIR__ . '/console.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/console.php'));
-      file_put_contents(__DIR__ . '/mod.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/mod.php'));
+      file_put_contents(__DIR__ . '/console.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/console.php?rev=' . time()));
+      file_put_contents(__DIR__ . '/mod.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/mod.php?rev=' . time()));
       break;
     case "credit":
       echo "\n\n";
