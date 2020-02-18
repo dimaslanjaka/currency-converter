@@ -1,0 +1,80 @@
+Kalo Dilarang Tolong Hapus Postingan aja yah bang jangan kick saya :D
+------------------------------------------------------------------------------
+$0.02 maskimal pengasilan 0.50 (untuk AUTO) manual biasanya lebih
+$1.50 Pengasilan kisaran $1 (untuk AUTO) manual Biasanya lebih
+------------------------------------------------------------------------------
+
+Untuk yang pingin manual Di sini link nya:
+https://www.facebook.com/groups/sgbteam.community/permalink/2848678698546316/
+
+
+Cara main auto modal $0.02:
+
+1.akun tumbal ber saldo $0.02
+
+2.kita siapin aplikasi capture packet pc atau android pasti tau lah buat ambil cookie ama csrf
+
+3.nyalakan aplikasi capture packet terus convert 0.02 USD ke TWD
+
+4.buka lagi aplikasi capture packet cari https://www.paypal.com/myaccount/money/api/currencies/transfer
+
+5.ambil cookie nya di bagian header dan ambil csrf di bagian post
+
+6.masukin cookie ke cookie.txt
+
+7.masukin csrf ke csrf.txt
+
+8.jalankan bot
+
+9.masukin looping 50 KENAPA 50 KARNA INI BULAK BALIK JADI HITUNGAN NYA DARI USD>TWD TWD>USD 1 KALI
+
+10.INGAT MAKSIMAL CONVERT NYA ITU 100 KALO LEBIH DARI 100 80% BISA KEBANNED JADI SAYA
+
+11.1 KALI CONVERT ITU DARI USD>TWD 1 CONVERT KALO USD>TWD TWD>USD KEHITUNG 2
+
+12.Kalo udah selesai Kirim ke akun asli bisa atau akun cadangan terus dari cadangan ke asli
+
+Cara main auto modal $1.50:
+
+1.akun tumbal ber saldo $1.50
+
+2.kita siapin aplikasi capture packet pc atau android pasti tau lah buat ambil cookie ama csrf
+
+3.nyalakan aplikasi capture packet terus convert 1.50 USD ke JPY
+
+4.buka lagi aplikasi capture packet cari https://www.paypal.com/myaccount/money/api/currencies/transfer
+
+5.ambil cookie nya di bagian header dan ambil csrf di bagian post
+
+6.masukin cookie ke cookie.txt
+
+7.masukin csrf ke csrf.txt
+
+8.jalankan bot
+
+9.masukin looping nya 80 kenapa karena saldo JPY 160 dan convert dari JPY ke TWD itu 2JPY = 1 TWD
+
+11.KENAPA INI BISA 80 KARNA INI HANYA CONVERT DARI JPY>TWD SAJA
+
+12.INGAT MAKSIMAL CONVERT NYA ITU 100 KALO LEBIH DARI 100 80% BISA KEBANNED
+
+13.kalo sudah selesai bot nya Convert semua TWD ke USD
+
+14.Kirim ke akun asli bisa atau akun cadangan terus dari cadangan ke asli
+
+Bahan Buat Modal 0.02 (Update error salah jalur dan bisa dixampp)
+
+https://drive.google.com/open?id=1_R_U1lTy_XBeUtdiijbwGaFR6UsKqJbo
+
+Bahan buat Modal 1.50 (update sudah bisa di xampp):
+
+https://drive.google.com/open?id=1ZoDTlYxKFPdRWRKHq8aUs-62VzY1MnCB
+
+VIDEO TUTORIAL:
+https://drive.google.com/open?id=1NKUyqdnHjlyG7VSDs2uIu2j3KHghHg2q
+
+PERLU DI INGAT!!
+
+MODAL 0.02 100 CONVERT = 0.50
+
+UNTUK MODAL 1.50 EMANG SUDAH SAYA HITUNG 80 CONVERT KURANG LEBIH BIAR MAIN AMAN
