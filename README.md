@@ -85,13 +85,13 @@ git clone https://github.com/dimaslanjaka/currency-converter.git
 #cd folder currency-converter
 cd currency-converter
 
-#memasak library
+#Install library
 composer install
 
-#menjalankan currency Converter
+#Run currency Converter
 php -S localhost:8000
 
-#buka browser http://localhost:8000/test
-#untuk menonaktifkan server
-#CTRL+C
+#open browser http://localhost:8000/test
+#for out from termux php server
+#CTRL+C on your termux tab runner
 ```
