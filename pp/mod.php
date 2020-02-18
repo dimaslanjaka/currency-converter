@@ -1,23 +1,6 @@
 <?php
 
 error_reporting(0);
-if ('WIN' === strtoupper(substr(PHP_OS, 0, 3))) {
-  $com = new COM('DynamicWrapper');
-
-  // register needed features
-  $com->Register('kernel32.dll', 'GetStdHandle', 'i=h', 'f=s', 'r=l');
-  $com->Register('kernel32.dll', 'SetConsoleTextAttribute', 'i=hl', 'f=s', 'r=t');
-
-  // get console handle
-  $ch = $com->GetStdHandle(-11);
-}
-exec('echo adminpassword | runas /user:administrator fullPathToProgram', $output);
-print_r($output);
-$com->SetConsoleTextAttribute($ch, 4);
-echo 'This is a red text!';
-$com->SetConsoleTextAttribute($ch, 7);
-echo 'Back to normal color!';
-exit;
 if (defined('STDIN')) {
   switch ($argv[1]) {
     case 'reset':
@@ -60,7 +43,7 @@ if (defined('STDIN')) {
   }
 
   if (!file_exists('console.php')) {
-    file_put_contents('console.php', file_get_contents('https://gist.githubusercontent.com/sallar/5257396/raw/fe6e7c3ba1fe34175153021688d254050b2b3e2f/console.php'));
+    file_put_contents(__DIR__ . '/console.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/console.php'));
   }
 }
 
