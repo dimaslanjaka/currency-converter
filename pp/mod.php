@@ -14,11 +14,11 @@ if (defined('STDIN')) {
       isi file loop.txt dengan angka (untuk menentukan berapa kali setiap eksekusi)\n
       isi file rumus.txt dengan nama fungsi yang akan dijalankan\n
       rumus.txt separated with space\n
-      Example : usd2twd twd2usd jpy2usd\n
+      Example : usd2twd twd2usd jpy2twd\n
       Overflow (alur) Example : usd ke twd > twd ke usd > jpy ke usd\n
       usd2twd (USD to TWD)\n
       twd2usd (TWD to USD)\n
-      jpy2usd (JPY to USD)\n\n
+      jpy2twd (JPY to USD)\n\n
       ;Update\n
       php " . basename(__FILE__) . " update\n
       ";
