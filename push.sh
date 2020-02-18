@@ -4,6 +4,7 @@ git config --global gui.encoding utf-8
 
 git config --global credential.helper store
 git config credential.helper store 
+git config --global credential.helper 'cache --timeout=360090' 
 
 git config --global user.name "dimaslanjaka"
 git config --global user.email "dimaslanjaka@gmail.com"
