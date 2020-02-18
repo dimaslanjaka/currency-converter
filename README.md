@@ -34,6 +34,13 @@ $c = new CC()->set('USD')->build()->get_data();
 
 ### Description
 ```php
+//your vendor autoload.php
+require __DIR__.'/vendor/autoload.php';
+
+//Use Class
+use \Curl\CC;
+
+//Initialize Currency Converter Class
 $c = new CC();
 
 //Set Source Currency
