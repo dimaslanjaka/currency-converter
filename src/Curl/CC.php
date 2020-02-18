@@ -9,9 +9,29 @@ class CC extends Curl
   private $ccURL = 'https://api.exchangerate-api.com';
   private $ccPATH = '/v4/latest/';
   private $ccDIR = __DIR__ . '/json';
-  private $cur = null;
+  /**
+   * Endpoint.
+   *
+   * @var string
+   */
+  private $cur;
+  /**
+   * Curl.
+   *
+   * @var \Curl\Curl
+   */
   protected $instance;
+  /**
+   * Object JSON.
+   *
+   * @var json_decode|object
+   */
   protected $result;
+  /**
+   * String.
+   *
+   * @var string
+   */
   protected $string;
 
   public function __construct()
@@ -61,18 +81,24 @@ class CC extends Curl
     return $this;
   }
 
-  function pre($str = null)
+  public function pre($str = null)
   {
-    if ($str) $this->string = $str;
+    if ($str) {
+      $this->string = $str;
+    }
+
     return '<pre>' . $this->__toString() . '</pre>';
   }
 
-  function gjson($x)
+  public function gjson($x)
   {
-    return (is_iterable($x)) ? json_encode($x, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : $x;
+    $this->result = (is_iterable($x)) ? json_encode($x, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : $x;
+    if (is_iterable($x) && JSON_ERROR_NONE == json_last_error()) {
+      $this->string = $this->result;
+    }
   }
 
-  function __toString()
+  public function __toString()
   {
     return $this->string;
   }
@@ -85,25 +111,21 @@ class CC extends Curl
     $this->result = $this->read($this->ccDIR . $this->ccPATH . $this->cur . '.json');
     if (is_iterable($this->result)) {
       $this->string = json_encode($this->result);
-    } else if (is_string($this->result)) {
+    } elseif (is_string($this->result)) {
       $this->string = $this->result;
+      $this->result = json_decode($this->result);
     }
+
     return $this;
   }
 
   public function read($path)
   {
-    if (!file_exists($path)) throw new Exception('Requested cache file is not found, try run build() first');
-    $lines = [];
-    $handle = fopen($path, 'r');
-
-    while (!feof($handle)) {
-      $lines[] = trim(fgets($handle));
+    if (!file_exists($path)) {
+      throw new Exception('Requested cache file is not found, try run build() first');
     }
 
-    fclose($handle);
-
-    return implode("\n", $lines);
+    return file_get_contents($path);
   }
 
   public function formatBytes($bytes, $precision = 2)
@@ -121,9 +143,9 @@ class CC extends Curl
 
   public function convert()
   {
-    $response_object = json_decode($response_json);
+    //$response_object = json_decode($response_json);
     $base_price = r('usd') or 12; // Your price in USD
-    $EUR_price = round(($base_price * $response_object->rates->EUR), 2);
+    $EUR_price = round(($base_price * $this->result->rates->EUR), 2);
   }
 
   /**
