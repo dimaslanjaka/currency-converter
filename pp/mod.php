@@ -18,7 +18,7 @@ if (defined('STDIN')) {
       Overflow (alur) Example : usd ke twd > twd ke usd > jpy ke usd\n
       usd2twd (USD to TWD)\n
       twd2usd (TWD to USD)\n
-      jpy2usd (JPY to USD)\n\n\n
+      jpy2usd (JPY to USD)\n\n
       ;Update\n
       php " . basename(__FILE__) . " update\n
       ";
