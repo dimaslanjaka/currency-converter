@@ -7,7 +7,7 @@ use \Curl\CC;
 $c = new CC();
 $c->set('USD');
 $c->build();
-$title = 'Currency Converter - WMI';
+$title = 'Currency Converter';
 $desc = 'PHP Class Currency Converter Tools.';
 $canonical = (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . strtok($_SERVER['REQUEST_URI'], '?');
 $content = <<<EOF
