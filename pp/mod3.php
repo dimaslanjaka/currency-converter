@@ -48,8 +48,8 @@ if (defined('STDIN')) {
         getConsole();
         file_put_contents(__DIR__ . '/' . basename(__FILE__), file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/mod.php?rev=' . time()));
         break;
-      case strpos($argv[1], '.json') >= 0:
-        exit('using ' . $argv[1]);
+      case false != strpos($argv[1], '.json'):
+        echo 'using configuration : ' . $argv[1] . PHP_EOL;
         break;
       case 'credit':
         echo "\n\n";
@@ -70,6 +70,8 @@ if (defined('STDIN')) {
 $rewrite = false;
 if (!file_exists($cfg_file) || $rewrite) {
   file_put_contents($cfg_file, gjson($cfg));
+  echo 'file ' . basename($cfg_file) . ' sudah dibuat. silahkan di edit dahulu.';
+  exit;
 }
 $cfg = array_replace($cfg, (array) json_decode(file_get_contents($cfg_file)));
 
@@ -77,14 +79,13 @@ $cfg = array_replace($cfg, (array) json_decode(file_get_contents($cfg_file)));
  * Setup global variable.
  */
 $loop = trim($cfg['loop']);
-$file = trim(file_get_contents('cookie.txt'));
-$cookie = $file;
-$csrf = (string) trim(file_get_contents('csrf.txt'));
-$cfg['counter'] = $cfg['counter'];
+$cookie = trim(file_get_contents(__DIR__ . '/cookie.txt'));
+$csrf = (string) trim(file_get_contents(__DIR__ . '/csrf.txt'));
 $limit = $cfg['limit'];
-$rumus = (string) trim(file_get_contents('rumus.txt'));
+$rumus = (string) trim(file_get_contents(__DIR__ . '/rumus.txt'));
 $rumuse = explode(' ', $rumus);
 $rumuse = array_filter($rumuse);
+$ua = (string) trim(file_get_contents('ua.txt'));
 
 include_once __DIR__ . '/console.php';
 
@@ -101,13 +102,17 @@ for ($x = 0; $x < $loop; ++$x) {
     if (strpos($e, ':')) {
       $ex = explode(':', $e);
       if (is_callable($ex[0])) {
-        $f = $c;
+        $f = $ex[0];
       }
+      if (preg_match('/sleep\((\d{1,999})\)/m', $e, $sl)) {
+        $s = (int) $sl[1];
+      }
+
       exit;
     }
-    if (is_callable($e)) {
-      echo "Executing $e\n";
-      call_user_func($e, $cookie, $csrf, $cfg['counter']);
+    if (is_callable($f)) {
+      echo "Executing $f\n";
+      call_user_func($f, $cookie, $csrf, $cfg['counter']);
     } else {
       echo "Cannot executing $e\n";
       continue;
@@ -135,14 +140,25 @@ function getStr($string, $start, $end)
  *
  * @return json_decode
  */
-function usd_to_twd($cookie, $csrf)
+function usd_to_twd($cookie, $csrf, $ammount = false)
 {
+  global $ua;
   $arr = ["\r", ' '];
   $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
+  if (!is_numeric($ammount)) {
+    echo "Ammount of " . __FUNCTION__ . " is ({$ammount}) invalid number\n";
+    $ammount = 0.02;
+  }
   $h = explode("\n", str_replace($arr, '', "Cookie: $cookie
 	Content-Type: application/json
-	user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36"));
-  $body = "{\"sourceCurrency\":\"USD\",\"sourceAmount\":0.02,\"targetCurrency\":\"TWD\",\"_csrf\":\"$csrf\"}";
+	user-agent: $ua"));
+  //$body = "{\"sourceCurrency\":\"USD\",\"sourceAmount\":$ammount,\"targetCurrency\":\"TWD\",\"_csrf\":\"$csrf\"}";
+  $body = gbody([
+    'csrf' => $csrf,
+    'src' => 'USD',
+    'to' => 'TWD',
+    'ammount' => $ammount
+  ]);
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $url);
   curl_setopt($ch, CURLOPT_HTTPHEADER, $h);
@@ -154,6 +170,24 @@ function usd_to_twd($cookie, $csrf)
 
   return json_decode($x, true);
 }
+
+/**
+ * Build Body Post.
+ *
+ * @param array $cfg
+ *
+ * @return string
+ */
+function gbody($cfg)
+{
+  return gjson([
+    'sourceCurrency' => trim(strtoupper($cfg['src'])),
+    'sourceAmount' => trim($cfg['ammount']),
+    'targetCurrency' => trim(strtoupper($cfg['to'])),
+    '_csrf' => trim($cfg['csrf']),
+  ]);
+}
+
 /**
  * USD to TWD Executor.
  *
@@ -177,11 +211,20 @@ function usd2twd($cookie, $csrf, $counter, $sleep = false)
   slp($sleep);
 }
 
-
+/**
+ * Consoler.
+ *
+ * @return void
+ */
 function getConsole()
 {
   file_put_contents(__DIR__ . '/console.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/console.php?rev=' . time()));
 }
+/**
+ * Default Initialization.
+ *
+ * @return void
+ */
 function defaultInit()
 {
   global $cfg, $rewrite;
@@ -200,6 +243,9 @@ function defaultInit()
     @unlink('limit.txt');
     $rewrite = 1;
   }
+  if (!file_exists('ua.txt')) {
+    file_put_contents('ua.txt', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36');
+  }
   if (!file_exists('rumus.txt')) {
     file_put_contents('rumus.txt', 'usd2twd');
   }
@@ -214,6 +260,13 @@ function defaultInit()
     getConsole();
   }
 }
+/**
+ * JSON maker.
+ *
+ * @param object|array $cfg
+ *
+ * @return string
+ */
 function gjson($cfg)
 {
   return json_encode($cfg, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
