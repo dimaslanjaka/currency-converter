@@ -1,7 +1,7 @@
 composer.phar
 /vendor/
-/pp/max.txt
-/pp/rumus.txt
+/pp/*.txt
+/pp/*.json
 composer.lock
 *.bak
 /key.txt

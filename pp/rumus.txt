@@ -1,1 +1,1 @@
-usd2twd
+usd2twd:5
