@@ -100,13 +100,10 @@ for ($x = 0; $x < $loop; ++$x) {
     $s = 1;
     if (strpos($e, ':')) {
       $ex = explode(':', $e);
-      foreach ($ex as $c) {
-        if (is_numeric(trim($c))) {
-          $s = $c;
-        } elseif (is_callable($c)) {
-          $f = $c;
-        }
+      if (is_callable($ex[0])) {
+        $f = $c;
       }
+      exit;
     }
     if (is_callable($e)) {
       echo "Executing $e\n";

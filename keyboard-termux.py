@@ -26,9 +26,9 @@ print(b+'\n[!] Adding files..')
 sleep(1)
 
 key = 'extra-keys = [["ESC", "/", "-", "HOME", "UP", "END", "PGUP"], ["TAB", "CTRL", "ALT", "LEFT", "DOWN", "RIGHT", "PGDN"]]'
-kontol = open('/data/data/com.termux/files/home/.termux/termux.properties','w')
-kontol.write(key)
-kontol.close()
+Control = open('/data/data/com.termux/files/home/.termux/termux.properties','w')
+Control.write(key)
+Control.close()
 sleep(1)
 print(a+'[!] Processing  !')
 sleep(1)
