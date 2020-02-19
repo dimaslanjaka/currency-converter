@@ -1,14 +1,15 @@
-\"limit\": n, isi (n) dengan angka (untuk menentukan maksimal eksekusi)\n
-\"loop\": n, isi (n) dengan angka (untuk menentukan berapa kali setiap eksekusi)\n
-isi file rumus.txt dengan nama fungsi yang akan dijalankan\n
-rumus.txt separated with space\n
-...basic\n
-Example : usd2twd twd2usd jpy2twd\n
-Overflow (alur) Example : usd ke twd > twd ke usd > jpy ke twd\n
-...custom delay\n
-Ex: usd2twd:5 twd2usd:3\n
-Description: usd to twd delay 5 seconds > twd to usd delay 3 seconds\n
-...description function name\n
-usd2twd (USD to TWD)\n
-twd2usd (TWD to USD)\n
-jpy2twd (JPY to USD)\n\n
+\"limit\": n, isi (n) dengan angka (untuk menentukan maksimal eksekusi)
+\"loop\": n, isi (n) dengan angka (untuk menentukan berapa kali setiap eksekusi)
+isi file rumus.txt dengan nama fungsi yang akan dijalankan
+rumus.txt separated with space
+...basic
+Example : usd2twd twd2usd jpy2twd
+Overflow (alur) Example : usd ke twd > twd ke usd > jpy ke twd
+...custom delay
+Ex: usd2twd:5 twd2usd:3
+Description: usd to twd delay 5 seconds > twd to usd delay 3 seconds
+...description function name
+usd2twd (USD to TWD)
+twd2usd (TWD to USD)
+jpy2twd (JPY to USD)
+

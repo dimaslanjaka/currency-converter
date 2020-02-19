@@ -35,7 +35,7 @@ if (defined('STDIN')) {
         exit;
         break;
       case 'help':
-        echo file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/tutor.txt?rev=' . time()) . "\n
+        echo str_replace('\n', "\n", file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/tutor.txt?rev=' . time())) . "
         Utility:\n
         ...Update\n
         php " . basename(__FILE__) . " update\n\n
