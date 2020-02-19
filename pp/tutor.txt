@@ -1,5 +1,5 @@
-\"limit\": n; isi (n) dengan angka (untuk menentukan maksimal eksekusi)\n
-\"loop\": n; isi (n) dengan angka (untuk menentukan berapa kali setiap eksekusi)\n
+\"limit\": n, isi (n) dengan angka (untuk menentukan maksimal eksekusi)\n
+\"loop\": n, isi (n) dengan angka (untuk menentukan berapa kali setiap eksekusi)\n
 isi file rumus.txt dengan nama fungsi yang akan dijalankan\n
 rumus.txt separated with space\n
 ...basic\n
