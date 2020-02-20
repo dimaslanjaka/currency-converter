@@ -1,10 +1,10 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/function.php';
-//include_once __DIR__ . '/console.php';
 
 use Curl\Executor;
 use Curl\PP;
+use Curl\Console;
 
 /**
  * Because we are lazy, shut up error.
@@ -46,7 +46,6 @@ if (defined('STDIN')) {
         exit;
         break;
       case 'update':
-        //getConsole();
         //file_put_contents(__DIR__ . '/' . basename(__FILE__), file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/mod.php?rev=' . time()));
         break;
       case false != strpos($argv[1], '.json'):
@@ -110,8 +109,6 @@ for ($x = 0; $x < $loop; ++$x) {
   }
 }
 
-
-
 /**
  * USD to TWD Executor.
  *
@@ -126,13 +123,11 @@ function usd2twd($cookie, $csrf, $counter, $ammount = false, $sleep = false)
   $usd_to_twd = $init->usd_to_twd($cookie, $csrf, $ammount);
   $output_send_usd = json_encode($usd_to_twd);
   $amount = $init->getStr($output_send_usd, '"value":"', '"');
+  $result = Console::red($counter . ' ' . date('d-m-Y H:i:s ') . ' Gagal Convert. (' . __FUNCTION__ . ')');
   if (true == strpos($output_send_usd, 'null')) {
-    $text1 = Curl\Console::green("Berhasil convert 0,02 USD to $amount TWD");
-    echo $counter . ' ' . date('d-m-Y H:i:s ') . $text1 . "\n";
-  } else {
-    $text2 = Curl\Console::red('Gagal Convert. (' . __FUNCTION__ . ')');
-    echo $counter . ' ' . date('d-m-Y H:i:s ') . $text2 . "\n";
+    $result = Console::green($counter . ' ' . date('d-m-Y H:i:s ') . " Berhasil convert 0,02 USD to $amount TWD");
   }
+  echo $result;
   $init->slp($sleep);
 }
 
@@ -150,12 +145,10 @@ function twd2usd($cookie, $csrf, $counter, $ammount = false, $sleep = false)
   $twd_to_usd = $init->twd_to_usd($cookie, $csrf, $ammount);
   $output_send_twd = json_encode($twd_to_usd);
   $amount = $init->getStr($output_send_twd, '"value":"', '"');
+  $result = Console::red($counter . ' ' . date('d-m-Y H:i:s ') . ' Gagal Convert. (' . __FUNCTION__ . ')');
   if (true == strpos($output_send_twd, 'null')) {
-    $text3 = Curl\Console::green("Berhasil convert 1 TWD  to $amount USD");
-    echo $counter . ' ' . date('d-m-Y H:i:s ') . $text3 . "\n";
-  } else {
-    $text4 = Curl\Console::red('Gagal Convert. (' . __FUNCTION__ . ')');
-    echo $counter . ' ' . date('d-m-Y H:i:s ') . $text4 . "\n";
+    $result = Console::green($counter . ' ' . date('d-m-Y H:i:s ') . " Berhasil convert 1 TWD to $amount USD");
   }
+  echo $result;
   $init->slp($sleep);
 }

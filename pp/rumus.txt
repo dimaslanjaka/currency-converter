@@ -1,1 +1,1 @@
-usd2twd:sleep(5):ammount(2)
+usd2twd usd2twd usd2twd twd2usd
