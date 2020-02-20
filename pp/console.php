@@ -1,7 +1,7 @@
-/**
-Usage:
-
 <?php
+
+/**
+ * Usage:
 // Output screenshot:
 // http://cl.ly/NsqF
 // -------------------------------------------------------
@@ -29,10 +29,7 @@ echo Console::blue('I should be blue on light gray but Im reversed too.', 'light
 // Ding!
 // -------------------------------------------------------
 echo Console::bell();
-?>
-**/
-<?php
-
+ */
 /**
  * PHP Colored CLI
  * Used to log strings with custom colors to console using php.
