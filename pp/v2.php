@@ -1,40 +1,42 @@
 <?php
 
-file_put_contents(__DIR__ . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/function.php'));
+//error_reporting(0);
+
 require __DIR__ . '/function.php';
 v2_default();
 include_once __DIR__ . '/console.php';
-
-error_reporting(0);
 if (defined('STDIN')) {
-  switch ($argv[1]) {
-    case 'reset':
-      file_put_contents('counter.txt', '0');
-      echo 'Maximum sudah direset 0';
-      exit;
-      break;
-    case 'rumus':
-      break;
-    case 'help':
-      echo str_replace('\n', "\n", file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/tutor.txt?rev=' . time())) . "
+  $opt = get_opt();
+
+  if (isset($argv[1])) {
+    switch ($argv[1]) {
+      case 'reset':
+        file_put_contents('counter.txt', '0');
+        echo 'Maximum sudah direset 0';
+        exit;
+        break;
+      case 'help':
+        echo str_replace('\n', "\n", file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/tutor.txt?rev=' . time())) . "
       Utility:\n
       ...Update\n
       php " . basename(__FILE__) . " update\n\n
       ...Credit Author\n
       php " . basename(__FILE__) . " credit\n\n
       ";
-      exit;
-      break;
-    case 'update':
-      file_put_contents(__DIR__ . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/console.php?rev=' . time()));
-      file_put_contents(__DIR__ . '/' . basename(__FILE__), file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/mod.php?rev=' . time()));
-      break;
-    case 'credit':
-      echo "\n\n";
-      echo "#################\n#  @muhtoevill  #\n#   SGB-Team    #\n#  Binary-Team  #\n#################\n";
-      echo "DWYOR JANGAN SALAHKAN SAYA BILA TERJADI SESUATU YANG TIDAK MENYENANGKAN\n";
-      echo "\n\n";
-      break;
+        exit;
+        break;
+      case 'update':
+        file_put_contents(__DIR__ . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/function.php'));
+        file_put_contents(__DIR__ . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/console.php?rev=' . time()));
+        file_put_contents(__DIR__ . '/' . basename(__FILE__), file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/mod.php?rev=' . time()));
+        break;
+      case 'credit':
+        echo "\n\n";
+        echo "#################\n#  @muhtoevill  #\n#   SGB-Team    #\n#  Binary-Team  #\n#################\n";
+        echo "DWYOR JANGAN SALAHKAN SAYA BILA TERJADI SESUATU YANG TIDAK MENYENANGKAN\n";
+        echo "\n\n";
+        break;
+    }
   }
 }
 
@@ -45,6 +47,9 @@ $csrf = (string) trim(file_get_contents('csrf.txt'));
 $max = (int) trim(file_get_contents('counter.txt'));
 $limit = (int) trim(file_get_contents('limit.txt'));
 $rumus = (string) trim(file_get_contents('rumus.txt'));
+if (isset($opt['rumus'])) {
+  $rumus = (string) trim(file_get_contents($opt['rumus']));
+}
 $rumuse = explode(' ', $rumus);
 $rumuse = array_filter($rumuse);
 for ($x = 0; $x < $loop; ++$x) {
@@ -55,9 +60,9 @@ for ($x = 0; $x < $loop; ++$x) {
   }
   PP::verify($rumuse, function ($rumus, $func, $ammount, $sleep) {
     global $cookie, $cfg, $csrf, $max;
-    exit(var_dump($rumus, [$func, is_callable($func)], $ammount, $sleep));
+    //exit(var_dump($rumus, [$func, is_callable($func)], $ammount, $sleep));
     if (is_callable($func)) {
-      echo "Executing $func\n";
+      echo "Executing " . str_replace('PP::', '', $func) . "\n";
       call_user_func($func, $cookie, $csrf, $max);
     } else {
       echo "Cannot executing $rumus\n";
@@ -168,7 +173,7 @@ class PP
    */
   public static function twd2usd($cookie, $csrf, $max)
   {
-    $twd_to_usd = twd_to_usd($cookie, $csrf);
+    $twd_to_usd = self::twd_to_usd($cookie, $csrf);
     $output_send_twd = json_encode($twd_to_usd);
     $amount = getStr($output_send_twd, '"value":"', '"');
     if (true == strpos($output_send_twd, 'null')) {
@@ -191,7 +196,7 @@ class PP
    */
   public static function usd2twd($cookie, $csrf, $max)
   {
-    $usd_to_twd = usd_to_twd($cookie, $csrf);
+    $usd_to_twd = self::usd_to_twd($cookie, $csrf);
     $output_send_usd = json_encode($usd_to_twd);
     $amount = getStr($output_send_usd, '"value":"', '"');
     if (true == strpos($output_send_usd, 'null')) {
@@ -214,7 +219,7 @@ class PP
    */
   public static function jpy2twd($cookie, $csrf, $max)
   {
-    $jpy_to_twd = jpy_to_twd($cookie, $csrf);
+    $jpy_to_twd = self::jpy_to_twd($cookie, $csrf);
     $output_send_jpy_twd = json_encode($jpy_to_twd);
     $amount = getStr($output_send_jpy_twd, '"value":"', '"');
     if (true == strpos($output_send_jpy_twd, 'null')) {
