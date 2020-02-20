@@ -120,15 +120,52 @@ function v2_default()
     file_put_contents(__DIR__ . '/console.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/console.php'));
   }
 }
+/**
+ * Parsing parameters
+ *
+ * @return void
+ */
+function get_opt()
+{
+  if ('cli' === !php_sapi_name()) {
+    throw new Exception('Only CLI', 1);
+  }
+  $shortopts = '';
+  $shortopts .= 'f:';  // Required value
+  $shortopts .= 'v::'; // Optional value
+  $shortopts .= 'abc'; // These options do not accept values
 
+  $longopts = [
+    'required:',     // Required value
+    'optional::',    // Optional value
+    'option',        // No value
+    'opt',           // No value
+  ];
+  $options = getopt($shortopts, $longopts);
+
+  return $options;
+}
+/**
+ * Get String
+ *
+ * @param string $string
+ * @param string $start
+ * @param string $end
+ * @return void
+ */
 function getStr($string, $start, $end)
 {
   $str = explode($start, $string);
-  $str = explode($end, ($str[1]));
+  if (isset($str[1])) $str = explode($end, ($str[1]));
 
   return $str[0];
 }
-
+/**
+ * CSRF parser
+ *
+ * @param string $csrf
+ * @return void
+ */
 function csrf($csrf)
 {
   return str_replace('_csrf=', '', $csrf);
