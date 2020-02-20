@@ -21,14 +21,7 @@ $cfg_file = __DIR__ . '/' . basename(__FILE__, '.php') . '.json';
  * Determine default configuration
  */
 defaultInit();
-$cfg = [
-  'loop' => 0,
-  'counter' => 0,
-  'limit' => 0,
-  'curl' => 'v1',
-  'body' => 'b1',
-  'header' => 'h1',
-];
+$cfg = loadConfig($cfg_file);
 
 /*
  * IS CLI ? lets do it
@@ -38,6 +31,7 @@ if (defined('STDIN')) {
     switch ($argv[1]) {
       case 'reset':
         $cfg['counter'] = 0;
+        saveConfig($cfg_file, $cfg);
         echo 'Maximum sudah direset 0';
         exit;
         break;
@@ -80,7 +74,7 @@ if (!file_exists($cfg_file) || $rewrite) {
   echo 'file ' . basename($cfg_file) . ' sudah dibuat. silahkan di edit dahulu.';
   exit;
 }
-$cfg = array_replace($cfg, (array) json_decode(file_get_contents($cfg_file)));
+//$cfg = array_replace($cfg, (array) json_decode(file_get_contents($cfg_file)));
 
 /**
  * Setup global variable.
@@ -112,7 +106,7 @@ for ($x = 0; $x < $loop; ++$x) {
   });
 
   if ($x == $loop - 1) {
-    file_put_contents($cfg_file, $cfg);
+    saveConfig($cfg_file, $cfg);
   }
 }
 
@@ -160,7 +154,7 @@ function twd2usd($cookie, $csrf, $counter, $ammount = false, $sleep = false)
     $text3 = Curl\Console::green("Berhasil convert 1 TWD  to $amount USD");
     echo $counter . ' ' . date('d-m-Y H:i:s ') . $text3 . "\n";
   } else {
-    $text4 = Console::red('Gagal Convert. (' . __FUNCTION__ . ')');
+    $text4 = Curl\Console::red('Gagal Convert. (' . __FUNCTION__ . ')');
     echo $counter . ' ' . date('d-m-Y H:i:s ') . $text4 . "\n";
   }
   $init->slp($sleep);

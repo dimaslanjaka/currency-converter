@@ -61,3 +61,36 @@ function gjson($cfg)
 {
   return json_encode($cfg, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 }
+/**
+ * Save Config
+ *
+ * @param string $file
+ * @param array $content
+ * @return void
+ */
+function saveConfig($file, $content = [
+  'loop' => 0,
+  'counter' => 0,
+  'limit' => 0,
+  'curl' => 'v1',
+  'body' => 'b1',
+  'header' => 'h1',
+])
+{
+  return file_put_contents($file, gjson($content));
+}
+/**
+ * Load default config
+ *
+ * @param string $file
+ * @return array
+ */
+function loadConfig($file)
+{
+  if (!file_exists($file)) {
+    saveConfig($file);
+    throw new Exception("$file not exist");
+  }
+
+  return (array) json_decode(file_get_contents($file));
+}

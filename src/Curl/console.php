@@ -2,7 +2,7 @@
 
 namespace Curl;
 
-use \Exception;
+use Exception;
 
 /**
  * Usage:.
@@ -145,6 +145,28 @@ class Console
    */
 
   /**
+   * Check function enabled.
+   *
+   * @param string $func
+   *
+   * @return boolean
+   */
+  public static function isEnabled($func)
+  {
+    return is_callable($func) && false === stripos(ini_get('disable_functions'), $func);
+  }
+  /**
+   * is mac ?
+   *
+   * @return void
+   */
+  public static function ismac()
+  {
+    $user_agent = getenv('HTTP_USER_AGENT');
+    return false !== strpos($user_agent, 'Mac');
+  }
+
+  /**
    * Catches static calls (Wildcard).
    *
    * @param string $foreground_color Text Color
@@ -154,14 +176,15 @@ class Console
    */
   public static function __callStatic($foreground_color, $args)
   {
+    self::$win = ('WIN' === strtoupper(substr(PHP_OS, 0, 3)));
     $string = $args[0];
     $colored_string = '';
     if (self::$win) {
       //Windows
       $foreground_color = strtolower($foreground_color);
-      $colored_string = './color.bat -s "' . $string . '" -n -e ';
+      $colored_string = __DIR__ . '/color.bat -s "' . $string . '" -n -e ';
       if (isset(self::$win_color[$foreground_color])) {
-        $colored_string .= "-f " . self::$win_color[$foreground_color];
+        $colored_string .= '-f ' . self::$win_color[$foreground_color];
       } else {
         throw new Exception($foreground_color . ' not a valid windows color');
       }
@@ -170,10 +193,15 @@ class Console
 
       foreach ($args as $option) {
         if (isset(self::$win_color[$option])) {
-          $colored_string .= "-b " . self::$win_color[$option];
+          $colored_string .= '-b ' . self::$win_color[$option];
         }
       }
-    } else {
+      if (self::isEnabled('shell_exec')) {
+        return shell_exec($colored_string);
+      } else {
+        return $string;
+      }
+    } elseif (!self::ismac()) {
       // Linux
       if (isset(self::$foreground_colors[$foreground_color])) {
         $colored_string .= "\033[" . self::$foreground_colors[$foreground_color] . 'm';
@@ -194,7 +222,10 @@ class Console
 
       // Add string and end coloring
       $colored_string .= $string . "\033[0m";
+    } else {
+      $colored_string = $string;
     }
+
     return $colored_string;
   }
 
