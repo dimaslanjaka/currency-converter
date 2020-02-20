@@ -2,8 +2,10 @@
 
 namespace Curl;
 
+use \Exception;
+
 /**
- * Usage:
+ * Usage:.
 // Output screenshot:
 // http://cl.ly/NsqF
 // -------------------------------------------------------
@@ -65,12 +67,27 @@ class Console
     'cyan' => '46',   'light_gray' => '47',
   ];
 
+  public static $win;
+
+  public static $win_color = [
+    'black' => '0', 'green' => '10',
+    'red' => '12', 'white' => '15',
+    'pink' => '13', 'cyan' => '11',
+    'grey' => '8', 'lightgrey' => '7',
+    'yellow' => '14',
+  ];
+
   public static $options = [
     'underline' => '4',    'blink' => '5',
     'reverse' => '7',    'hidden' => '8',
   ];
 
   public static $EOF = "\n";
+
+  public function __construct()
+  {
+    self::$win = ('WIN' === strtoupper(substr(PHP_OS, 0, 3)));
+  }
 
   public static function warna($text, $warna)
   {
@@ -138,16 +155,30 @@ class Console
   public static function __callStatic($foreground_color, $args)
   {
     $string = $args[0];
-    if ('WIN' === strtoupper(substr(PHP_OS, 0, 3))) {
-      return $string;
-    } else {
-      $colored_string = '';
+    $colored_string = '';
+    if (self::$win) {
+      //Windows
+      $foreground_color = strtolower($foreground_color);
+      $colored_string = './color.bat -s "' . $string . '" -n -e ';
+      if (isset(self::$win_color[$foreground_color])) {
+        $colored_string .= "-f " . self::$win_color[$foreground_color];
+      } else {
+        throw new Exception($foreground_color . ' not a valid windows color');
+      }
 
-      // Check if given foreground color found
+      array_shift($args);
+
+      foreach ($args as $option) {
+        if (isset(self::$win_color[$option])) {
+          $colored_string .= "-b " . self::$win_color[$option];
+        }
+      }
+    } else {
+      // Linux
       if (isset(self::$foreground_colors[$foreground_color])) {
         $colored_string .= "\033[" . self::$foreground_colors[$foreground_color] . 'm';
       } else {
-        die($foreground_color . ' not a valid color');
+        throw new Exception($foreground_color . ' not a valid color');
       }
 
       array_shift($args);
@@ -163,9 +194,8 @@ class Console
 
       // Add string and end coloring
       $colored_string .= $string . "\033[0m";
-
-      return $colored_string;
     }
+    return $colored_string;
   }
 
   /**
