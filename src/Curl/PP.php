@@ -20,7 +20,7 @@ class PP extends Curl
   public function getStr($string, $start, $end)
   {
     $str = explode($start, $string);
-    $str = explode($end, ($str[1]));
+    if (isset($str[1])) $str = explode($end, ($str[1]));
 
     return $str[0];
   }
@@ -109,6 +109,24 @@ class PP extends Curl
       'targetCurrency' => trim(strtoupper($cfg['to'])),
       '_csrf' => trim($cfg['csrf']),
     ]);
+  }
+
+  /**
+   * Sleep delay.
+   *
+   * @param mixed $n
+   *
+   * @return void
+   */
+  function slp($n)
+  {
+    if (!$n) {
+      $n = 1;
+    }
+    if (is_numeric($n)) {
+      echo "Delay {$n} detik\n";
+      sleep($n);
+    }
   }
 
   /**
