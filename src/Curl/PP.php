@@ -25,7 +25,7 @@ class PP extends Curl
     return $str[0];
   }
 
-  function pp_send($path, $h, $body)
+  public function pp_send($path, $h, $body)
   {
     //$this->instance = new Curl($this->paypal);
     $this->setUrl($this->paypal);
@@ -33,9 +33,11 @@ class PP extends Curl
     $this->post($path, $body);
   }
 
-  function old_request($url, $h, $body)
+  public function old_request($url, $h, $body)
   {
-    if (!$this->isurl($url)) $url = $this->paypal . $url;
+    if (!$this->isurl($url)) {
+      $url = $this->paypal . $url;
+    }
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $h);
@@ -44,10 +46,11 @@ class PP extends Curl
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     $x = curl_exec($ch);
     curl_close($ch);
+
     return $x;
   }
 
-  function isurl($url)
+  public function isurl($url)
   {
     return filter_var($url, FILTER_VALIDATE_URL);
   }
@@ -65,18 +68,18 @@ class PP extends Curl
     $arr = ["\r", '	'];
     $url = $this->pp_url;
     /**
-     * $h = explode("\n", str_replace($arr, '', "Cookie: $cookie
-	Content-Type: application/json
-	user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36"));
+     * $h = explode("\n", str_replace($arr, '', "Cookie: $cookie.
+    Content-Type: application/json
+    user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36"));
      */
     //$body = "{\"sourceCurrency\":\"USD\",\"sourceAmount\":0.02,\"targetCurrency\":\"TWD\",\"_csrf\":\"$csrf\"}";
     $h = [
       'Content-Type: application/json',
       "Cookie: $cookie",
-      "user-agent: " . $this->ua
+      'user-agent: ' . $this->ua,
     ];
     if (!is_numeric($ammount)) {
-      echo "Ammount of " . __FUNCTION__ . " is ({$ammount}) invalid number\n";
+      echo 'Ammount of ' . __FUNCTION__ . " is ({$ammount}) invalid number\n";
       $ammount = 0.02;
       echo "Set ammount default {$ammount}\n";
     }
@@ -84,7 +87,7 @@ class PP extends Curl
       'csrf' => $csrf,
       'src' => 'USD',
       'to' => 'TWD',
-      'ammount' => $ammount
+      'ammount' => $ammount,
     ]);
     $x = $this->old_request($url, $h, $body);
 
@@ -98,7 +101,7 @@ class PP extends Curl
    *
    * @return string
    */
-  function gbody($cfg)
+  public function gbody($cfg)
   {
     return gjson([
       'sourceCurrency' => trim(strtoupper($cfg['src'])),
@@ -116,14 +119,32 @@ class PP extends Curl
    *
    * @return json_decode
    */
-  public function twd_to_usd($cookie, $csrf)
+  public function twd_to_usd($cookie, $csrf, $ammount = false)
   {
     $arr = ["\r", '	'];
     $url = $this->pp_url;
-    $h = explode("\n", str_replace($arr, '', "Cookie: $cookie
+    /**
+     * $h = explode("\n", str_replace($arr, '', "Cookie: $cookie
 	Content-Type: application/json
 	user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36"));
     $body = "{\"sourceCurrency\":\"TWD\",\"sourceAmount\":3,\"targetCurrency\":\"USD\",\"_csrf\":\"$csrf\"}";
+     */
+    $h = [
+      'Content-Type: application/json',
+      "Cookie: $cookie",
+      'user-agent: ' . $this->ua,
+    ];
+    if (!is_numeric($ammount)) {
+      echo 'Ammount of ' . __FUNCTION__ . " is ({$ammount}) invalid number\n";
+      $ammount = 3;
+      echo "Set ammount default {$ammount}\n";
+    }
+    $body = $this->gbody([
+      'csrf' => $csrf,
+      'src' => 'TWD',
+      'to' => 'USD',
+      'ammount' => $ammount,
+    ]);
     $x = $this->old_request($url, $h, $body);
 
     return json_decode($x, true);
