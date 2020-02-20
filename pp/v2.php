@@ -60,7 +60,6 @@ for ($x = 0; $x < $loop; ++$x) {
     global $cookie, $cfg, $csrf, $max;
     //exit(var_dump($rumus, [$func, is_callable($func)], $ammount, $sleep));
     if (is_callable($func)) {
-      //echo "Executing " . str_replace('PP::', '', $func) . "\n";
       call_user_func($func, $cookie, $csrf, $max);
     } else {
       echo "Cannot executing $rumus\n";
@@ -79,6 +78,20 @@ class PP
   private static $ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36';
   protected static $counter;
 
+  public static function cload($url, $h, $body)
+  {
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $h);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $x = curl_exec($ch);
+    curl_close($ch);
+
+    return $x;
+  }
+
   /**
    * USD to TWD.
    *
@@ -95,16 +108,8 @@ class PP
 	Content-Type: application/json
 	user-agent: " . self::$ua));
     $body = "{\"sourceCurrency\":\"USD\",\"sourceAmount\":0.02,\"targetCurrency\":\"TWD\",\"_csrf\":\"$csrf\"}";
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $h);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    $x = curl_exec($ch);
-    curl_close($ch);
 
-    return json_decode($x, true);
+    return json_decode(self::cload($url, $h, $body), true);
   }
 
   /**
@@ -123,16 +128,15 @@ class PP
 	Content-Type: application/json
 	user-agent: " . self::$ua));
     $body = "{\"sourceCurrency\":\"TWD\",\"sourceAmount\":3,\"targetCurrency\":\"USD\",\"_csrf\":\"$csrf\"}";
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $h);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    $x = curl_exec($ch);
-    curl_close($ch);
 
-    return json_decode($x, true);
+    return json_decode(self::cload($url, $h, $body), true);
+  }
+
+  public static function setua($ua)
+  {
+    if (is_string($ua)) {
+      self::$ua = $ua;
+    }
   }
 
   /**
@@ -151,16 +155,8 @@ class PP
 	Content-Type: application/json
 	user-agent: " . self::$ua));
     $body = "{\"sourceCurrency\":\"JPY\",\"sourceAmount\":2,\"targetCurrency\":\"TWD\",\"_csrf\":\"$csrf\"}";
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $h);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    $x = curl_exec($ch);
-    curl_close($ch);
 
-    return json_decode($x, true);
+    return json_decode(self::cload($url, $h, $body), true);
   }
 
   /**
@@ -178,7 +174,7 @@ class PP
     $amount = getStr($output_send_twd, '"value":"', '"');
     $result = Console::red($counter . ' ' . date('d-m-Y H:i:s ') . ' Gagal Convert. (' . __FUNCTION__ . ')');
     if (true == strpos($output_send_twd, 'null')) {
-      $result = Console::green($counter . ' ' . date('d-m-Y H:i:s ') . " Berhasil convert 1 TWD to $amount USD");
+      $result = Console::green($counter . ' ' . date('d-m-Y H:i:s ') . " Berhasil convert 1 TWD to $amount USD (" . __FUNCTION__ . ")");
     }
     echo $result . "\n";
     self::sleep();
@@ -199,7 +195,7 @@ class PP
     $amount = getStr($output_send_usd, '"value":"', '"');
     $result = Console::red($counter . ' ' . date('d-m-Y H:i:s ') . ' Gagal Convert. (' . __FUNCTION__ . ')');
     if (true == strpos($output_send_usd, 'null')) {
-      $result = Console::green($counter . ' ' . date('d-m-Y H:i:s ') . " Berhasil convert 0,02 USD to $amount TWD");
+      $result = Console::green($counter . ' ' . date('d-m-Y H:i:s ') . " Berhasil convert 0,02 USD to $amount TWD (" . __FUNCTION__ . ")");
     }
     echo $result . "\n";
     self::sleep();
@@ -220,7 +216,7 @@ class PP
     $amount = getStr($output_send_jpy_twd, '"value":"', '"');
     $result = Console::red($max . ' ' . date('d-m-Y H:i:s ') . 'Gagal Convert. (' . __FUNCTION__ . ')');
     if (true == strpos($output_send_jpy_twd, 'null')) {
-      $result = Console::green($max . ' ' . date('d-m-Y H:i:s ') . "Berhasil convert 2 JPY to $amount TWD");
+      $result = Console::green($max . ' ' . date('d-m-Y H:i:s ') . "Berhasil convert 2 JPY to $amount TWD (" . __FUNCTION__ . ")");
     }
     echo $result . "\n";
     self::sleep();
