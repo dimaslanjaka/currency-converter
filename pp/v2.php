@@ -26,9 +26,7 @@ if (defined('STDIN')) {
         exit;
         break;
       case 'update':
-        file_put_contents(__DIR__ . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/function.php?rev=' . time()));
-        file_put_contents(__DIR__ . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/console.php?rev=' . time()));
-        file_put_contents(__DIR__ . '/' . basename(__FILE__), file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/mod.php?rev=' . time()));
+        Update(__DIR__);
         break;
       case 'credit':
         echo "\n\n";
@@ -62,7 +60,7 @@ for ($x = 0; $x < $loop; ++$x) {
     global $cookie, $cfg, $csrf, $max;
     //exit(var_dump($rumus, [$func, is_callable($func)], $ammount, $sleep));
     if (is_callable($func)) {
-      echo "Executing " . str_replace('PP::', '', $func) . "\n";
+      //echo "Executing " . str_replace('PP::', '', $func) . "\n";
       call_user_func($func, $cookie, $csrf, $max);
     } else {
       echo "Cannot executing $rumus\n";
@@ -78,6 +76,8 @@ class PP
 {
   public static $sleep = 5;
   public static $wrap_config = [];
+  private static $ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36';
+  protected static $counter;
 
   /**
    * USD to TWD.
@@ -93,7 +93,7 @@ class PP
     $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
     $h = explode("\n", str_replace($arr, '', "Cookie: $cookie
 	Content-Type: application/json
-	user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36"));
+	user-agent: " . self::$ua));
     $body = "{\"sourceCurrency\":\"USD\",\"sourceAmount\":0.02,\"targetCurrency\":\"TWD\",\"_csrf\":\"$csrf\"}";
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -121,7 +121,7 @@ class PP
     $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
     $h = explode("\n", str_replace($arr, '', "Cookie: $cookie
 	Content-Type: application/json
-	user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36"));
+	user-agent: " . self::$ua));
     $body = "{\"sourceCurrency\":\"TWD\",\"sourceAmount\":3,\"targetCurrency\":\"USD\",\"_csrf\":\"$csrf\"}";
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -149,7 +149,7 @@ class PP
     $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
     $h = explode("\n", str_replace($arr, '', "Cookie: $cookie
 	Content-Type: application/json
-	user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36"));
+	user-agent: " . self::$ua));
     $body = "{\"sourceCurrency\":\"JPY\",\"sourceAmount\":2,\"targetCurrency\":\"TWD\",\"_csrf\":\"$csrf\"}";
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -171,18 +171,16 @@ class PP
    *
    * @return json_decode
    */
-  public static function twd2usd($cookie, $csrf, $max)
+  public static function twd2usd($cookie, $csrf, $counter)
   {
     $twd_to_usd = self::twd_to_usd($cookie, $csrf);
     $output_send_twd = json_encode($twd_to_usd);
     $amount = getStr($output_send_twd, '"value":"', '"');
+    $result = Console::red($counter . ' ' . date('d-m-Y H:i:s ') . ' Gagal Convert. (' . __FUNCTION__ . ')');
     if (true == strpos($output_send_twd, 'null')) {
-      $text3 = "Berhasil convert 1 TWD  to $amount USD";
-      echo $max . ' ' . date('d-m-Y H:i:s ') . $text3 . "\n";
-    } else {
-      $text4 = Console::red('Gagal Convert. (' . __FUNCTION__ . ')');
-      echo $max . ' ' . date('d-m-Y H:i:s ') . $text4 . "\n";
+      $result = Console::green($counter . ' ' . date('d-m-Y H:i:s ') . " Berhasil convert 1 TWD to $amount USD");
     }
+    echo $result . "\n";
     self::sleep();
   }
 
@@ -194,18 +192,16 @@ class PP
    *
    * @return json_decode
    */
-  public static function usd2twd($cookie, $csrf, $max)
+  public static function usd2twd($cookie, $csrf, $counter)
   {
     $usd_to_twd = self::usd_to_twd($cookie, $csrf);
     $output_send_usd = json_encode($usd_to_twd);
     $amount = getStr($output_send_usd, '"value":"', '"');
+    $result = Console::red($counter . ' ' . date('d-m-Y H:i:s ') . ' Gagal Convert. (' . __FUNCTION__ . ')');
     if (true == strpos($output_send_usd, 'null')) {
-      $text1 = "Berhasil convert 0,02 USD to $amount TWD";
-      echo $max . ' ' . date('d-m-Y H:i:s ') . $text1 . "\n";
-    } else {
-      $text2 = Console::red('Gagal Convert. (' . __FUNCTION__ . ')');
-      echo $max . ' ' . date('d-m-Y H:i:s ') . $text2 . "\n";
+      $result = Console::green($counter . ' ' . date('d-m-Y H:i:s ') . " Berhasil convert 0,02 USD to $amount TWD");
     }
+    echo $result . "\n";
     self::sleep();
   }
 
@@ -222,13 +218,11 @@ class PP
     $jpy_to_twd = self::jpy_to_twd($cookie, $csrf);
     $output_send_jpy_twd = json_encode($jpy_to_twd);
     $amount = getStr($output_send_jpy_twd, '"value":"', '"');
+    $result = Console::red($max . ' ' . date('d-m-Y H:i:s ') . 'Gagal Convert. (' . __FUNCTION__ . ')');
     if (true == strpos($output_send_jpy_twd, 'null')) {
-      $text3 = "Berhasil convert 2 JPY  to $amount TWD";
-      echo $max . ' ' . date('d-m-Y H:i:s ') . $text3 . "\n";
-    } else {
-      $text4 = Console::red('Gagal Convert. (' . __FUNCTION__ . ')');
-      echo $max . ' ' . date('d-m-Y H:i:s ') . $text4 . "\n";
+      $result = Console::green($max . ' ' . date('d-m-Y H:i:s ') . "Berhasil convert 2 JPY to $amount TWD");
     }
+    echo $result . "\n";
     self::sleep();
   }
 
