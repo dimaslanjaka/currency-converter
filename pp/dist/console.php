@@ -85,6 +85,13 @@ class Console
         self::$win = ('WIN' === strtoupper(substr(PHP_OS, 0, 3)));
     }
 
+    static function welcome()
+    {
+        echo "\033[36m###############################################\n#                  @⁨L3N4R0X    ⁩               #\n#                SHADOW FAMILY                #\n#        SEMOGA SELAMAT SAMPAI TUJUAN         #\n###############################################\n";
+        echo "\33[35m#                 NUYUL PAYPAL                #\n#                    READY!?                  #\n#                     GO!                     #\n###############################################\n";
+        echo "\n\n";
+    }
+
     public static function warna($text, $warna)
     {
         $warna = strtoupper($warna);
@@ -173,12 +180,13 @@ class Console
     public static function __callStatic($foreground_color, $args)
     {
         self::$win = ('WIN' === strtoupper(substr(PHP_OS, 0, 3)));
+        $printenv = shell_exec('printenv >nul 2>&1 && ( echo found ) || ( echo fail )');
         $string = $args[0];
         $colored_string = '';
-        if (self::$win) {
+        if (self::$win && trim($printenv) == 'fail') {
             //Windows
             return $string;
-        } elseif (!self::ismac()) {
+        } elseif (!self::ismac() || trim($printenv) == 'found') {
             // Linux
             if (isset(self::$foreground_colors[$foreground_color])) {
                 $colored_string .= "\033[" . self::$foreground_colors[$foreground_color] . 'm';

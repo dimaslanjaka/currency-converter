@@ -40,6 +40,8 @@ php " . basename(__FILE__) . " credit\n\n
         echo "#################\n#  @muhtoevill  #\n#   SGB-Team    #\n#  Binary-Team  #\n#################\n";
         echo "DWYOR JANGAN SALAHKAN SAYA BILA TERJADI SESUATU YANG TIDAK MENYENANGKAN\n";
         echo "\n\n";
+        echo "\n\n";
+
         break;
     }
   }
@@ -56,11 +58,15 @@ php " . basename(__FILE__) . " credit\n\n
   } while (!is_numeric($loop_delay) || $loop_delay <= 0);
 }
 
+Console::welcome();
+
+$pp = PP::init();
 $opt = get_opt();
 $loop = (int) trim(file_get_contents('loop.txt'));
-$file = trim(file_get_contents('cookie.txt'));
-$cookie = $file;
+$cookie = trim(file_get_contents('cookie.txt'));
+$pp->setCookie($cookie);
 $csrf = (string) trim(file_get_contents('csrf.txt'));
+$pp->setCsrf($csrf);
 $counter = (int) trim(file_get_contents('counter.txt'));
 $limit = (int) trim(file_get_contents('limit.txt'));
 if (isset($opt['rumus'])) {
@@ -71,7 +77,6 @@ if (isset($opt['rumus'])) {
 } else {
   die(Console::red('Rumus file is needed'));
 }
-
 $rumuse = preg_split('/[\s\n]/', $rumus);
 $rumuse = array_filter($rumuse);
 if (isset($opt['ua'])) {
@@ -89,7 +94,7 @@ while ($x <= $loop) {
     echo "\nMaksimal '$limit' Bro\n";
     break;
   }
-  echo Console::blue("===$counter===\n");
+  echo Console::purple("===" . ordinal($counter) . " Execution===\n");
   run($rumuse);
   echo "\n\n";
   echo Console::green("===Sleep for $loop_delay seconds===\n");
@@ -103,13 +108,19 @@ while ($x <= $loop) {
 
 function run($rumuse)
 {
-  global $cookie, $ua, $csrf;
-  $pp = PP::init();
+  global $cookie, $ua, $csrf, $pp;
+
   $pp->verify($rumuse, function ($rumus, $func, $amount, $sleep, $count_all) use (&$pp) {
     global $cookie, $ua, $csrf;
-    //PP::dump(func_get_args());
+
     if (!is_string($ua) && empty(trim($ua))) {
       exit('User-agent invalid');
+    }
+    if (!is_string($cookie) && empty(trim($cookie))) {
+      exit('Cookie invalid');
+    }
+    if (!is_string($csrf) && empty(trim($csrf))) {
+      exit('CSRF invalid');
     }
     if (!is_numeric($sleep)) {
       exit("Invalid Sleep ($sleep) format, must be integer/number");
@@ -117,6 +128,8 @@ function run($rumuse)
     if ($amount && !is_numeric($amount) || $amount == 0) {
       exit("Invalid amount ($amount) format, must be integer/number. and not zero.");
     }
+    $pp->setCookie($cookie);
+    $pp->setCsrf($csrf);
     $pp->set_ua($ua);
     $pp->set_amount($amount);
     $pp->set_sleep($sleep);

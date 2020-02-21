@@ -1,5 +1,8 @@
 <?php
 
+if (!class_exists('Console')) {
+  include_once __DIR__ . '/console.php';
+}
 class PP
 {
   public static $sleep = 5;
@@ -12,6 +15,8 @@ class PP
   public static $from;
   public static $to;
   private static $_instance = null;
+  public static $cookie;
+  public static $csrf;
 
   public static function init()
   {
@@ -146,14 +151,14 @@ class PP
    * @param string $to
    * @param string $csrf
    */
-  public static function body($from, $to, $csrf)
+  public static function body($from, $to)
   {
     self::$from = $from;
     self::$to = $to;
     if (0 == self::get_amount()) {
       exit(__FUNCTION__ . ' amount (' . self::get_amount() . ') is zero');
     }
-    $result = "{\"sourceCurrency\":\"$from\",\"sourceAmount\":" . self::get_amount() . ",\"targetCurrency\":\"$to\",\"_csrf\":\"$csrf\"}";
+    $result = "{\"sourceCurrency\":\"$from\",\"sourceAmount\":" . self::get_amount() . ",\"targetCurrency\":\"$to\",\"_csrf\":\"" . self::$csrf . '"}';
     //var_dump($result);
     return $result;
   }
@@ -165,13 +170,13 @@ class PP
    *
    * @return explode
    */
-  public static function header($cookie)
+  public static function header()
   {
     $arr = ["\r", '	'];
 
-    return explode("\n", str_replace($arr, '', "Cookie: $cookie
+    return explode("\n", str_replace($arr, '', 'Cookie: ' . self::$cookie . '
 Content-Type: application/json
-user-agent: " . self::$ua));
+user-agent: ' . self::$ua));
   }
 
   /**
@@ -182,47 +187,53 @@ user-agent: " . self::$ua));
    *
    * @return json_decode
    */
-  public static function usd_to_twd($cookie, $csrf)
+  public static function usd_to_twd()
   {
     if (!self::check_amount()) {
       self::set_amount(__FUNCTION__);
     }
+
+    $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
+    $h = self::header();
+    $body = self::body('USD', 'TWD');
+
     if (self::dev()) {
       self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
     }
-    $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
-    $h = self::header($cookie);
-    $body = self::body('USD', 'TWD', $csrf);
 
     return json_decode(self::cload($url, $h, $body), true);
   }
 
-  public static function usd_to_jpy($cookie, $csrf)
+  public static function usd_to_jpy()
   {
     if (!self::check_amount()) {
       self::set_amount(__FUNCTION__);
     }
+
+    $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
+    $h = self::header();
+    $body = self::body('USD', 'JPY');
+
     if (self::dev()) {
       self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
     }
-    $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
-    $h = self::header($cookie);
-    $body = self::body('USD', 'JPY', $csrf);
 
     return json_decode(self::cload($url, $h, $body), true);
   }
 
-  public static function usd_to_ils($cookie, $csrf)
+  public static function usd_to_ils()
   {
     if (!self::check_amount()) {
       self::set_amount(__FUNCTION__);
     }
+
+    $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
+    $h = self::header();
+    $body = self::body('USD', 'ILS');
+
     if (self::dev()) {
       self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
     }
-    $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
-    $h = self::header($cookie);
-    $body = self::body('USD', 'ILS', $csrf);
 
     return json_decode(self::cload($url, $h, $body), true);
   }
@@ -235,17 +246,19 @@ user-agent: " . self::$ua));
    *
    * @return json_decode
    */
-  public static function twd_to_usd($cookie, $csrf)
+  public static function twd_to_usd()
   {
     if (!self::check_amount()) {
       self::set_amount(__FUNCTION__);
     }
+
+    $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
+    $h = self::header();
+    $body = self::body('TWD', 'USD');
+
     if (self::dev()) {
       self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
     }
-    $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
-    $h = self::header($cookie);
-    $body = self::body('TWD', 'USD', $csrf);
 
     return json_decode(self::cload($url, $h, $body), true);
   }
@@ -258,17 +271,19 @@ user-agent: " . self::$ua));
    *
    * @return json_decode
    */
-  public static function jpy_to_twd($cookie, $csrf)
+  public static function jpy_to_twd()
   {
     if (!self::check_amount()) {
       self::set_amount(__FUNCTION__);
     }
+
+    $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
+    $h = self::header();
+    $body = self::body('JPY', 'TWD');
+
     if (self::dev()) {
       self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
     }
-    $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
-    $h = self::header($cookie);
-    $body = self::body('JPY', 'TWD', $csrf);
 
     return json_decode(self::cload($url, $h, $body), true);
   }
@@ -281,24 +296,24 @@ user-agent: " . self::$ua));
    *
    * @return json_decode
    */
-  public static function twd2usd($cookie, $csrf)
+  public static function twd2usd()
   {
     if (self::dev()) {
       self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
     }
-    $twd_to_usd = self::twd_to_usd($cookie, $csrf);
+    $twd_to_usd = self::twd_to_usd();
     $output = json_encode($twd_to_usd);
     $amount = getStr($output, '"value":"', '"');
     self::console(__FUNCTION__, $output, $amount);
     self::sleep();
   }
 
-  public static function usd2jpy($cookie, $csrf)
+  public static function usd2jpy()
   {
     if (self::dev()) {
       self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
     }
-    $run = self::usd_to_jpy($cookie, $csrf);
+    $run = self::usd_to_jpy();
     $output = json_encode($run);
     $amount = getStr($output, '"value":"', '"');
     self::console(__FUNCTION__, $output, $amount);
@@ -313,12 +328,12 @@ user-agent: " . self::$ua));
    *
    * @return json_decode
    */
-  public static function usd2twd($cookie, $csrf)
+  public static function usd2twd()
   {
     if (self::dev()) {
       self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
     }
-    $usd_to_twd = self::usd_to_twd($cookie, $csrf);
+    $usd_to_twd = self::usd_to_twd();
     $output = json_encode($usd_to_twd);
     $amount = getStr($output, '"value":"', '"');
     self::console(__FUNCTION__, $output, $amount);
@@ -343,12 +358,12 @@ user-agent: " . self::$ua));
    *
    * @return json_decode
    */
-  public static function jpy2twd($cookie, $csrf)
+  public static function jpy2twd()
   {
     if (self::dev()) {
       self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
     }
-    $jpy_to_twd = self::jpy_to_twd($cookie, $csrf);
+    $jpy_to_twd = self::jpy_to_twd();
     $output = json_encode($jpy_to_twd);
     $amount = getStr($output, '"value":"', '"');
     self::console(__FUNCTION__, $output, $amount);
@@ -439,5 +454,40 @@ user-agent: " . self::$ua));
   public static function shift_function($f)
   {
     return str_replace('2', '_to_', $f);
+  }
+
+  /**
+   * Set Cookie.
+   *
+   * @param string $str
+   *
+   * @return void
+   */
+  public static function setCookie($str)
+  {
+    self::$cookie = trim($str);
+  }
+
+  /**
+   * Set CSRF.
+   *
+   * @param string $str
+   *
+   * @return void
+   */
+  public static function setCsrf($str)
+  {
+    if (self::isJson($str)) {
+      $j = (array) json_decode($str);
+      $str = isset($j['_csrf']) ? $j['_csrf'] : die('CSRF invalid JSON format');
+    }
+    self::$csrf = $str;
+  }
+
+  public static function isJson($string)
+  {
+    json_decode($string);
+
+    return JSON_ERROR_NONE == json_last_error();
   }
 }

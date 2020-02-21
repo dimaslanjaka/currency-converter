@@ -1,13 +1,17 @@
 <?php
 
 if ('L3n4r0x-PC' != gethostname()) {
-  if (!file_exists(__DIR__ . '/class.php')) file_put_contents(__DIR__ . '/class.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/dist/class.php?rev=' . time()));
+  if (!file_exists(__DIR__ . '/class.php')) {
+    file_put_contents(__DIR__ . '/class.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/dist/class.php?rev=' . time()));
+  }
 }
 require_once __DIR__ . '/class.php';
 if (!file_exists('console.php')) {
   getConsole();
 }
-include_once __DIR__ . '/console.php';
+if (!class_exists('Console')) {
+  include_once __DIR__ . '/console.php';
+}
 $v = '1.0.9';
 
 /**
@@ -75,12 +79,12 @@ function v2_default($fn = null)
   if (!file_exists('limit.txt')) {
     file_put_contents('limit.txt', '0');
   }
+  if (!file_exists('counter.txt')) {
+    file_put_contents('counter.txt', '0');
+  }
   if (file_exists('max.txt')) {
     file_put_contents('counter.txt', file_get_contents('max.txt'));
     @unlink('max.txt');
-  }
-  if (!file_exists('counter.txt')) {
-    file_put_contents('counter.txt', '0');
   }
   if (!file_exists('csrf.txt')) {
     file_put_contents('csrf.txt', '1GSaHXUdGkzps8ZJyA4lwHJ5lOG6I/avRL+94=');
@@ -97,7 +101,7 @@ function v2_default($fn = null)
   if (!file_exists(__DIR__ . '/function.php')) {
     file_put_contents(__DIR__ . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/dist/function.php?rev=' . time()));
   }
-  if (!file_exists(__DIR__ . '/version.json') || (file_exists(__DIR__ . '/version.json') && date("U", filectime(__DIR__ . '/version.json') <= time() - 3600))) {
+  if (!file_exists(__DIR__ . '/version.json') || (file_exists(__DIR__ . '/version.json') && date('U', filectime(__DIR__ . '/version.json') <= time() - 3600))) {
     file_put_contents(__DIR__ . '/version.json', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/dist/version.json?rev=' . time()));
   }
   $jv = (array) json_decode(file_get_contents(__DIR__ . '/version.json'));
@@ -105,6 +109,22 @@ function v2_default($fn = null)
     echo Console::red("Update available, to update\nphp $fn update\n\n");
   }
 }
+/**
+ * Ordinal Number
+ *
+ * @param int $number
+ * @return void
+ */
+function ordinal($number)
+{
+  $ends = ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'];
+  if ((($number % 100) >= 11) && (($number % 100) <= 13)) {
+    return $number . 'th';
+  } else {
+    return $number . $ends[$number % 10];
+  }
+}
+
 /**
  * Parsing parameters.
  */
@@ -114,7 +134,7 @@ function get_opt()
     throw new Exception('Only CLI', 1);
   }
 
-  $options = $opts = getoptreq('abc:d:e::f::', ['one', 'two', 'three:', 'four:', 'five::', 'config:', 'rumus:']);
+  $options = getoptreq('abc:d:e::f::', ['one', 'two', 'three:', 'four:', 'five::', 'dynamic:', 'rumus:']);
 
   return $options;
 }
@@ -191,10 +211,9 @@ function csrf($csrf)
   return str_replace('_csrf=', '', $csrf);
 }
 /**
- * Update Script
+ * Update Script.
  *
  * @param string $DIR
- * @return void
  */
 function Update($DIR, $file)
 {
