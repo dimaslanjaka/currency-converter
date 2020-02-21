@@ -22,13 +22,13 @@ if (defined('STDIN')) {
         break;
       case 'help':
         echo str_replace('\n', "\n", file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/tutor.txt?rev=' . time())) . "
-      Usage:\n
-      ...Custom Rumus\n
-      php " . basename(__FILE__) . " --rumus=rumus1.txt\n\n
-      ...Update\n
-      php " . basename(__FILE__) . " update\n\n
-      ...Credit Author\n
-      php " . basename(__FILE__) . " credit\n\n
+Usage:\n
+...Custom Rumus\n
+php " . basename(__FILE__) . " --rumus=rumus1.txt\n\n
+...Update\n
+php " . basename(__FILE__) . " update\n\n
+...Credit Author\n
+php " . basename(__FILE__) . " credit\n\n
       ";
         exit;
         break;
