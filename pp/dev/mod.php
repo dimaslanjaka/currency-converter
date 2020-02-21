@@ -40,6 +40,10 @@ php " . basename(__FILE__) . " credit\n\n
         echo "#################\n#  @muhtoevill  #\n#   SGB-Team    #\n#  Binary-Team  #\n#################\n";
         echo "DWYOR JANGAN SALAHKAN SAYA BILA TERJADI SESUATU YANG TIDAK MENYENANGKAN\n";
         echo "\n\n";
+        echo "\n\n";
+        echo "\033[36m###############################################\n#                  @⁨L3N4R0X  ⁩               #\n#                SHADOW FAMILY                #\n#        SEMOGA SELAMAT SAMPAI TUJUAN         #\n###############################################\n";
+        echo "\33[35m#                 NUYUL PAYPAL                #\n#                    READY!?                  #\n#                     GO!                     #\n###############################################\n";
+        echo "\n\n";
         break;
     }
   }

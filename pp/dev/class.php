@@ -454,30 +454,37 @@ user-agent: " . self::$ua));
     return str_replace('2', '_to_', $f);
   }
 
-  protected static function convert($from, $to, $cookie, $csrf)
+  protected static function convert($cookie, $csrf)
   {
     $method = str_replace(__CLASS__ . '::', '', __METHOD__);
     $amount = self::get_amount();
-    echo Console::magenta("Begin $method $amount $from to $to\n");
+    $from = self::$from;
+    $to = self::$to;
+    echo Console::purple("Begin $method $amount $from to $to\n");
+    if (self::dev()) {
+      self::log(__FUNCTION__, $amount, self::$from, self::$to);
+    }
+    $usd_to_twd = self::usd_to_twd($cookie, $csrf);
+    $output = json_encode($usd_to_twd);
+    $amount = getStr($output, '"value":"', '"');
+    self::console(__FUNCTION__, $output, $amount);
+    self::sleep();
   }
 
   public static function __callStatic($method, $args)
   {
     switch ($method) {
-      case 'foo':
-        echo 'You have called foo()';
-        var_dump($args);
-        break;
-
-      case 'helloWorld':
-        echo 'Hello ' . $args[0];
-        break;
-
       case 'convert':
         return call_user_func_array(
           [get_called_class(), 'convert'],
           $args
         );
+        break;
+      case 'usd2':
+        echo "H";
+        break;
+      default:
+        exit($method . ' Not Valid Method');
         break;
     }
   }
