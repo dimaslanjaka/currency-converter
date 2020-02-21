@@ -232,7 +232,7 @@ function Update($DIR)
   global $v;
   file_put_contents($DIR . '/class.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/class.php?rev=' . time()));
   file_put_contents($DIR . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/function.php?rev=' . time()));
-  file_put_contents($DIR . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/console.php?rev=' . time()));
+  file_put_contents($DIR . '/console.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/console.php?rev=' . time()));
   file_put_contents($DIR . '/' . basename(__FILE__), file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/mod.php?rev=' . time()));
   file_put_contents(__DIR__ . '/version.txt', $v);
 }
