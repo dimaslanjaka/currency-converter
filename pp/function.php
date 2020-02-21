@@ -1,5 +1,10 @@
 <?php
 
+if (!file_exists(__DIR__ . '/class.php')) {
+  file_put_contents(__DIR__ . '/class.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/class.php?rev=' . time()));
+}
+require_once __DIR__ . '/class.php';
+
 /**
  * Consoler.
  *
@@ -212,6 +217,7 @@ function csrf($csrf)
 }
 function Update($DIR)
 {
+  file_put_contents($DIR . '/class.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/class.php?rev=' . time()));
   file_put_contents($DIR . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/function.php?rev=' . time()));
   file_put_contents($DIR . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/console.php?rev=' . time()));
   file_put_contents($DIR . '/' . basename(__FILE__), file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/mod.php?rev=' . time()));

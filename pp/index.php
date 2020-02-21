@@ -66,7 +66,7 @@ $content .= <<<EOF
 
   <div class="collapse" id="CLR">
     <div class="card card-body m-3 p-1">
-    <img src="https://raw.githubusercontent.com/dimaslanjaka/Web-Manajemen/master/img/pp/cookie.png" alt="" class="img-fluid" alt="Responsive image" width="100%" height="auto">
+    <img src="https://raw.githubusercontent.com/dimaslanjaka/Web-Manajemen/master/img/pp/csrf.png" alt="" class="img-fluid" alt="Responsive image" width="100%" height="auto">
     </div>
   </div>
   <textarea name="csrf" id="" cols="30" rows="10" class="form-control mb-2" placeholder='{"sourceAmount":1,"sourceCurrency":"USD","targetCurrency":"TWD","_csrf":"zpPfZtYZwG+alqfBhfV3ffyxU/nkpiy6uqQ6M="}'></textarea>
