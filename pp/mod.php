@@ -17,7 +17,7 @@ if (defined('STDIN')) {
     switch ($argv[1]) {
       case 'reset':
         file_put_contents('counter.txt', '0');
-        echo 'Maximum sudah direset 0';
+        echo 'Counter sudah direset 0';
         exit;
         break;
       case 'help':
