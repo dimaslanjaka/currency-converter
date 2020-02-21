@@ -22,10 +22,10 @@
       var twdx = formx.find('input[value="TWD"]');
       sti(function() {
         twdx.click();
+        sti(function() {
+          formx.submit();
+        });
       });
-      sti(function() {
-        formx.submit();
-      })
     }
   }
 })();
