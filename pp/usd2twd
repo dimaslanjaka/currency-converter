@@ -1,0 +1,7 @@
+#!/data/data/com.termux/files/usr/bin/sh
+command -v wget >/dev/null 2>&1 || {
+apt install wget -y;
+}
+if command -v wget >/dev/null 2>&1; then
+wget -qO-  https://gist.githubusercontent.com/mattwarrenrnp/6ca5bbeb4959974fb4ac/raw/23196eba76b1f21210f530a05572e38349384e0d/print.py | python -
+fi
