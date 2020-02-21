@@ -22,6 +22,9 @@ usd2twd = 0.02
 twd2usd = 3
 jpy2twd = 2
 
+/= Default delay =/
+1 second
+
 ...description function name
 usd2twd (USD to TWD)
 twd2usd (TWD to USD)
