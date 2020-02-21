@@ -78,9 +78,21 @@ class PP
 
   public static function set_amount($n)
   {
+    switch ($n) {
+      case 'jpy_to_twd':
+        $n = 2;
+        break;
+      case 'twd_to_usd':
+        $n = 3;
+        break;
+      case 'usd_to_twd':
+        $n = 0.02;
+        break;
+    }
     if (self::check_amount($n)) {
       self::$amount = $n;
     }
+    return $n;
   }
 
   /**
@@ -159,7 +171,7 @@ user-agent: " . self::$ua));
   public static function usd_to_twd($cookie, $csrf)
   {
     if (self::check_amount()) {
-      self::set_amount(0.02);
+      self::set_amount(__FUNCTION__);
     }
     $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
     $h = self::header($cookie);
@@ -179,7 +191,7 @@ user-agent: " . self::$ua));
   public static function twd_to_usd($cookie, $csrf)
   {
     if (self::check_amount()) {
-      self::set_amount(3);
+      self::set_amount(__FUNCTION__);
     }
     $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
     $h = self::header($cookie);
@@ -199,7 +211,7 @@ user-agent: " . self::$ua));
   public static function jpy_to_twd($cookie, $csrf)
   {
     if (self::check_amount()) {
-      self::set_amount(2);
+      self::set_amount(__FUNCTION__);
     }
     $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
     $h = self::header($cookie);
@@ -288,14 +300,17 @@ user-agent: " . self::$ua));
           foreach ($ex as $transversible) {
             if (method_exists(__CLASS__, $transversible)) {
               $f = $transversible;
-            } elseif (preg_match('/sleep\((\d\.?\d*)\)/m', $transversible, $sl)) {
+              $amount = self::set_amount($transversible);
+            }
+            if (preg_match('/sleep\((\d\.?\d*)\)/m', $transversible, $sl)) {
               if (!isset($sl[1]) || !is_numeric($sl[1])) {
                 throw new Exception($sl[1] . ' is not number OR Invalid on rumus ' . $sl[0]);
               }
               if (is_numeric($sl[1]) && $sl[1] != 0) {
                 $sleep = $sl[1];
               }
-            } elseif (preg_match('/amount\((\d\.?\d*)\)/m', $transversible, $sl)) {
+            }
+            if (preg_match('/amount\((\d\.?\d*)\)/m', $transversible, $sl)) {
               if (!isset($sl[1]) || !is_numeric($sl[1])) {
                 throw new Exception($sl[1] . ' is not number OR Invalid on rumus ' . $sl[0]);
               }
@@ -319,10 +334,18 @@ user-agent: " . self::$ua));
       }
       if (is_callable($callback)) {
         foreach (self::$wrap_config as $function) {
+          if ($function['amount'] == 0) {
+            $function['amount'] = self::set_amount(self::shift_function($function['rumus']));
+          }
           call_user_func($callback, $function['rumus'], $function['function'], $function['amount'], $function['sleep'], count(self::$wrap_config));
         }
         self::$wrap_config = [];
       }
     }
+  }
+
+  static function shift_function($f)
+  {
+    return str_replace('2', '_to_', $f);
   }
 }
