@@ -9,9 +9,9 @@ Overflow (alur) Example : usd ke twd > twd ke usd > jpy ke twd
 ...custom delay
 Ex: usd2twd:sleep(5) twd2usd:sleep(3)
 Description: usd to twd delay 5 seconds > twd to usd delay 3 seconds
-...custom ammount
-Ex: usd2twd:ammount(0.02) twd2usd:ammount(3)
-Description: usd to twd ammount 0.02 USD > twd to usd ammount 3 TWD
+...custom amount
+Ex: usd2twd:amount(0.02) twd2usd:amount(3)
+Description: usd to twd amount 0.02 USD > twd to usd amount 3 TWD
 WARNING: use dot (.) not comma (,)
 
 ...description function name
@@ -21,5 +21,5 @@ jpy2twd (JPY to USD)
 
 ...default configuration
 ua: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36
-ammount:
+amount:
   usd2twd: 0.02

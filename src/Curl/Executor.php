@@ -20,7 +20,7 @@ class Executor extends PP
       foreach ($rumus as $e) {
         $f = $e;
         $sleep = 1;
-        $ammount = false;
+        $amount = false;
         if (strpos($e, ':')) {
           $ex = explode(':', $e);
           /*
@@ -36,12 +36,12 @@ class Executor extends PP
               if (is_numeric($sl[1]) && $sl[1] != (int) 0) {
                 $sleep = (int) $sl[1];
               }
-            } elseif (preg_match('/ammount\((\d\.?\d*)\)/m', $transversible, $sl)) {
+            } elseif (preg_match('/amount\((\d\.?\d*)\)/m', $transversible, $sl)) {
               if (!isset($sl[1]) || !is_numeric($sl[1])) {
                 throw new Exception($sl[1] . ' is not number OR Invalid on rumus ' . $sl[0]);
               }
               if (is_numeric($sl[1]) && $sl[1] != (int) 0) {
-                $ammount = (int) $sl[1];
+                $amount = (int) $sl[1];
               }
             }
           }
@@ -52,14 +52,14 @@ class Executor extends PP
           self::$wrap_config[] = [
             'function' => $f,
             'sleep' => $sleep,
-            'ammount' => $ammount,
+            'amount' => $amount,
             'rumus' => $e,
           ];
         }
       }
       if (is_callable($callback)) {
         foreach (self::$wrap_config as $function) {
-          call_user_func($callback, $function['rumus'], $function['function'], $function['ammount'], $function['sleep']);
+          call_user_func($callback, $function['rumus'], $function['function'], $function['amount'], $function['sleep']);
         }
       }
     }

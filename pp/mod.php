@@ -72,7 +72,7 @@ for ($x = 0; $x < $loop; ++$x) {
     break;
   }
   echo Console::blue("===$counter===\n");
-  PP::verify($rumuse, function ($rumus, $func, $ammount, $sleep) {
+  PP::verify($rumuse, function ($rumus, $func, $amount, $sleep) {
     global $cookie, $ua, $csrf;
 
     if (isset($ua) && is_string($ua) && !empty(trim($ua))) {

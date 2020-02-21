@@ -1,7 +1,7 @@
 <?php
 
 if ('L3n4r0x-PC' != gethostname()) {
-  error_reporting(0);
+  //error_reporting(0);
   if (!file_exists(__DIR__ . '/function.php')) {
     file_put_contents(__DIR__ . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/function.php?rev=' . time()));
   }
@@ -74,12 +74,21 @@ for ($x = 0; $x < $loop; ++$x) {
     break;
   }
   echo Console::blue("===$counter===\n");
-  PP::verify($rumuse, function ($rumus, $func, $ammount, $sleep) {
+  PP::verify($rumuse, function ($rumus, $func, $amount, $sleep) {
     global $cookie, $ua, $csrf;
 
-    if (isset($ua) && is_string($ua) && !empty(trim($ua))) {
-      PP::set_ua($ua);
+    if (!is_string($ua) && empty(trim($ua))) {
+      exit('User-agent invalid');
     }
+    PP::set_ua($ua);
+    if (!is_numeric($sleep)) {
+      exit('Invalid Sleep format, must be integer/number');
+    }
+    if (!is_numeric($amount)) {
+      exit('Invalid amount format, must be integer/number');
+    }
+    PP::set_amount($amount);
+    PP::set_sleep($sleep);
     if (is_callable($func)) {
       call_user_func($func, $cookie, $csrf);
     } else {

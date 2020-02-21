@@ -63,7 +63,7 @@ class PP extends Curl
    *
    * @return json_decode
    */
-  public function usd_to_twd($cookie, $csrf, $ammount = false)
+  public function usd_to_twd($cookie, $csrf, $amount = false)
   {
     $arr = ["\r", '	'];
     $url = $this->pp_url;
@@ -78,16 +78,16 @@ class PP extends Curl
       "Cookie: $cookie",
       'user-agent: ' . $this->ua,
     ];
-    if (!is_numeric($ammount)) {
-      echo 'Ammount of ' . __FUNCTION__ . " is ({$ammount}) invalid number\n";
-      $ammount = 0.02;
-      echo "Set ammount default {$ammount}\n";
+    if (!is_numeric($amount)) {
+      echo 'amount of ' . __FUNCTION__ . " is ({$amount}) invalid number\n";
+      $amount = 0.02;
+      echo "Set amount default {$amount}\n";
     }
     $body = $this->gbody([
       'csrf' => $csrf,
       'src' => 'USD',
       'to' => 'TWD',
-      'ammount' => $ammount,
+      'amount' => $amount,
     ]);
     $x = $this->old_request($url, $h, $body);
 
@@ -105,7 +105,7 @@ class PP extends Curl
   {
     return gjson([
       'sourceCurrency' => trim(strtoupper($cfg['src'])),
-      'sourceAmount' => trim($cfg['ammount']),
+      'sourceAmount' => trim($cfg['amount']),
       'targetCurrency' => trim(strtoupper($cfg['to'])),
       '_csrf' => trim($cfg['csrf']),
     ]);
@@ -137,7 +137,7 @@ class PP extends Curl
    *
    * @return json_decode
    */
-  public function twd_to_usd($cookie, $csrf, $ammount = false)
+  public function twd_to_usd($cookie, $csrf, $amount = false)
   {
     $arr = ["\r", '	'];
     $url = $this->pp_url;
@@ -152,16 +152,16 @@ class PP extends Curl
       "Cookie: $cookie",
       'user-agent: ' . $this->ua,
     ];
-    if (!is_numeric($ammount)) {
-      echo 'Ammount of ' . __FUNCTION__ . " is ({$ammount}) invalid number\n";
-      $ammount = 3;
-      echo "Set ammount default {$ammount}\n";
+    if (!is_numeric($amount)) {
+      echo 'amount of ' . __FUNCTION__ . " is ({$amount}) invalid number\n";
+      $amount = 3;
+      echo "Set amount default {$amount}\n";
     }
     $body = $this->gbody([
       'csrf' => $csrf,
       'src' => 'TWD',
       'to' => 'USD',
-      'ammount' => $ammount,
+      'amount' => $amount,
     ]);
     $x = $this->old_request($url, $h, $body);
 

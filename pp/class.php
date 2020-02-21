@@ -93,19 +93,57 @@ class PP
   {
     self::$amount = null;
   }
+
   /**
-   * Body builder
+   * Console result output.
+   *
+   * @param string           $fn     function name
+   * @param string           $output
+   * @param string|int|float $amount
+   *
+   * @return void
+   */
+  public static function console($fn, $output, $amount)
+  {
+    $result = Console::red(date('d-m-Y H:i:s ') . ' Gagal Convert. (' . $fn . ')');
+    if (true == strpos($output, 'null')) {
+      $result = Console::green(date('d-m-Y H:i:s ') . ' Berhasil convert ' . self::$amount . ' ' . self::$from . " to $amount " . self::$to . ' (' . $fn . ')');
+    }
+    echo $result . "\n";
+  }
+
+  /**
+   * Body builder.
    *
    * @param string $from
    * @param string $to
    * @param string $csrf
+   *
    * @return void
    */
   public static function body($from, $to, $csrf)
   {
     self::$from = $from;
     self::$to = $to;
-    return "{\"sourceCurrency\":\"$from\",\"sourceAmount\":" . self::$amount . ",\"targetCurrency\":\"$to\",\"_csrf\":\"$csrf\"}";
+    $result = "{\"sourceCurrency\":\"$from\",\"sourceAmount\":" . self::$amount . ",\"targetCurrency\":\"$to\",\"_csrf\":\"$csrf\"}";
+    var_dump($result);
+    return $result;
+  }
+
+  /**
+   * Build header.
+   *
+   * @param string $cookie
+   *
+   * @return explode
+   */
+  public static function header($cookie)
+  {
+    $arr = ["\r", '	'];
+
+    return explode("\n", str_replace($arr, '', "Cookie: $cookie
+Content-Type: application/json
+user-agent: " . self::$ua));
   }
 
   /**
@@ -121,11 +159,8 @@ class PP
     if (self::check_amount()) {
       self::set_amount(0.02);
     }
-    $arr = ["\r", '	'];
     $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
-    $h = explode("\n", str_replace($arr, '', "Cookie: $cookie
-	Content-Type: application/json
-	user-agent: " . self::$ua));
+    $h = self::header($cookie);
     $body = self::body('USD', 'TWD', $csrf);
 
     return json_decode(self::cload($url, $h, $body), true);
@@ -144,11 +179,8 @@ class PP
     if (self::check_amount()) {
       self::set_amount(3);
     }
-    $arr = ["\r", '	'];
     $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
-    $h = explode("\n", str_replace($arr, '', "Cookie: $cookie
-	Content-Type: application/json
-	user-agent: " . self::$ua));
+    $h = self::header($cookie);
     $body = self::body('TWD', 'USD', $csrf);
 
     return json_decode(self::cload($url, $h, $body), true);
@@ -167,11 +199,8 @@ class PP
     if (self::check_amount()) {
       self::set_amount(2);
     }
-    $arr = ["\r", '	'];
     $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
-    $h = explode("\n", str_replace($arr, '', "Cookie: $cookie
-	Content-Type: application/json
-	user-agent: " . self::$ua));
+    $h = self::header($cookie);
     $body = self::body('JPY', 'TWD', $csrf);
 
     return json_decode(self::cload($url, $h, $body), true);
@@ -192,15 +221,6 @@ class PP
     $amount = getStr($output_send_twd, '"value":"', '"');
     self::console(__FUNCTION__, $output_send_twd, $amount);
     self::sleep();
-  }
-
-  static function console($fn, $output, $amount)
-  {
-    $result = Console::red(date('d-m-Y H:i:s ') . ' Gagal Convert. (' . $fn . ')');
-    if (true == strpos($output, 'null')) {
-      $result = Console::green(date('d-m-Y H:i:s ') . " Berhasil convert " . self::$amount . " " . self::$from . " to $amount " . self::$to . " (" . $fn . ')');
-    }
-    echo $result . "\n";
   }
 
   /**
