@@ -8,7 +8,7 @@ if (!file_exists('console.php')) {
   getConsole();
 }
 include_once __DIR__ . '/console.php';
-$v = '1.0.8';
+$v = '1.0.9';
 
 /**
  * Consoler.
