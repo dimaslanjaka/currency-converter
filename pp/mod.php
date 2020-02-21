@@ -62,12 +62,14 @@ $csrf = (string) trim(file_get_contents('csrf.txt'));
 $counter = (int) trim(file_get_contents('counter.txt'));
 $limit = (int) trim(file_get_contents('limit.txt'));
 if (isset($opt['rumus'])) {
+  echo Console::green("Using " . realpath($opt['rumus']) . "\n");
   $rumus = (string) trim(file_get_contents($opt['rumus']));
 } elseif (file_exists('rumus.txt')) {
   $rumus = (string) trim(file_get_contents('rumus.txt'));
 } else {
   die(Console::red('Rumus file is needed'));
 }
+
 $rumuse = explode(' ', $rumus);
 $rumuse = array_filter($rumuse);
 if (isset($opt['ua'])) {
