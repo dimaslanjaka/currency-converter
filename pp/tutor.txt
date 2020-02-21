@@ -35,7 +35,5 @@ usd2twd (USD to TWD)
 twd2usd (TWD to USD)
 jpy2twd (JPY to USD)
 
-...default configuration
-ua: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36
-amount:
-  usd2twd: 0.02
+/== Default User-agent ==/
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36
