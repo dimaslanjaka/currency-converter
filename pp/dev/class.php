@@ -158,7 +158,7 @@ class PP
     if (0 == self::get_amount()) {
       exit(__FUNCTION__ . ' amount (' . self::get_amount() . ') is zero');
     }
-    $result = "{\"sourceCurrency\":\"$from\",\"sourceAmount\":" . self::get_amount() . ",\"targetCurrency\":\"$to\",\"_csrf\":\"" . self::$csrf . "\"}";
+    $result = "{\"sourceCurrency\":\"$from\",\"sourceAmount\":" . self::get_amount() . ",\"targetCurrency\":\"$to\",\"_csrf\":\"" . self::$csrf . '"}';
     //var_dump($result);
     return $result;
   }
@@ -174,9 +174,9 @@ class PP
   {
     $arr = ["\r", '	'];
 
-    return explode("\n", str_replace($arr, '', "Cookie: " . self::$cookie . "
+    return explode("\n", str_replace($arr, '', 'Cookie: ' . self::$cookie . '
 Content-Type: application/json
-user-agent: " . self::$ua));
+user-agent: ' . self::$ua));
   }
 
   /**
@@ -455,24 +455,39 @@ user-agent: " . self::$ua));
   {
     return str_replace('2', '_to_', $f);
   }
+
   /**
-   * Set Cookie
+   * Set Cookie.
    *
    * @param string $str
+   *
    * @return void
    */
   public static function setCookie($str)
   {
-    self::$cookie = $str;
+    self::$cookie = trim($str);
   }
+
   /**
-   * Set CSRF
+   * Set CSRF.
    *
    * @param string $str
+   *
    * @return void
    */
   public static function setCsrf($str)
   {
+    if (self::isJson($str)) {
+      $j = (array) json_decode($str);
+      $str = isset($j['_csrf']) ? $j['_csrf'] : die('CSRF invalid JSON format');
+    }
     self::$csrf = $str;
+  }
+
+  public static function isJson($string)
+  {
+    json_decode($string);
+
+    return JSON_ERROR_NONE == json_last_error();
   }
 }

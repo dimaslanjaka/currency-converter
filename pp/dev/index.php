@@ -48,6 +48,8 @@ EOF;
   }
 }
 
+if (isset($_SERVER['HTTP_USER_AGENT'])) file_put_contents('ua.txt', $_SERVER['HTTP_USER_AGENT']);
+
 $title = 'Cookie Creator';
 $desc = 'PHP Cookie header to Cookie urlencoded';
 $canonical = (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . strtok($_SERVER['REQUEST_URI'], '?');
