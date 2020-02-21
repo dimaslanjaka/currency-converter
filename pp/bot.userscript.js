@@ -12,53 +12,54 @@
 // ==/UserScript==
 
 var USD = null;
-(function() {
-    'use strict';
-    USD = iti(runUSD, 5000);
-    localStorage.setItem(location.href, document.cookie);
-    if (curl == 'https://www.paypal.com/mep/dashboard') {
-        console.log(allStorage());
-    }
+(function () {
+  'use strict';
+  console.log(gURL());
+  if (gURL() == 'https://www.paypal.com/myaccount/money'){
+    var summary = $(document).find('a[name="viewBalance"]');
+    console.log(summary)
+  }
+  localStorage.setItem(location.href, document.cookie);
+  //console.log(allStorage());
 })();
 
-function gURL(){
-    return location.protocol + '//' + location.host + location.pathname;
+function gURL() {
+  return location.protocol + '//' + location.host + location.pathname;
 }
 
-function runUSD(){
-    var curl = gURL();
-    if (curl == 'https://www.paypal.com/myaccount/money/currencies/USD/transfer') {
-        var formx = $(document).find('form[action="/myaccount/money"]');
-        if (formx.length) {
-            var twdx = formx.find('input[value="TWD"]');
-            sti(function() {
-                twdx.click();
-                sti(function() {
-                    formx.submit();
-                });
-            });
-        }
+function runUSD() {
+  if (gURL() == 'https://www.paypal.com/myaccount/money/currencies/USD/transfer') {
+    var formx = $(document).find('form[action="/myaccount/money"]');
+    if (formx.length) {
+      var twdx = formx.find('input[value="TWD"]');
+      sti(function () {
+        twdx.click();
+        sti(function () {
+          formx.submit();
+        });
+      });
     }
+  }
 }
 
 function sti(c, t) {
-    setTimeout(c, t || 3000);
+  return setTimeout(c, t || 3000);
 }
 
-function iti(c, t){
-    setInterval(c, t || 3000);
+function iti(c, t) {
+  return setInterval(c, t || 3000);
 }
 
 function allStorage() {
 
-    var archive = [],
-        keys = Object.keys(localStorage),
-        i = 0,
-        key;
+  var archive = [],
+    keys = Object.keys(localStorage),
+    i = 0,
+    key;
 
-    for (; key = keys[i]; i++) {
-        archive.push(key + '=' + localStorage.getItem(key));
-    }
+  for (; key = keys[i]; i++) {
+    archive.push(key + '=' + localStorage.getItem(key));
+  }
 
-    return archive;
+  return archive;
 }

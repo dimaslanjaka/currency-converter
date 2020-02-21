@@ -305,6 +305,7 @@ user-agent: " . self::$ua));
   {
     if (is_iterable($rumus)) {
       foreach ($rumus as $e) {
+        $e = trim($e);
         $f = $e;
         $sleep = 1;
         $amount = 0;

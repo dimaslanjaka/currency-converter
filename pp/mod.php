@@ -72,7 +72,7 @@ if (isset($opt['rumus'])) {
   die(Console::red('Rumus file is needed'));
 }
 
-$rumuse = explode(' ', $rumus);
+$rumuse = preg_split('/[\s\n]/', $rumus);
 $rumuse = array_filter($rumuse);
 if (isset($opt['ua'])) {
   if (file_exists($opt['ua'])) {

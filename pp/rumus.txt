@@ -1,1 +1,4 @@
-usd2twd:sleep(5) usd2twd:sleep(5) usd2twd:sleep(5) twd2usd:sleep(5)
+usd2twd:sleep(5)
+usd2twd:sleep(5)
+usd2twd:sleep(5)
+twd2usd:sleep(5)
