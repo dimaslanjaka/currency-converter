@@ -100,7 +100,8 @@ function v2_default($fn = null)
   if (!file_exists(__DIR__ . '/version.json') || (file_exists(__DIR__ . '/version.json') && date("U", filectime(__DIR__ . '/version.json') <= time() - 3600))) {
     file_put_contents(__DIR__ . '/version.json', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/dist/version.json?rev=' . time()));
   }
-  if (file_get_contents(__DIR__ . '/version.json') > $v) {
+  $jv = (array) json_decode(file_get_contents(__DIR__ . '/version.json'));
+  if ($jv['version'] > $v) {
     echo Console::red("Update available, to update\nphp $fn update\n\n");
   }
 }
