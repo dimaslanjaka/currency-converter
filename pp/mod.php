@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Tuyul paypal
+ * @author Dimaslanjaka <dimaslanjaka@gmail.com>
+ */
 if ('L3n4r0x-PC' != gethostname()) {
   error_reporting(0);
   if (!file_exists(__DIR__ . '/function.php')) {
