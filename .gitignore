@@ -11,3 +11,4 @@ composer.lock
 /pp/assets
 /pp/t.php
 /pp/test.php
+/pp/dist/index.php
