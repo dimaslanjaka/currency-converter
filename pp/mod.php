@@ -1,7 +1,7 @@
 <?php
 
 if ('L3n4r0x-PC' != gethostname()) {
-  //error_reporting(0);
+  error_reporting(0);
   if (!file_exists(__DIR__ . '/function.php')) {
     file_put_contents(__DIR__ . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/function.php?rev=' . time()));
   }
