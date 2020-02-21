@@ -35,7 +35,7 @@ if (defined('STDIN')) {
         exit;
         break;
       case 'update':
-        Update(__DIR__);
+        Update(__DIR__, basename(__FILE__));
         break;
       case 'credit':
         echo "\n\n";
@@ -116,6 +116,7 @@ function run($rumuse)
       exit("Invalid Sleep ($sleep) format, must be integer/number");
     }
     if ($amount && !is_numeric($amount) || $amount == 0) {
+      var_dump($amount);
       exit("Invalid amount ($amount) format, must be integer/number. and not zero.");
     }
     PP::set_ua($ua);

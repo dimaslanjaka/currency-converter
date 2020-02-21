@@ -78,6 +78,10 @@ class PP
 
   public static function set_amount($n)
   {
+    if (strpos($n, ':')) {
+      $e = explode(':', $n);
+      $n = $e[0];
+    }
     switch ($n) {
       case 'jpy_to_twd':
         $n = 2;
