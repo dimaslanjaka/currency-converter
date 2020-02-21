@@ -2,6 +2,7 @@ isi file limit.txt dengan angka (untuk menentukan maksimal eksekusi)\n
 isi file loop.txt dengan angka (untuk menentukan berapa kali setiap eksekusi)\n
 isi file rumus.txt dengan nama fungsi yang akan dijalankan
 rumus.txt separated with space
+
 ...basic
 Example : usd2twd twd2usd jpy2twd
 Overflow (alur) Example : usd ke twd > twd ke usd > jpy ke twd
@@ -12,6 +13,7 @@ Description: usd to twd delay 5 seconds > twd to usd delay 3 seconds
 Ex: usd2twd:ammount(0.02) twd2usd:ammount(3)
 Description: usd to twd ammount 0.02 USD > twd to usd ammount 3 TWD
 WARNING: use dot (.) not comma (,)
+
 ...description function name
 usd2twd (USD to TWD)
 twd2usd (TWD to USD)

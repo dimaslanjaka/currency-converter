@@ -11,8 +11,6 @@ v2_default();
 include_once __DIR__ . '/console.php';
 
 if (defined('STDIN')) {
-  $opt = get_opt();
-
   if (isset($argv[1])) {
     switch ($argv[1]) {
       case 'reset':
@@ -22,7 +20,9 @@ if (defined('STDIN')) {
         break;
       case 'help':
         echo str_replace('\n', "\n", file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/tutor.txt?rev=' . time())) . "
-      Utility:\n
+      Usage:\n
+      ...Custom Rumus\n
+      php " . basename(__FILE__) . " --rumus=rumus1.txt\n\n
       ...Update\n
       php " . basename(__FILE__) . " update\n\n
       ...Credit Author\n
@@ -43,6 +43,7 @@ if (defined('STDIN')) {
   }
 }
 
+$opt = get_opt();
 $loop = (int) trim(file_get_contents('loop.txt'));
 $file = trim(file_get_contents('cookie.txt'));
 $cookie = $file;

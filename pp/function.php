@@ -139,7 +139,7 @@ function get_opt()
     throw new Exception('Only CLI', 1);
   }
 
-  $options = $opts = getoptreq('abc:d:e::f::', array('one', 'two', 'three:', 'four:', 'five::', 'config:'));
+  $options = $opts = getoptreq('abc:d:e::f::', array('one', 'two', 'three:', 'four:', 'five::', 'config:', 'rumus:'));
   return $options;
 }
 

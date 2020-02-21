@@ -194,6 +194,7 @@ class PP
 
   public static function sleep()
   {
+    echo "Delay " . self::$sleep . " Secs\n";
     return sleep(self::$sleep);
   }
 
@@ -241,7 +242,6 @@ class PP
         }
       }
       if (is_callable($callback)) {
-        exit(var_dump(self::$wrap_config));
         foreach (self::$wrap_config as $function) {
           call_user_func($callback, $function['rumus'], $function['function'], $function['ammount'], $function['sleep']);
         }
