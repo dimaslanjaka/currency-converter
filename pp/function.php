@@ -8,7 +8,7 @@ if (!file_exists('console.php')) {
   getConsole();
 }
 include_once __DIR__ . '/console.php';
-$v = '1.0.7';
+$v = '1.0.8';
 
 /**
  * Consoler.
@@ -131,11 +131,10 @@ function v2_default($fn = null)
   if (!file_exists(__DIR__ . '/function.php')) {
     file_put_contents(__DIR__ . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/function.php?rev=' . time()));
   }
-  if (!file_exists(__DIR__ . '/version.txt')) {
+  if (!file_exists(__DIR__ . '/version.txt') || (file_exists(__DIR__ . '/version.txt') && date("U", filectime(__DIR__ . '/version.txt') <= time() - 3600))) {
     file_put_contents(__DIR__ . '/version.txt', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/version.txt?rev=' . time()));
   } else {
-    $old = file_get_contents(__DIR__ . '/version.txt');
-    if ($old < $v) {
+    if (file_get_contents(__DIR__ . '/version.txt') > $v) {
       echo Console::red("Update available, to update\nphp $fn update\n\n");
     }
   }
