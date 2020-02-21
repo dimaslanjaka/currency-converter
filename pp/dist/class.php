@@ -15,8 +15,8 @@ class PP
 
   public static function init()
   {
-    if (self::$_instance === null) {
-      self::$_instance = new self;
+    if (null === self::$_instance) {
+      self::$_instance = new self();
     }
 
     return self::$_instance;
@@ -125,9 +125,13 @@ class PP
    */
   public static function console($fn, $output, $amount)
   {
-    if (!self::$to) exit('To Currency null');
-    if (!self::$from) exit('From Currency null');
-    var_dump(self::get_amount());
+    if (!self::$to) {
+      exit('To Currency null');
+    }
+    if (!self::$from) {
+      exit('From Currency null');
+    }
+
     $result = Console::red(date('d-m-Y H:i:s ') . ' Gagal Convert ' . self::get_amount() . ' ' . self::$from . " to $amount " . self::$to . ' (' . $fn . ')');
     if (true == strpos($output, 'null')) {
       $result = Console::green(date('d-m-Y H:i:s ') . ' Berhasil convert ' . self::get_amount() . ' ' . self::$from . " to $amount " . self::$to . ' (' . $fn . ')');
@@ -189,6 +193,21 @@ user-agent: " . self::$ua));
     $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
     $h = self::header($cookie);
     $body = self::body('USD', 'TWD', $csrf);
+
+    return json_decode(self::cload($url, $h, $body), true);
+  }
+
+  public static function usd_to_jpy($cookie, $csrf)
+  {
+    if (!self::check_amount()) {
+      self::set_amount(__FUNCTION__);
+    }
+    if (self::dev()) {
+      self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
+    }
+    $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
+    $h = self::header($cookie);
+    $body = self::body('USD', 'JPY', $csrf);
 
     return json_decode(self::cload($url, $h, $body), true);
   }
@@ -268,9 +287,21 @@ user-agent: " . self::$ua));
       self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
     }
     $twd_to_usd = self::twd_to_usd($cookie, $csrf);
-    $output_send_twd = json_encode($twd_to_usd);
-    $amount = getStr($output_send_twd, '"value":"', '"');
-    self::console(__FUNCTION__, $output_send_twd, $amount);
+    $output = json_encode($twd_to_usd);
+    $amount = getStr($output, '"value":"', '"');
+    self::console(__FUNCTION__, $output, $amount);
+    self::sleep();
+  }
+
+  public static function usd2jpy($cookie, $csrf)
+  {
+    if (self::dev()) {
+      self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
+    }
+    $run = self::usd_to_jpy($cookie, $csrf);
+    $output = json_encode($run);
+    $amount = getStr($output, '"value":"', '"');
+    self::console(__FUNCTION__, $output, $amount);
     self::sleep();
   }
 
@@ -288,18 +319,18 @@ user-agent: " . self::$ua));
       self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
     }
     $usd_to_twd = self::usd_to_twd($cookie, $csrf);
-    $output_send_usd = json_encode($usd_to_twd);
-    $amount = getStr($output_send_usd, '"value":"', '"');
-    self::console(__FUNCTION__, $output_send_usd, $amount);
+    $output = json_encode($usd_to_twd);
+    $amount = getStr($output, '"value":"', '"');
+    self::console(__FUNCTION__, $output, $amount);
     self::sleep();
   }
 
-  static function log(...$fn)
+  public static function log(...$fn)
   {
     echo Console::yellow(implode(', ', $fn) . "\n");
   }
 
-  static function dev()
+  public static function dev()
   {
     return 'L3n4r0x-PC' == gethostname();
   }
@@ -318,9 +349,9 @@ user-agent: " . self::$ua));
       self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
     }
     $jpy_to_twd = self::jpy_to_twd($cookie, $csrf);
-    $output_send_jpy_twd = json_encode($jpy_to_twd);
-    $amount = getStr($output_send_jpy_twd, '"value":"', '"');
-    self::console(__FUNCTION__, $output_send_jpy_twd, $amount);
+    $output = json_encode($jpy_to_twd);
+    $amount = getStr($output, '"value":"', '"');
+    self::console(__FUNCTION__, $output, $amount);
     self::sleep();
   }
 
