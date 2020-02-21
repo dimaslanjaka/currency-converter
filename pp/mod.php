@@ -104,9 +104,10 @@ while ($x <= $loop) {
 function run($rumuse)
 {
   global $cookie, $ua, $csrf;
-  PP::verify($rumuse, function ($rumus, $func, $amount, $sleep, $count_all) {
+  $pp = PP::init();
+  $pp->verify($rumuse, function ($rumus, $func, $amount, $sleep, $count_all) use (&$pp) {
     global $cookie, $ua, $csrf;
-
+    //PP::dump(func_get_args());
     if (!is_string($ua) && empty(trim($ua))) {
       exit('User-agent invalid');
     }
@@ -114,14 +115,13 @@ function run($rumuse)
       exit("Invalid Sleep ($sleep) format, must be integer/number");
     }
     if ($amount && !is_numeric($amount) || $amount == 0) {
-      var_dump($amount);
       exit("Invalid amount ($amount) format, must be integer/number. and not zero.");
     }
-    PP::set_ua($ua);
-    PP::set_amount($amount);
-    PP::set_sleep($sleep);
-    if (is_callable($func)) {
-      call_user_func($func, $cookie, $csrf);
+    $pp->set_ua($ua);
+    $pp->set_amount($amount);
+    $pp->set_sleep($sleep);
+    if (is_callable(array($pp, $func))) {
+      $pp->$func($cookie, $csrf);
     } else {
       echo "Cannot executing $rumus\n";
     }
