@@ -9,7 +9,7 @@ if ('L3n4r0x-PC' != gethostname()) {
 require_once __DIR__ . '/function.php';
 v2_default();
 include_once __DIR__ . '/console.php';
-
+$loop_delay = 0;
 if (defined('STDIN')) {
   if (isset($argv[1])) {
     switch ($argv[1]) {
@@ -41,6 +41,17 @@ if (defined('STDIN')) {
         break;
     }
   }
+  do {
+    echo Console::red("Insert delay in number format, for next Loop (ALL loop iterations)\n");
+    echo Console::green("Sleep: ");
+    $handle = fopen("php://stdin", "r");
+    $loop_delay = fgets($handle);
+    $loop_delay = trim($loop_delay);
+    if (!is_numeric($loop_delay) || $loop_delay <= 0) {
+      echo Console::red("Loop delay must be integer/number, and not zero.\n");
+      echo Console::green("Retry!\n");
+    }
+  } while (!is_numeric($loop_delay) || $loop_delay <= 0);
 }
 
 $opt = get_opt();
@@ -66,27 +77,42 @@ if (isset($opt['ua'])) {
 } elseif (file_exists('ua.txt')) {
   $ua = (string) trim(file_get_contents('ua.txt'));
 }
-
-for ($x = 0; $x < $loop; ++$x) {
-  ++$counter;
+$x = 0;
+while ($x <= $loop) {
+  $counter++;
+  $x++;
   if ($counter >= $limit) {
     echo "\nMaksimal '$limit' Bro\n";
     break;
   }
   echo Console::blue("===$counter===\n");
-  PP::verify($rumuse, function ($rumus, $func, $amount, $sleep) {
+  run($rumuse);
+  echo "\n\n";
+  echo Console::green("===Sleep for $loop_delay seconds===\n");
+  echo "\n\n";
+  sleep($loop_delay);
+
+  if ($x == $loop - 1) {
+    file_put_contents('counter.txt', $counter);
+  }
+}
+
+function run($rumuse)
+{
+  global $cookie, $ua, $csrf;
+  PP::verify($rumuse, function ($rumus, $func, $amount, $sleep, $count_all) {
     global $cookie, $ua, $csrf;
 
     if (!is_string($ua) && empty(trim($ua))) {
       exit('User-agent invalid');
     }
-    PP::set_ua($ua);
     if (!is_numeric($sleep)) {
-      exit('Invalid Sleep format, must be integer/number');
+      exit("Invalid Sleep ($sleep) format, must be integer/number");
     }
-    if (!is_numeric($amount)) {
-      exit('Invalid amount format, must be integer/number');
+    if (!is_numeric($amount) || $amount == 0) {
+      exit("Invalid amount ($amount) format, must be integer/number. and not zero.");
     }
+    PP::set_ua($ua);
     PP::set_amount($amount);
     PP::set_sleep($sleep);
     if (is_callable($func)) {
@@ -95,8 +121,4 @@ for ($x = 0; $x < $loop; ++$x) {
       echo "Cannot executing $rumus\n";
     }
   });
-
-  if ($x == $loop - 1) {
-    file_put_contents('counter.txt', $counter);
-  }
 }

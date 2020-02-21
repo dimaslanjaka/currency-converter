@@ -48,7 +48,7 @@ class PP
   }
 
   /**
-   * Is amount invalid.
+   * Is amount valid.
    *
    * @param number|null $n
    *
@@ -59,8 +59,7 @@ class PP
     if (!$n) {
       $n = self::$amount;
     }
-
-    return !$n || !is_numeric($n);
+    return ($n && is_numeric($n) && $n != 0);
   }
 
   /**
@@ -105,7 +104,7 @@ class PP
    */
   public static function console($fn, $output, $amount)
   {
-    $result = Console::red(date('d-m-Y H:i:s ') . ' Gagal Convert. (' . $fn . ')');
+    $result = Console::red(date('d-m-Y H:i:s ') . ' Gagal Convert ' . self::$amount . ' ' . self::$from . " to $amount " . self::$to . ' (' . $fn . ')');
     if (true == strpos($output, 'null')) {
       $result = Console::green(date('d-m-Y H:i:s ') . ' Berhasil convert ' . self::$amount . ' ' . self::$from . " to $amount " . self::$to . ' (' . $fn . ')');
     }
@@ -125,8 +124,11 @@ class PP
   {
     self::$from = $from;
     self::$to = $to;
+    if (self::$amount == 0) {
+      exit(__FUNCTION__ . ' amount (' . self::$amount . ') is zero');
+    }
     $result = "{\"sourceCurrency\":\"$from\",\"sourceAmount\":" . self::$amount . ",\"targetCurrency\":\"$to\",\"_csrf\":\"$csrf\"}";
-    var_dump($result);
+    //var_dump($result);
     return $result;
   }
 
@@ -277,7 +279,7 @@ user-agent: " . self::$ua));
       foreach ($rumus as $e) {
         $f = $e;
         $sleep = 1;
-        $amount = false;
+        $amount = 0;
         if (strpos($e, ':')) {
           $ex = explode(':', $e);
           /*
@@ -290,19 +292,20 @@ user-agent: " . self::$ua));
               if (!isset($sl[1]) || !is_numeric($sl[1])) {
                 throw new Exception($sl[1] . ' is not number OR Invalid on rumus ' . $sl[0]);
               }
-              if (is_numeric($sl[1]) && $sl[1] != (int) 0) {
-                $sleep = (int) $sl[1];
+              if (is_numeric($sl[1]) && $sl[1] != 0) {
+                $sleep = $sl[1];
               }
             } elseif (preg_match('/amount\((\d\.?\d*)\)/m', $transversible, $sl)) {
               if (!isset($sl[1]) || !is_numeric($sl[1])) {
                 throw new Exception($sl[1] . ' is not number OR Invalid on rumus ' . $sl[0]);
               }
-              if (is_numeric($sl[1]) && $sl[1] != (int) 0) {
-                $amount = (int) $sl[1];
+              if (is_numeric($sl[1]) && $sl[1] != 0) {
+                $amount = $sl[1];
               }
             }
           }
         }
+
         if (!method_exists(__CLASS__, $f)) {
           throw new Exception("$f is not function");
         } else {
@@ -316,8 +319,9 @@ user-agent: " . self::$ua));
       }
       if (is_callable($callback)) {
         foreach (self::$wrap_config as $function) {
-          call_user_func($callback, $function['rumus'], $function['function'], $function['amount'], $function['sleep']);
+          call_user_func($callback, $function['rumus'], $function['function'], $function['amount'], $function['sleep'], count(self::$wrap_config));
         }
+        self::$wrap_config = [];
       }
     }
   }
