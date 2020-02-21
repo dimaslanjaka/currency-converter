@@ -1,1 +1,0 @@
-usd2twd:sleep(5):amount(0.02) usd2twd:sleep(5):amount(0.02) usd2twd:sleep(5):amount(0.02) twd2usd:sleep(5):amount(3)
