@@ -8,3 +8,5 @@ composer.lock
 *.bak
 /key.txt
 /pp/assets
+/pp/t.php
+/pp/test.php

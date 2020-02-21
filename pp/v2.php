@@ -10,8 +10,6 @@ require_once __DIR__ . '/function.php';
 v2_default();
 include_once __DIR__ . '/console.php';
 
-use Curl\PP;
-
 if (defined('STDIN')) {
   $opt = get_opt();
 
@@ -85,6 +83,5 @@ for ($x = 0; $x < $loop; ++$x) {
 
   if ($x == $loop - 1) {
     file_put_contents('counter.txt', $counter);
-    PP::send($cookie);
   }
 }

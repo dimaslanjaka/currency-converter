@@ -1,1 +1,1 @@
-usd2twd usd2twd usd2twd twd2usd
+usd2twd:sleep(5):ammount(0.02) usd2twd:sleep(5):ammount(0.02) usd2twd:sleep(5):ammount(0.02) twd2usd:sleep(5):ammount(3)

