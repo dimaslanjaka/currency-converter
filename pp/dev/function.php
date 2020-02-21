@@ -1,21 +1,21 @@
 <?php
 
 if ('L3n4r0x-PC' != gethostname()) {
-  if (!file_exists(__DIR__ . '/class.php')) file_put_contents(__DIR__ . '/class.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/class.php?rev=' . time()));
+  if (!file_exists(__DIR__ . '/class.php')) file_put_contents(__DIR__ . '/class.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/dist/class.php?rev=' . time()));
 }
 require_once __DIR__ . '/class.php';
 if (!file_exists('console.php')) {
   getConsole();
 }
 include_once __DIR__ . '/console.php';
-$v = '1.0.6';
+$v = '1.0.8';
 
 /**
  * Consoler.
  */
 function getConsole()
 {
-  file_put_contents(__DIR__ . '/console.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/console.php?rev=' . time()));
+  file_put_contents(__DIR__ . '/console.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/dist/console.php?rev=' . time()));
 }
 
 /**
@@ -92,13 +92,13 @@ function v2_default($fn = null)
     file_put_contents('ua.txt', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36');
   }
   if (!file_exists(__DIR__ . '/console.php')) {
-    file_put_contents(__DIR__ . '/console.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/console.php'));
+    file_put_contents(__DIR__ . '/console.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/dist/console.php'));
   }
   if (!file_exists(__DIR__ . '/function.php')) {
-    file_put_contents(__DIR__ . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/function.php?rev=' . time()));
+    file_put_contents(__DIR__ . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/dist/function.php?rev=' . time()));
   }
   if (!file_exists(__DIR__ . '/version.txt') || (file_exists(__DIR__ . '/version.txt') && date("U", filectime(__DIR__ . '/version.txt') <= time() - 3600))) {
-    file_put_contents(__DIR__ . '/version.txt', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/version.txt?rev=' . time()));
+    file_put_contents(__DIR__ . '/version.txt', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/dist/version.txt?rev=' . time()));
   }
   if (file_get_contents(__DIR__ . '/version.txt') > $v) {
     echo Console::red("Update available, to update\nphp $fn update\n\n");
@@ -198,9 +198,9 @@ function csrf($csrf)
 function Update($DIR, $file)
 {
   global $v;
-  file_put_contents($DIR . '/class.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/class.php?rev=' . time()));
-  file_put_contents($DIR . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/function.php?rev=' . time()));
-  file_put_contents($DIR . '/console.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/console.php?rev=' . time()));
-  file_put_contents($DIR . '/' . $file, file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/mod.php?rev=' . time()));
+  file_put_contents($DIR . '/class.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/dist/class.php?rev=' . time()));
+  file_put_contents($DIR . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/dist/function.php?rev=' . time()));
+  file_put_contents($DIR . '/console.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/dist/console.php?rev=' . time()));
+  file_put_contents($DIR . '/' . $file, file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/dist/mod.php?rev=' . time()));
   file_put_contents(__DIR__ . '/version.txt', $v);
 }

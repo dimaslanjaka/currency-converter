@@ -6,7 +6,7 @@
  */
 if ('L3n4r0x-PC' != gethostname()) {
   error_reporting(0);
-  if (!file_exists(__DIR__ . '/function.php')) file_put_contents(__DIR__ . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/function.php?rev=' . time()));
+  if (!file_exists(__DIR__ . '/function.php')) file_put_contents(__DIR__ . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/dist/function.php?rev=' . time()));
 }
 require_once __DIR__ . '/function.php';
 v2_default(basename(__FILE__));
@@ -21,7 +21,7 @@ if (defined('STDIN')) {
         exit;
         break;
       case 'help':
-        echo str_replace('\n', "\n", file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/tutor.txt?rev=' . time())) . "
+        echo str_replace('\n', "\n", file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/dist/tutor.txt?rev=' . time())) . "
 Usage:\n
 ...Custom Rumus\n
 php " . basename(__FILE__) . " --rumus=rumus1.txt\n\n

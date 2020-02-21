@@ -1,0 +1,39 @@
+isi file limit.txt dengan angka (untuk menentukan maksimal eksekusi)\n
+isi file loop.txt dengan angka (untuk menentukan berapa kali setiap eksekusi)\n
+isi file rumus.txt dengan nama fungsi yang akan dijalankan
+rumus.txt separated with space
+
+/== RUMUS ==/
+...basic
+Example : usd2twd twd2usd jpy2twd
+Overflow (alur) Example : usd ke twd > twd ke usd > jpy ke twd
+...custom delay
+Ex: usd2twd:sleep(5) twd2usd:sleep(3)
+Description: usd to twd delay 5 seconds > twd to usd delay 3 seconds
+...custom amount
+Ex: usd2twd:amount(0.02) twd2usd:amount(3)
+Description: usd to twd amount 0.02 USD > twd to usd amount 3 TWD
+WARNING: use dot (.) not comma (,)
+...custom combined
+Ex: usd2twd:sleep(5):amount(0.02)
+Description: usd2twd delay 5 ammount 0.02
+
+/== Custom rumus ==/
+php mod.php --rumus=rumus.txt
+Description: rumus.txt is file rumus you want to execute;
+
+/= Default ammount =/
+usd2twd = 0.02
+twd2usd = 3
+jpy2twd = 2
+
+/= Default delay =/
+1 second
+
+...description function name
+usd2twd (USD to TWD)
+twd2usd (TWD to USD)
+jpy2twd (JPY to USD)
+
+/== Default User-agent ==/
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36
