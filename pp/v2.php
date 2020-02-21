@@ -2,7 +2,9 @@
 
 if ('L3n4r0x-PC' != gethostname()) {
   error_reporting(0);
-  file_put_contents(__DIR__ . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/function.php?rev=' . time()));
+  if (!file_exists(__DIR__ . '/function.php')) {
+    file_put_contents(__DIR__ . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/function.php?rev=' . time()));
+  }
 }
 require_once __DIR__ . '/function.php';
 v2_default();
@@ -50,7 +52,7 @@ $counter = (int) trim(file_get_contents('counter.txt'));
 $limit = (int) trim(file_get_contents('limit.txt'));
 if (isset($opt['rumus'])) {
   $rumus = (string) trim(file_get_contents($opt['rumus']));
-} else if (file_exists('rumus.txt')) {
+} elseif (file_exists('rumus.txt')) {
   $rumus = (string) trim(file_get_contents('rumus.txt'));
 } else {
   die(Console::red('Rumus file is needed'));

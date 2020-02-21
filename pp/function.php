@@ -1,14 +1,14 @@
 <?php
 
 if ('L3n4r0x-PC' != gethostname()) {
-  file_put_contents(__DIR__ . '/class.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/class.php?rev=' . time()));
+  if (!file_exists(__DIR__ . '/class.php')) {
+    file_put_contents(__DIR__ . '/class.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/class.php?rev=' . time()));
+  }
 }
 require_once __DIR__ . '/class.php';
 
 /**
  * Consoler.
- *
- * @return void
  */
 function getConsole()
 {
@@ -17,8 +17,6 @@ function getConsole()
 
 /**
  * Default Initialization.
- *
- * @return void
  */
 function defaultInit()
 {
@@ -67,11 +65,10 @@ function gjson($cfg)
   return json_encode($cfg, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 }
 /**
- * Save Config
+ * Save Config.
  *
  * @param string $file
- * @param array $content
- * @return void
+ * @param array  $content
  */
 function saveConfig($file, $content = [
   'loop' => 0,
@@ -85,9 +82,10 @@ function saveConfig($file, $content = [
   return file_put_contents($file, gjson($content));
 }
 /**
- * Load default config
+ * Load default config.
  *
  * @param string $file
+ *
  * @return array
  */
 function loadConfig($file)
@@ -129,9 +127,7 @@ function v2_default()
   }
 }
 /**
- * Parsing parameters
- *
- * @return void
+ * Parsing parameters.
  */
 function get_opt()
 {
@@ -139,48 +135,48 @@ function get_opt()
     throw new Exception('Only CLI', 1);
   }
 
-  $options = $opts = getoptreq('abc:d:e::f::', array('one', 'two', 'three:', 'four:', 'five::', 'config:', 'rumus:'));
+  $options = $opts = getoptreq('abc:d:e::f::', ['one', 'two', 'three:', 'four:', 'five::', 'config:', 'rumus:']);
+
   return $options;
 }
 
 /**
- * Get options from the command line or web request
+ * Get options from the command line or web request.
  *
  * @param string $options
- * @param array $longopts
+ * @param array  $longopts
+ *
  * @return array
  */
 function getoptreq($options, $longopts)
 {
-  if (PHP_SAPI === 'cli' || empty($_SERVER['REMOTE_ADDR']))  // command line
-  {
+  if (PHP_SAPI === 'cli' || empty($_SERVER['REMOTE_ADDR'])) {  // command line
     return getopt($options, $longopts);
-  } else if (isset($_REQUEST))  // web script
-  {
-    $found = array();
+  } elseif (isset($_REQUEST)) {  // web script
+    $found = [];
 
     $shortopts = preg_split('@([a-z0-9][:]{0,2})@i', $options, 0, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
     $opts = array_merge($shortopts, $longopts);
 
     foreach ($opts as $opt) {
-      if (substr($opt, -2) === '::')  // optional
-      {
+      if ('::' === substr($opt, -2)) {  // optional
         $key = substr($opt, 0, -2);
 
-        if (isset($_REQUEST[$key]) && !empty($_REQUEST[$key]))
+        if (isset($_REQUEST[$key]) && !empty($_REQUEST[$key])) {
           $found[$key] = $_REQUEST[$key];
-        else if (isset($_REQUEST[$key]))
+        } elseif (isset($_REQUEST[$key])) {
           $found[$key] = false;
-      } else if (substr($opt, -1) === ':')  // required value
-      {
+        }
+      } elseif (':' === substr($opt, -1)) {  // required value
         $key = substr($opt, 0, -1);
 
-        if (isset($_REQUEST[$key]) && !empty($_REQUEST[$key]))
+        if (isset($_REQUEST[$key]) && !empty($_REQUEST[$key])) {
           $found[$key] = $_REQUEST[$key];
-      } else if (ctype_alnum($opt))  // no value
-      {
-        if (isset($_REQUEST[$opt]))
+        }
+      } elseif (ctype_alnum($opt)) {  // no value
+        if (isset($_REQUEST[$opt])) {
           $found[$opt] = false;
+        }
       }
     }
 
@@ -191,25 +187,25 @@ function getoptreq($options, $longopts)
 }
 
 /**
- * Get String
+ * Get String.
  *
  * @param string $string
  * @param string $start
  * @param string $end
- * @return void
  */
 function getStr($string, $start, $end)
 {
   $str = explode($start, $string);
-  if (isset($str[1])) $str = explode($end, ($str[1]));
+  if (isset($str[1])) {
+    $str = explode($end, ($str[1]));
+  }
 
   return $str[0];
 }
 /**
- * CSRF parser
+ * CSRF parser.
  *
  * @param string $csrf
- * @return void
  */
 function csrf($csrf)
 {

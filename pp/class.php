@@ -58,7 +58,7 @@ class PP
     $h = explode("\n", str_replace($arr, '', "Cookie: $cookie
 	Content-Type: application/json
 	user-agent: " . self::$ua));
-    $body = "{\"sourceCurrency\":\"USD\",\"sourceAmount\":0.02,\"targetCurrency\":\"TWD\",\"_csrf\":\"$csrf\"}";
+    $body = "{\"sourceCurrency\":\"USD\",\"sourceAmount\":$ammount,\"targetCurrency\":\"TWD\",\"_csrf\":\"$csrf\"}";
 
     return json_decode(self::cload($url, $h, $body), true);
   }
