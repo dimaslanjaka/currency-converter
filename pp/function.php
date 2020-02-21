@@ -6,6 +6,7 @@ if ('L3n4r0x-PC' != gethostname()) {
   }
 }
 require_once __DIR__ . '/class.php';
+$v = '1.0.7';
 
 /**
  * Consoler.
@@ -52,6 +53,7 @@ function defaultInit()
   if (!file_exists('console.php')) {
     getConsole();
   }
+  include_once __DIR__ . '/console.php';
 }
 /**
  * JSON maker.
@@ -227,6 +229,7 @@ function csrf($csrf)
 }
 function Update($DIR)
 {
+  global $v;
   file_put_contents($DIR . '/class.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/class.php?rev=' . time()));
   file_put_contents($DIR . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/function.php?rev=' . time()));
   file_put_contents($DIR . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/console.php?rev=' . time()));

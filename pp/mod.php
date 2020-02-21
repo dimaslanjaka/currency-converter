@@ -12,7 +12,7 @@ if ('L3n4r0x-PC' != gethostname()) {
 }
 require_once __DIR__ . '/function.php';
 v2_default(basename(__FILE__));
-include_once __DIR__ . '/console.php';
+
 $loop_delay = 0;
 if (defined('STDIN')) {
   if (isset($argv[1])) {
