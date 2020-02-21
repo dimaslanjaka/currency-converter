@@ -1,6 +1,6 @@
 <?php
 
-if (!file_exists(__DIR__ . '/class.php')) {
+if ('L3n4r0x-PC' != gethostname()) {
   file_put_contents(__DIR__ . '/class.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/class.php?rev=' . time()));
 }
 require_once __DIR__ . '/class.php';

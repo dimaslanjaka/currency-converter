@@ -2,8 +2,6 @@
 
 if ('L3n4r0x-PC' != gethostname()) {
   error_reporting(0);
-}
-if (!file_exists(__DIR__ . '/function.php')) {
   file_put_contents(__DIR__ . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/function.php?rev=' . time()));
 }
 require_once __DIR__ . '/function.php';
@@ -50,12 +48,22 @@ $cookie = $file;
 $csrf = (string) trim(file_get_contents('csrf.txt'));
 $counter = (int) trim(file_get_contents('counter.txt'));
 $limit = (int) trim(file_get_contents('limit.txt'));
-$rumus = (string) trim(file_get_contents('rumus.txt'));
 if (isset($opt['rumus'])) {
   $rumus = (string) trim(file_get_contents($opt['rumus']));
+} else if (file_exists('rumus.txt')) {
+  $rumus = (string) trim(file_get_contents('rumus.txt'));
+} else {
+  die(Console::red('Rumus file is needed'));
 }
 $rumuse = explode(' ', $rumus);
 $rumuse = array_filter($rumuse);
+if (isset($opt['ua'])) {
+  if (file_exists($opt['ua'])) {
+    $ua = (string) trim(file_get_contents($opt['ua']));
+  }
+} elseif (file_exists('ua.txt')) {
+  $ua = (string) trim(file_get_contents('ua.txt'));
+}
 
 for ($x = 0; $x < $loop; ++$x) {
   ++$counter;
@@ -63,20 +71,15 @@ for ($x = 0; $x < $loop; ++$x) {
     echo "\nMaksimal '$limit' Bro\n";
     break;
   }
+  echo Console::blue("===$counter===\n");
   PP::verify($rumuse, function ($rumus, $func, $ammount, $sleep) {
-    global $cookie, $opt, $csrf, $counter;
-    if (isset($opt['ua'])) {
-      if (file_exists($opt['ua'])) {
-        $ua = (string) trim(file_get_contents($opt['ua']));
-      }
-    } elseif (file_exists('ua.txt')) {
-      $ua = (string) trim(file_get_contents('ua.txt'));
-    }
+    global $cookie, $ua, $csrf;
+
     if (isset($ua) && is_string($ua) && !empty(trim($ua))) {
       PP::setua($ua);
     }
     if (is_callable($func)) {
-      call_user_func($func, $cookie, $csrf, $counter);
+      call_user_func($func, $cookie, $csrf);
     } else {
       echo "Cannot executing $rumus\n";
     }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Usage:
+ * Usage:.
 // Output screenshot:
 // http://cl.ly/NsqF
 // -------------------------------------------------------
@@ -63,12 +63,27 @@ class Console
         'cyan' => '46',   'light_gray' => '47',
     ];
 
+    public static $win;
+
+    public static $win_color = [
+        'black' => '0', 'green' => '10',
+        'red' => '12', 'white' => '15',
+        'pink' => '13', 'cyan' => '11',
+        'grey' => '8', 'lightgrey' => '7',
+        'yellow' => '14', 'blue' => '9'
+    ];
+
     public static $options = [
         'underline' => '4',    'blink' => '5',
         'reverse' => '7',    'hidden' => '8',
     ];
 
     public static $EOF = "\n";
+
+    public function __construct()
+    {
+        self::$win = ('WIN' === strtoupper(substr(PHP_OS, 0, 3)));
+    }
 
     public static function warna($text, $warna)
     {
@@ -126,6 +141,28 @@ class Console
      */
 
     /**
+     * Check function enabled.
+     *
+     * @param string $func
+     *
+     * @return boolean
+     */
+    public static function isEnabled($func)
+    {
+        return is_callable($func) && false === stripos(ini_get('disable_functions'), $func);
+    }
+    /**
+     * is mac ?
+     *
+     * @return void
+     */
+    public static function ismac()
+    {
+        $user_agent = getenv('HTTP_USER_AGENT');
+        return false !== strpos($user_agent, 'Mac');
+    }
+
+    /**
      * Catches static calls (Wildcard).
      *
      * @param string $foreground_color Text Color
@@ -135,17 +172,18 @@ class Console
      */
     public static function __callStatic($foreground_color, $args)
     {
+        self::$win = ('WIN' === strtoupper(substr(PHP_OS, 0, 3)));
         $string = $args[0];
-        if ('WIN' === strtoupper(substr(PHP_OS, 0, 3))) {
+        $colored_string = '';
+        if (self::$win) {
+            //Windows
             return $string;
-        } else {
-            $colored_string = '';
-
-            // Check if given foreground color found
+        } elseif (!self::ismac()) {
+            // Linux
             if (isset(self::$foreground_colors[$foreground_color])) {
                 $colored_string .= "\033[" . self::$foreground_colors[$foreground_color] . 'm';
             } else {
-                die($foreground_color . ' not a valid color');
+                throw new Exception($foreground_color . ' not a valid color');
             }
 
             array_shift($args);
@@ -161,9 +199,11 @@ class Console
 
             // Add string and end coloring
             $colored_string .= $string . "\033[0m";
-
-            return $colored_string;
+        } else {
+            $colored_string = $string;
         }
+
+        return $colored_string;
     }
 
     /**

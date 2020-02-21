@@ -1,2 +1,4 @@
 <?php
-echo gethostname();
+
+require 'console.php';
+echo Console::red("sss\nfdfd");
