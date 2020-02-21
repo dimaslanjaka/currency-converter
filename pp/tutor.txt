@@ -17,6 +17,11 @@ WARNING: use dot (.) not comma (,)
 Ex: usd2twd:sleep(5):amount(0.02)
 Description: usd2twd delay 5 ammount 0.02
 
+/= Default ammount =/
+usd2twd = 0.02
+twd2usd = 3
+jpy2twd = 2
+
 ...description function name
 usd2twd (USD to TWD)
 twd2usd (TWD to USD)
