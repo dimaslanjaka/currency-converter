@@ -131,7 +131,7 @@ class PP
     if (!self::$from) {
       exit('From Currency null');
     }
-    var_dump(self::get_amount());
+
     $result = Console::red(date('d-m-Y H:i:s ') . ' Gagal Convert ' . self::get_amount() . ' ' . self::$from . " to $amount " . self::$to . ' (' . $fn . ')');
     if (true == strpos($output, 'null')) {
       $result = Console::green(date('d-m-Y H:i:s ') . ' Berhasil convert ' . self::get_amount() . ' ' . self::$from . " to $amount " . self::$to . ' (' . $fn . ')');

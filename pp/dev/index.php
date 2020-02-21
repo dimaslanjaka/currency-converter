@@ -74,4 +74,4 @@ $content .= <<<EOF
   </form>
 </main>
 EOF;
-include __DIR__ . '/../test/theme/content.php';
+include __DIR__ . '/../../test/theme/content.php';
