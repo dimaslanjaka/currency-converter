@@ -192,6 +192,20 @@ user-agent: " . self::$ua));
 
     return json_decode(self::cload($url, $h, $body), true);
   }
+  
+  static function usd_to_jpy($cookie, $csrf){
+  	if (!self::check_amount()) {
+      self::set_amount(__FUNCTION__);
+    }
+    if (self::dev()) {
+      self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
+    }
+    $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
+    $h = self::header($cookie);
+    $body = self::body('USD', 'JPY', $csrf);
+
+    return json_decode(self::cload($url, $h, $body), true);
+  }
 
   public static function usd_to_ils($cookie, $csrf)
   {
@@ -271,6 +285,17 @@ user-agent: " . self::$ua));
     $output_send_twd = json_encode($twd_to_usd);
     $amount = getStr($output_send_twd, '"value":"', '"');
     self::console(__FUNCTION__, $output_send_twd, $amount);
+    self::sleep();
+  }
+  
+  static function usd2jpy ($cookie, $csrf){
+  	if (self::dev()) {
+      self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
+    }
+    $run = self::usd_to_jpy($cookie, $csrf);
+    $output = json_encode($run);
+    $amount = getStr($output, '"value":"', '"');
+    self::console(__FUNCTION__, $output, $amount);
     self::sleep();
   }
 
