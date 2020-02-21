@@ -131,6 +131,14 @@ function v2_default()
   if (!file_exists(__DIR__ . '/function.php')) {
     file_put_contents(__DIR__ . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/function.php?rev=' . time()));
   }
+  if (!file_exists(__DIR__ . '/version.txt')) {
+    file_put_contents(__DIR__ . '/version.txt', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/version.txt?rev=' . time()));
+  } else {
+    $old = file_get_contents(__DIR__ . '/version.txt');
+    if ($old < '1.0.7') {
+      echo Console::red("Update available\n");
+    }
+  }
 }
 /**
  * Parsing parameters.
