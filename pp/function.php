@@ -109,8 +109,12 @@ function v2_default()
   if (!file_exists('limit.txt')) {
     file_put_contents('limit.txt', '0');
   }
-  if (!file_exists('max.txt')) {
-    file_put_contents('max.txt', '0');
+  if (!file_exists('counter.txt')) {
+    file_put_contents('counter.txt', '0');
+  }
+  if (file_exists('max.txt')) {
+    file_put_contents('counter.txt', file_get_contents('max.txt'));
+    @unlink('max.txt');
   }
   if (!file_exists('csrf.txt')) {
     file_put_contents('csrf.txt', '1GSaHXUdGkzps8ZJyA4lwHJ5lOG6I/avRL+94=');
