@@ -227,6 +227,12 @@ function csrf($csrf)
 {
   return str_replace('_csrf=', '', $csrf);
 }
+/**
+ * Update Script
+ *
+ * @param string $DIR
+ * @return void
+ */
 function Update($DIR)
 {
   global $v;

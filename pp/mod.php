@@ -115,7 +115,7 @@ function run($rumuse)
     if (!is_numeric($sleep)) {
       exit("Invalid Sleep ($sleep) format, must be integer/number");
     }
-    if (!is_numeric($amount) || $amount == 0) {
+    if ($amount && !is_numeric($amount) || $amount == 0) {
       exit("Invalid amount ($amount) format, must be integer/number. and not zero.");
     }
     PP::set_ua($ua);
