@@ -180,6 +180,18 @@ user-agent: " . self::$ua));
     return json_decode(self::cload($url, $h, $body), true);
   }
 
+  public static function usd_to_ils($cookie, $csrf)
+  {
+    if (self::check_amount()) {
+      self::set_amount(__FUNCTION__);
+    }
+    $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
+    $h = self::header($cookie);
+    $body = self::body('USD', 'ILS', $csrf);
+
+    return json_decode(self::cload($url, $h, $body), true);
+  }
+
   /**
    * TWD to USD.
    *
