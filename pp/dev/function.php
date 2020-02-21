@@ -7,7 +7,7 @@ require_once __DIR__ . '/class.php';
 if (!file_exists('console.php')) {
   getConsole();
 }
-include_once __DIR__ . '/console.php';
+if (!class_exists('Console')) include_once __DIR__ . '/console.php';
 $v = '1.0.9';
 
 /**

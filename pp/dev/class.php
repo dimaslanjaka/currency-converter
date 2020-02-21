@@ -1,5 +1,8 @@
 <?php
 
+if (!class_exists('Console')) {
+  include_once __DIR__ . '/console.php';
+}
 class PP
 {
   public static $sleep = 5;
@@ -187,12 +190,14 @@ user-agent: " . self::$ua));
     if (!self::check_amount()) {
       self::set_amount(__FUNCTION__);
     }
-    if (self::dev()) {
-      self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
-    }
+
     $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
     $h = self::header($cookie);
     $body = self::body('USD', 'TWD', $csrf);
+
+    if (self::dev()) {
+      self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
+    }
 
     return json_decode(self::cload($url, $h, $body), true);
   }
@@ -202,12 +207,14 @@ user-agent: " . self::$ua));
     if (!self::check_amount()) {
       self::set_amount(__FUNCTION__);
     }
-    if (self::dev()) {
-      self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
-    }
+
     $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
     $h = self::header($cookie);
     $body = self::body('USD', 'JPY', $csrf);
+
+    if (self::dev()) {
+      self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
+    }
 
     return json_decode(self::cload($url, $h, $body), true);
   }
@@ -217,12 +224,14 @@ user-agent: " . self::$ua));
     if (!self::check_amount()) {
       self::set_amount(__FUNCTION__);
     }
-    if (self::dev()) {
-      self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
-    }
+
     $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
     $h = self::header($cookie);
     $body = self::body('USD', 'ILS', $csrf);
+
+    if (self::dev()) {
+      self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
+    }
 
     return json_decode(self::cload($url, $h, $body), true);
   }
@@ -240,12 +249,14 @@ user-agent: " . self::$ua));
     if (!self::check_amount()) {
       self::set_amount(__FUNCTION__);
     }
-    if (self::dev()) {
-      self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
-    }
+
     $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
     $h = self::header($cookie);
     $body = self::body('TWD', 'USD', $csrf);
+
+    if (self::dev()) {
+      self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
+    }
 
     return json_decode(self::cload($url, $h, $body), true);
   }
@@ -263,12 +274,14 @@ user-agent: " . self::$ua));
     if (!self::check_amount()) {
       self::set_amount(__FUNCTION__);
     }
-    if (self::dev()) {
-      self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
-    }
+
     $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
     $h = self::header($cookie);
     $body = self::body('JPY', 'TWD', $csrf);
+
+    if (self::dev()) {
+      self::log(__FUNCTION__, self::$amount, self::$from, self::$to);
+    }
 
     return json_decode(self::cload($url, $h, $body), true);
   }
@@ -439,5 +452,33 @@ user-agent: " . self::$ua));
   public static function shift_function($f)
   {
     return str_replace('2', '_to_', $f);
+  }
+
+  protected static function convert($from, $to, $cookie, $csrf)
+  {
+    $method = str_replace(__CLASS__ . '::', '', __METHOD__);
+    $amount = self::get_amount();
+    echo Console::magenta("Begin $method $amount $from to $to\n");
+  }
+
+  public static function __callStatic($method, $args)
+  {
+    switch ($method) {
+      case 'foo':
+        echo 'You have called foo()';
+        var_dump($args);
+        break;
+
+      case 'helloWorld':
+        echo 'Hello ' . $args[0];
+        break;
+
+      case 'convert':
+        return call_user_func_array(
+          [get_called_class(), 'convert'],
+          $args
+        );
+        break;
+    }
   }
 }
