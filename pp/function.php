@@ -136,7 +136,7 @@ function v2_default($fn = null)
   } else {
     $old = file_get_contents(__DIR__ . '/version.txt');
     if ($old < '1.0.7') {
-      echo Console::red("Update available\nphp $fn update");
+      echo Console::red("Update available, to update\nphp $fn update\n");
     }
   }
 }
