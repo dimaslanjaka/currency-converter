@@ -13,6 +13,9 @@ Description: usd to twd delay 5 seconds > twd to usd delay 3 seconds
 Ex: usd2twd:amount(0.02) twd2usd:amount(3)
 Description: usd to twd amount 0.02 USD > twd to usd amount 3 TWD
 WARNING: use dot (.) not comma (,)
+...custom combined
+Ex: usd2twd:sleep(5):amount(0.02)
+Description: usd2twd delay 5 ammount 0.02
 
 ...description function name
 usd2twd (USD to TWD)
