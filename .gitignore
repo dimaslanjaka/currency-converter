@@ -2,7 +2,8 @@ composer.phar
 /vendor/
 /pp/cookie.txt
 /pp/csrf.txt
-
+/pp/counter.txt
+/pp/max.txt
 /pp/*.json
 composer.lock
 *.bak
