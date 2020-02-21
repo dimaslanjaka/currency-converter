@@ -5,7 +5,6 @@ class PP
   public static $sleep = 5;
   public static $wrap_config = [];
   private static $ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36';
-  protected static $counter;
   public static $pp = 'https://www.paypal.com/';
   public static $v1 = '/myaccount/money/api/currencies/transfer';
   public static $v2 = '/myaccount/money/api/currencies/exchange-rate';
@@ -130,14 +129,14 @@ class PP
    *
    * @return json_decode
    */
-  public static function twd2usd($cookie, $csrf, $counter)
+  public static function twd2usd($cookie, $csrf)
   {
     $twd_to_usd = self::twd_to_usd($cookie, $csrf);
     $output_send_twd = json_encode($twd_to_usd);
     $amount = getStr($output_send_twd, '"value":"', '"');
-    $result = Console::red($counter . ' ' . date('d-m-Y H:i:s ') . ' Gagal Convert. (' . __FUNCTION__ . ')');
+    $result = Console::red(date('d-m-Y H:i:s ') . ' Gagal Convert. (' . __FUNCTION__ . ')');
     if (true == strpos($output_send_twd, 'null')) {
-      $result = Console::green($counter . ' ' . date('d-m-Y H:i:s ') . " Berhasil convert 1 TWD to $amount USD (" . __FUNCTION__ . ')');
+      $result = Console::green(date('d-m-Y H:i:s ') . " Berhasil convert 1 TWD to $amount USD (" . __FUNCTION__ . ')');
     }
     echo $result . "\n";
     self::sleep();
@@ -151,14 +150,14 @@ class PP
    *
    * @return json_decode
    */
-  public static function usd2twd($cookie, $csrf, $counter)
+  public static function usd2twd($cookie, $csrf)
   {
     $usd_to_twd = self::usd_to_twd($cookie, $csrf);
     $output_send_usd = json_encode($usd_to_twd);
     $amount = getStr($output_send_usd, '"value":"', '"');
-    $result = Console::red($counter . ' ' . date('d-m-Y H:i:s ') . ' Gagal Convert. (' . __FUNCTION__ . ')');
+    $result = Console::red(date('d-m-Y H:i:s ') . ' Gagal Convert. (' . __FUNCTION__ . ')');
     if (true == strpos($output_send_usd, 'null')) {
-      $result = Console::green($counter . ' ' . date('d-m-Y H:i:s ') . " Berhasil convert 0,02 USD to $amount TWD (" . __FUNCTION__ . ')');
+      $result = Console::green(date('d-m-Y H:i:s ') . " Berhasil convert 0,02 USD to $amount TWD (" . __FUNCTION__ . ')');
     }
     echo $result . "\n";
     self::sleep();
@@ -172,14 +171,14 @@ class PP
    *
    * @return json_decode
    */
-  public static function jpy2twd($cookie, $csrf, $counter)
+  public static function jpy2twd($cookie, $csrf)
   {
     $jpy_to_twd = self::jpy_to_twd($cookie, $csrf);
     $output_send_jpy_twd = json_encode($jpy_to_twd);
     $amount = getStr($output_send_jpy_twd, '"value":"', '"');
-    $result = Console::red($counter . ' ' . date('d-m-Y H:i:s ') . 'Gagal Convert. (' . __FUNCTION__ . ')');
+    $result = Console::red(date('d-m-Y H:i:s ') . 'Gagal Convert. (' . __FUNCTION__ . ')');
     if (true == strpos($output_send_jpy_twd, 'null')) {
-      $result = Console::green($counter . ' ' . date('d-m-Y H:i:s ') . "Berhasil convert 2 JPY to $amount TWD (" . __FUNCTION__ . ')');
+      $result = Console::green(date('d-m-Y H:i:s ') . "Berhasil convert 2 JPY to $amount TWD (" . __FUNCTION__ . ')');
     }
     echo $result . "\n";
     self::sleep();
