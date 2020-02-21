@@ -78,7 +78,7 @@ for ($x = 0; $x < $loop; ++$x) {
     global $cookie, $ua, $csrf;
 
     if (isset($ua) && is_string($ua) && !empty(trim($ua))) {
-      PP::setua($ua);
+      PP::set_ua($ua);
     }
     if (is_callable($func)) {
       call_user_func($func, $cookie, $csrf);

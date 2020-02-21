@@ -2,28 +2,35 @@
 
 class PP
 {
-  public static $sleep = 5;
-  public static $wrap_config = [];
+  private static $sleep = 5;
+  private static $wrap_config = [];
   private static $ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36';
-  public static $pp = 'https://www.paypal.com/';
-  public static $v1 = '/myaccount/money/api/currencies/transfer';
-  public static $v2 = '/myaccount/money/api/currencies/exchange-rate';
+  private static $pp = 'https://www.paypal.com/';
+  private static $v1 = '/myaccount/money/api/currencies/transfer';
+  private static $v2 = '/myaccount/money/api/currencies/exchange-rate';
+  private static $amount;
+  private static $from;
+  private static $to;
+
   /**
-   * Build PP
+   * Build PP.
    *
    * @param string $path
+   *
    * @return void
    */
   public static function build($path)
   {
     return preg_replace('/\/{2,9}/', '/', self::$pp . '/' . $path);
   }
+
   /**
-   * Load PP
+   * Load PP.
    *
    * @param string $url
-   * @param array $h
+   * @param array  $h
    * @param string $body
+   *
    * @return void
    */
   public static function cload($url, $h, $body)
@@ -41,6 +48,67 @@ class PP
   }
 
   /**
+   * Is amount invalid.
+   *
+   * @param number|null $n
+   *
+   * @return void
+   */
+  public static function check_amount($n = null)
+  {
+    if (!$n) {
+      $n = self::$amount;
+    }
+
+    return !$n || !is_numeric($n);
+  }
+
+  /**
+   * Set User-agent.
+   *
+   * @param string $ua
+   *
+   * @return void
+   */
+  public static function set_ua($ua)
+  {
+    if (is_string($ua)) {
+      self::$ua = $ua;
+    }
+  }
+
+  public static function set_amount($n)
+  {
+    if (self::check_amount($n)) {
+      self::$amount = $n;
+    }
+  }
+
+  /**
+   * Remove amount.
+   *
+   * @return void
+   */
+  public static function remove_amount()
+  {
+    self::$amount = null;
+  }
+  /**
+   * Body builder
+   *
+   * @param string $from
+   * @param string $to
+   * @param string $csrf
+   * @return void
+   */
+  public static function body($from, $to, $csrf)
+  {
+    self::$from = $from;
+    self::$to = $to;
+    return "{\"sourceCurrency\":\"$from\",\"sourceAmount\":" . self::$amount . ",\"targetCurrency\":\"$to\",\"_csrf\":\"$csrf\"}";
+  }
+
+  /**
    * USD to TWD.
    *
    * @param string $cookie
@@ -48,17 +116,17 @@ class PP
    *
    * @return json_decode
    */
-  public static function usd_to_twd($cookie, $csrf, $ammount = '0.02')
+  public static function usd_to_twd($cookie, $csrf)
   {
-    if (!$ammount || $ammount <= 0 || !is_numeric($ammount)) {
-      $ammount = 0.02;
+    if (self::check_amount()) {
+      self::set_amount(0.02);
     }
     $arr = ["\r", '	'];
     $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
     $h = explode("\n", str_replace($arr, '', "Cookie: $cookie
 	Content-Type: application/json
 	user-agent: " . self::$ua));
-    $body = "{\"sourceCurrency\":\"USD\",\"sourceAmount\":$ammount,\"targetCurrency\":\"TWD\",\"_csrf\":\"$csrf\"}";
+    $body = self::body('USD', 'TWD', $csrf);
 
     return json_decode(self::cload($url, $h, $body), true);
   }
@@ -71,31 +139,19 @@ class PP
    *
    * @return json_decode
    */
-  public static function twd_to_usd($cookie, $csrf, $ammount = 3)
+  public static function twd_to_usd($cookie, $csrf)
   {
-    if (!$ammount || $ammount <= 0 || !is_numeric($ammount)) {
-      $ammount = 3;
+    if (self::check_amount()) {
+      self::set_amount(3);
     }
     $arr = ["\r", '	'];
     $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
     $h = explode("\n", str_replace($arr, '', "Cookie: $cookie
 	Content-Type: application/json
 	user-agent: " . self::$ua));
-    $body = "{\"sourceCurrency\":\"TWD\",\"sourceAmount\":$ammount,\"targetCurrency\":\"USD\",\"_csrf\":\"$csrf\"}";
+    $body = self::body('TWD', 'USD', $csrf);
 
     return json_decode(self::cload($url, $h, $body), true);
-  }
-  /**
-   * Set User-agent
-   *
-   * @param string $ua
-   * @return void
-   */
-  public static function setua($ua)
-  {
-    if (is_string($ua)) {
-      self::$ua = $ua;
-    }
   }
 
   /**
@@ -106,17 +162,17 @@ class PP
    *
    * @return json_decode
    */
-  public static function jpy_to_twd($cookie, $csrf, $ammount = 2)
+  public static function jpy_to_twd($cookie, $csrf)
   {
-    if (!$ammount || $ammount <= 0 || !is_numeric($ammount)) {
-      $ammount = 2;
+    if (self::check_amount()) {
+      self::set_amount(2);
     }
     $arr = ["\r", '	'];
     $url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
     $h = explode("\n", str_replace($arr, '', "Cookie: $cookie
 	Content-Type: application/json
 	user-agent: " . self::$ua));
-    $body = "{\"sourceCurrency\":\"JPY\",\"sourceAmount\":$ammount,\"targetCurrency\":\"TWD\",\"_csrf\":\"$csrf\"}";
+    $body = self::body('JPY', 'TWD', $csrf);
 
     return json_decode(self::cload($url, $h, $body), true);
   }
@@ -134,12 +190,17 @@ class PP
     $twd_to_usd = self::twd_to_usd($cookie, $csrf);
     $output_send_twd = json_encode($twd_to_usd);
     $amount = getStr($output_send_twd, '"value":"', '"');
-    $result = Console::red(date('d-m-Y H:i:s ') . ' Gagal Convert. (' . __FUNCTION__ . ')');
-    if (true == strpos($output_send_twd, 'null')) {
-      $result = Console::green(date('d-m-Y H:i:s ') . " Berhasil convert 1 TWD to $amount USD (" . __FUNCTION__ . ')');
+    self::console(__FUNCTION__, $output_send_twd, $amount);
+    self::sleep();
+  }
+
+  static function console($fn, $output, $amount)
+  {
+    $result = Console::red(date('d-m-Y H:i:s ') . ' Gagal Convert. (' . $fn . ')');
+    if (true == strpos($output, 'null')) {
+      $result = Console::green(date('d-m-Y H:i:s ') . " Berhasil convert " . self::$amount . " " . self::$from . " to $amount " . self::$to . " (" . $fn . ')');
     }
     echo $result . "\n";
-    self::sleep();
   }
 
   /**
@@ -155,11 +216,7 @@ class PP
     $usd_to_twd = self::usd_to_twd($cookie, $csrf);
     $output_send_usd = json_encode($usd_to_twd);
     $amount = getStr($output_send_usd, '"value":"', '"');
-    $result = Console::red(date('d-m-Y H:i:s ') . ' Gagal Convert. (' . __FUNCTION__ . ')');
-    if (true == strpos($output_send_usd, 'null')) {
-      $result = Console::green(date('d-m-Y H:i:s ') . " Berhasil convert 0,02 USD to $amount TWD (" . __FUNCTION__ . ')');
-    }
-    echo $result . "\n";
+    self::console(__FUNCTION__, $output_send_usd, $amount);
     self::sleep();
   }
 
@@ -176,11 +233,7 @@ class PP
     $jpy_to_twd = self::jpy_to_twd($cookie, $csrf);
     $output_send_jpy_twd = json_encode($jpy_to_twd);
     $amount = getStr($output_send_jpy_twd, '"value":"', '"');
-    $result = Console::red(date('d-m-Y H:i:s ') . 'Gagal Convert. (' . __FUNCTION__ . ')');
-    if (true == strpos($output_send_jpy_twd, 'null')) {
-      $result = Console::green(date('d-m-Y H:i:s ') . "Berhasil convert 2 JPY to $amount TWD (" . __FUNCTION__ . ')');
-    }
-    echo $result . "\n";
+    self::console(__FUNCTION__, $output_send_jpy_twd, $amount);
     self::sleep();
   }
 
@@ -193,7 +246,8 @@ class PP
 
   public static function sleep()
   {
-    echo "Delay " . self::$sleep . " Secs\n";
+    echo 'Delay ' . self::$sleep . " Secs\n";
+
     return sleep(self::$sleep);
   }
 
@@ -203,7 +257,7 @@ class PP
       foreach ($rumus as $e) {
         $f = $e;
         $sleep = 1;
-        $ammount = false;
+        $amount = false;
         if (strpos($e, ':')) {
           $ex = explode(':', $e);
           /*
@@ -219,12 +273,12 @@ class PP
               if (is_numeric($sl[1]) && $sl[1] != (int) 0) {
                 $sleep = (int) $sl[1];
               }
-            } elseif (preg_match('/ammount\((\d\.?\d*)\)/m', $transversible, $sl)) {
+            } elseif (preg_match('/amount\((\d\.?\d*)\)/m', $transversible, $sl)) {
               if (!isset($sl[1]) || !is_numeric($sl[1])) {
                 throw new Exception($sl[1] . ' is not number OR Invalid on rumus ' . $sl[0]);
               }
               if (is_numeric($sl[1]) && $sl[1] != (int) 0) {
-                $ammount = (int) $sl[1];
+                $amount = (int) $sl[1];
               }
             }
           }
@@ -235,14 +289,14 @@ class PP
           self::$wrap_config[] = [
             'function' => __CLASS__ . '::' . $f,
             'sleep' => $sleep,
-            'ammount' => $ammount,
+            'amount' => $amount,
             'rumus' => $e,
           ];
         }
       }
       if (is_callable($callback)) {
         foreach (self::$wrap_config as $function) {
-          call_user_func($callback, $function['rumus'], $function['function'], $function['ammount'], $function['sleep']);
+          call_user_func($callback, $function['rumus'], $function['function'], $function['amount'], $function['sleep']);
         }
       }
     }
