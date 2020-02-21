@@ -1,4 +1,4 @@
-usd2twd:sleep(5)
-usd2twd:sleep(5)
-usd2twd:sleep(5)
-twd2usd:sleep(5)
+convert(USD,TWD):sleep(5)
+convert(USD,JPY):sleep(5)
+convert(twd,usd):sleep(5)
+convert(jpy,twd):sleep(5)

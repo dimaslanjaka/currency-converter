@@ -84,18 +84,6 @@ class Console
     {
         self::$win = ('WIN' === strtoupper(substr(PHP_OS, 0, 3)));
     }
-    static function welcome()
-    {
-        echo <<<EOF
-        '||'      ____            ,
-        ||       ` // .. ...    /|  ... ..   /\\  ... ...
-        ||        //   ||  ||  / |   ||' '' || ||  '|..'
-        ||        \\   ||  ||  __|_  ||     || ||   .|.
-       .||.....|   )) .||. ||. ---- .||.    || || .|  ||.
-                  //             |          || ||
-                 /'             '-'          \\/
-EOF;
-    }
 
     public static function warna($text, $warna)
     {
