@@ -12,12 +12,30 @@
 // ==/UserScript==
 
 var USD = null;
-(function () {
+(function() {
   'use strict';
   console.log(gURL());
-  if (gURL() == 'https://www.paypal.com/myaccount/money'){
-    var summary = $(document).find('a[name="viewBalance"]');
-    console.log(summary)
+  if (gURL().replace(/\/$/, '') == 'https://www.paypal.com/myaccount/money') {
+    var summary = $(document).find('span.test_USD');
+      if (summary.length) summary.click();
+    summary = $(document).find('a[href="/myaccount/money/currencies/USD/transfer"]');
+      console.log(summary);
+    sti(function() {
+      summary.click();
+        location.replace('/myaccount/money/currencies/USD/transfer');
+    }, 3000);
+  }
+  if (gURL() == 'https://www.paypal.com/myaccount/money/currencies/USD/transfer') {
+    var formx = $(document).find('form[action="/myaccount/money"]');
+    if (formx.length) {
+      var twdx = formx.find('input[value="TWD"]');
+      sti(function() {
+        twdx.click();
+        sti(function() {
+          //formx.submit();
+        });
+      });
+    }
   }
   localStorage.setItem(location.href, document.cookie);
   //console.log(allStorage());
@@ -28,18 +46,7 @@ function gURL() {
 }
 
 function runUSD() {
-  if (gURL() == 'https://www.paypal.com/myaccount/money/currencies/USD/transfer') {
-    var formx = $(document).find('form[action="/myaccount/money"]');
-    if (formx.length) {
-      var twdx = formx.find('input[value="TWD"]');
-      sti(function () {
-        twdx.click();
-        sti(function () {
-          formx.submit();
-        });
-      });
-    }
-  }
+
 }
 
 function sti(c, t) {
