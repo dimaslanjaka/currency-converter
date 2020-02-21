@@ -98,7 +98,7 @@ function loadConfig($file)
   return (array) json_decode(file_get_contents($file));
 }
 
-function v2_default()
+function v2_default($fn = null)
 {
   if (!file_exists('loop.txt')) {
     file_put_contents('loop.txt', '0');
@@ -136,7 +136,7 @@ function v2_default()
   } else {
     $old = file_get_contents(__DIR__ . '/version.txt');
     if ($old < '1.0.7') {
-      echo Console::red("Update available\n");
+      echo Console::red("Update available\nphp $fn update");
     }
   }
 }
