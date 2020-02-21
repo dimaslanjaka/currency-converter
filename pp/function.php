@@ -102,6 +102,7 @@ function loadConfig($file)
 
 function v2_default($fn = null)
 {
+  global $v;
   if (!file_exists('loop.txt')) {
     file_put_contents('loop.txt', '0');
   }
@@ -137,7 +138,7 @@ function v2_default($fn = null)
     file_put_contents(__DIR__ . '/version.txt', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/version.txt?rev=' . time()));
   } else {
     $old = file_get_contents(__DIR__ . '/version.txt');
-    if ($old < '1.0.7') {
+    if ($old < $v) {
       echo Console::red("Update available, to update\nphp $fn update\n");
     }
   }
@@ -234,5 +235,5 @@ function Update($DIR)
   file_put_contents($DIR . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/function.php?rev=' . time()));
   file_put_contents($DIR . '/function.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/console.php?rev=' . time()));
   file_put_contents($DIR . '/' . basename(__FILE__), file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/mod.php?rev=' . time()));
-  file_put_contents(__DIR__ . '/version.txt', '1.0.7');
+  file_put_contents(__DIR__ . '/version.txt', $v);
 }
