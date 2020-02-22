@@ -556,6 +556,30 @@ function checkPlatform(&$warnings, $quiet, $disableTls, $install)
 }
 
 /**
+ * colorize output
+ */
+function out($text, $color = null, $newLine = true)
+{
+	$styles = array(
+		'success' => "\033[0;32m%s\033[0m",
+		'error' => "\033[31;31m%s\033[0m",
+		'info' => "\033[33;33m%s\033[0m"
+	);
+
+	$format = '%s';
+
+	if (isset($styles[$color]) && USE_ANSI) {
+		$format = $styles[$color];
+	}
+
+	if ($newLine) {
+		$format .= PHP_EOL;
+	}
+
+	printf($format, $text);
+}
+
+/**
  * Checks platform configuration for common incompatibility issues.
  *
  * @param array $errors   Populated by method
