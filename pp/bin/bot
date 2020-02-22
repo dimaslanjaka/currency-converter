@@ -33,10 +33,10 @@ for ($x = 0; $x < $loop; ++$x) {
 	$out = json_encode($usd_to_twd);
 	$amount = getStr($out, '"value":"', '"');
 	if (true == strpos($out, 'null')) {
-		$text3 = "Berhasil convert 0.02 USD  to $amount TWD";
+		$text3 = "Success convert 0.02 USD  to $amount TWD";
 		echo warna(date('d-m-Y H:i:s ') . $text3 . "\n", 'green');
 	} else {
-		$text4 = 'Gagal Convert USD2TWD';
+		$text4 = 'Failed Convert USD2TWD';
 		echo warna(date('d-m-Y H:i:s ') . $text4 . "\n", 'red');
 		--$twd2usd;
 	}
@@ -46,10 +46,10 @@ for ($x = 0; $x < $loop; ++$x) {
 		$out = json_encode($twd_to_usd);
 		$amount = getStr($out, '"value":"', '"');
 		if (true == strpos($out, 'null')) {
-			$text3 = warna("Berhasil convert $loop TWD  to $amount USD", 'green');
+			$text3 = warna("Success convert $loop TWD  to $amount USD", 'green');
 			echo date('d-m-Y H:i:s ') . $text3 . "\n";
 		} else {
-			$text4 = 'Gagal Convert USD2TWD';
+			$text4 = 'Failed Convert USD2TWD';
 			echo warna(date('d-m-Y H:i:s ') . $text4 . "\n", 'red');
 		}
 	}
