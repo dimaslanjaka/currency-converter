@@ -69,12 +69,13 @@ function botRun($argv)
 	}
 }
 
-function botHelp()
+function botHelp($botname = 'bot.phar')
 {
+	$fn = basename(__FILE__) && basename(__FILE__) != 'Standard input code' ? basename(__FILE__) : $botname;
 	echo '
-Script : ' . realpath(__DIR__ . '/' . basename(__FILE__)) . '
-Update : ' . Console::warna(basename(__FILE__) . ' update', 'green') . '
-Install Webserver : ' . Console::warna(basename(__FILE__) . ' install-web', 'green') . '
+Script : ' . realpath(__DIR__ . '/' . $fn) . '
+Update : ' . Console::warna($fn . ' update', 'green') . '
+Install Webserver : ' . Console::warna($fn . ' install-web', 'green') . '
 ';
 	echo "\n\n";
 }
