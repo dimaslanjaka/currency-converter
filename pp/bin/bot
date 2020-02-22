@@ -73,7 +73,7 @@ function botHelp($botname = 'bot.phar')
 {
 	$fn = basename(__FILE__) && !empty(basename(__FILE__)) && basename(__FILE__) != 'Standard input code' ? basename(__FILE__) : $botname;
 	echo '
-Script : ' . realpath(__DIR__ . '/' . $fn) . '
+Script : ' . __DIR__ . '/' . $fn . '
 Update : ' . Console::warna($fn . ' update', 'green') . '
 Install Webserver : ' . Console::warna($fn . ' install-web', 'green') . '
 ';
