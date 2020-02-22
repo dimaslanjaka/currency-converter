@@ -22,7 +22,9 @@ Update : " . warna(basename(__FILE__) . " update", "green") . "
 welcome();
 echo 'berapa kali: ';
 $loop = trim(fgets(STDIN));
-
+if (!is_numeric($loop)) {
+	die(warna("Harus nomor, serah lu lah\n", "red"));
+}
 $cookie = getCookie('cookie.txt');
 $csrf = getCsrf('csrf.txt');
 $twd2usd = $loop;
