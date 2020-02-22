@@ -27,44 +27,43 @@ function botRun()
 					break;
 			}
 		}
-	}
-
-	welcome();
-	echo 'berapa kali: ';
-	$loop = trim(fgets(STDIN));
-	if (!is_numeric($loop)) {
-		die(Console::warna("Harus nomor, serah lu lah\n", 'red'));
-	}
-	$cookie = getCookie('cookie.txt');
-	$csrf = getCsrf('csrf.txt');
-	if (!file_exists('ua.txt')) {
-		file_put_contents('ua.txt', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36');
-	}
-	$ua = file_get_contents('ua.txt');
-	$twd2usd = $loop;
-	for ($x = 0; $x < $loop; ++$x) {
-		$usd_to_twd = usd_to_twd($cookie, $csrf);
-		$out = json_encode($usd_to_twd);
-		$amount = getStr($out, '"value":"', '"');
-		if (true == strpos($out, 'null')) {
-			$text3 = "Success convert 0.02 USD  to $amount TWD";
-			echo Console::warna(date('d-m-Y H:i:s ') . $text3 . "\n", 'green');
-		} else {
-			$text4 = 'Failed Convert USD2TWD';
-			echo Console::warna(date('d-m-Y H:i:s ') . $text4 . "\n", 'red');
-			--$twd2usd;
+		welcome();
+		echo 'berapa kali: ';
+		$loop = trim(fgets('STDIN'));
+		if (!is_numeric($loop)) {
+			die(Console::warna("Harus nomor, serah lu lah\n", 'red'));
 		}
-		sleep(1);
-		if ($x == $loop - 1) {
-			$twd_to_usd = twd_to_usd($cookie, $csrf, $twd2usd);
-			$out = json_encode($twd_to_usd);
+		$cookie = getCookie('cookie.txt');
+		$csrf = getCsrf('csrf.txt');
+		if (!file_exists('ua.txt')) {
+			file_put_contents('ua.txt', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36');
+		}
+		$ua = file_get_contents('ua.txt');
+		$twd2usd = $loop;
+		for ($x = 0; $x < $loop; ++$x) {
+			$usd_to_twd = usd_to_twd($cookie, $csrf);
+			$out = json_encode($usd_to_twd);
 			$amount = getStr($out, '"value":"', '"');
 			if (true == strpos($out, 'null')) {
-				$text3 = Console::warna("Success convert $loop TWD  to $amount USD", 'green');
-				echo date('d-m-Y H:i:s ') . $text3 . "\n";
+				$text3 = "Success convert 0.02 USD  to $amount TWD";
+				echo Console::warna(date('d-m-Y H:i:s ') . $text3 . "\n", 'green');
 			} else {
 				$text4 = 'Failed Convert USD2TWD';
 				echo Console::warna(date('d-m-Y H:i:s ') . $text4 . "\n", 'red');
+				--$twd2usd;
+			}
+			sleep(1);
+			if ($x == $loop - 1) {
+				$twd_to_usd = twd_to_usd($cookie, $csrf, $twd2usd);
+				$out = json_encode($twd_to_usd);
+				$amount = getStr($out, '"value":"', '"');
+				if (true == strpos($out, 'null')) {
+					$text3 = Console::warna("Success convert $loop TWD  to $amount USD", 'green');
+					echo date('d-m-Y H:i:s ') . $text3 . "\n";
+				} else {
+					$text4 = 'Failed Convert USD2TWD';
+					echo Console::warna(date('d-m-Y H:i:s ') . $text4 . "\n", 'red');
+				}
 			}
 		}
 	}
