@@ -2,74 +2,81 @@
 <?php
 //error_reporting(0);
 
-
 process(is_array($argv) ? $argv : []);
 
-if (defined('STDIN')) {
-	if (isset($argv[1])) {
-		switch ($argv[1]) {
-			case 'install-web':
-				file_put_contents('run', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/run'));
-				file_put_contents('content.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/content.php'));
-				file_put_contents('func.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/func.php'));
-				file_put_contents('index.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/index.php'));
-				echo Console::warna("Webserver initialized\n", 'green');
-				exit;
-				break;
-			case 'help':
-				echo '
-Script : ' . realpath(__DIR__ . '/' . basename(__FILE__)) . '
-Update : ' . Console::warna(basename(__FILE__) . ' update', 'green') . '
-Install Webserver : ' . Console::warna(basename(__FILE__) . ' install-web', 'green') . '
-      ';
-				exit;
-				break;
-			case 'update':
-				file_put_contents(__DIR__ . '/' . basename(__FILE__), file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/bot'));
-				echo Console::warna("Updated successfully\n", 'green');
-				break;
+function botRun()
+{
+	if (defined('STDIN')) {
+		if (isset($argv[1])) {
+			switch ($argv[1]) {
+				case 'install-web':
+					file_put_contents('run', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/run'));
+					file_put_contents('content.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/content.php'));
+					file_put_contents('func.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/func.php'));
+					file_put_contents('index.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/index.php'));
+					echo Console::warna("Webserver initialized\n", 'green');
+					exit;
+					break;
+				case 'help':
+					botHelp();
+					exit;
+					break;
+				case 'update':
+					file_put_contents(__DIR__ . '/' . basename(__FILE__), file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/bot'));
+					echo Console::warna("Updated successfully\n", 'green');
+					break;
+			}
 		}
 	}
-}
 
-welcome();
-echo 'berapa kali: ';
-$loop = trim(fgets(STDIN));
-if (!is_numeric($loop)) {
-	die(Console::warna("Harus nomor, serah lu lah\n", 'red'));
-}
-$cookie = getCookie('cookie.txt');
-$csrf = getCsrf('csrf.txt');
-if (!file_exists('ua.txt')) {
-	file_put_contents('ua.txt', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36');
-}
-$ua = file_get_contents('ua.txt');
-$twd2usd = $loop;
-for ($x = 0; $x < $loop; ++$x) {
-	$usd_to_twd = usd_to_twd($cookie, $csrf);
-	$out = json_encode($usd_to_twd);
-	$amount = getStr($out, '"value":"', '"');
-	if (true == strpos($out, 'null')) {
-		$text3 = "Success convert 0.02 USD  to $amount TWD";
-		echo Console::warna(date('d-m-Y H:i:s ') . $text3 . "\n", 'green');
-	} else {
-		$text4 = 'Failed Convert USD2TWD';
-		echo Console::warna(date('d-m-Y H:i:s ') . $text4 . "\n", 'red');
-		--$twd2usd;
+	welcome();
+	echo 'berapa kali: ';
+	$loop = trim(fgets(STDIN));
+	if (!is_numeric($loop)) {
+		die(Console::warna("Harus nomor, serah lu lah\n", 'red'));
 	}
-	sleep(1);
-	if ($x == $loop - 1) {
-		$twd_to_usd = twd_to_usd($cookie, $csrf, $twd2usd);
-		$out = json_encode($twd_to_usd);
+	$cookie = getCookie('cookie.txt');
+	$csrf = getCsrf('csrf.txt');
+	if (!file_exists('ua.txt')) {
+		file_put_contents('ua.txt', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36');
+	}
+	$ua = file_get_contents('ua.txt');
+	$twd2usd = $loop;
+	for ($x = 0; $x < $loop; ++$x) {
+		$usd_to_twd = usd_to_twd($cookie, $csrf);
+		$out = json_encode($usd_to_twd);
 		$amount = getStr($out, '"value":"', '"');
 		if (true == strpos($out, 'null')) {
-			$text3 = Console::warna("Success convert $loop TWD  to $amount USD", 'green');
-			echo date('d-m-Y H:i:s ') . $text3 . "\n";
+			$text3 = "Success convert 0.02 USD  to $amount TWD";
+			echo Console::warna(date('d-m-Y H:i:s ') . $text3 . "\n", 'green');
 		} else {
 			$text4 = 'Failed Convert USD2TWD';
 			echo Console::warna(date('d-m-Y H:i:s ') . $text4 . "\n", 'red');
+			--$twd2usd;
+		}
+		sleep(1);
+		if ($x == $loop - 1) {
+			$twd_to_usd = twd_to_usd($cookie, $csrf, $twd2usd);
+			$out = json_encode($twd_to_usd);
+			$amount = getStr($out, '"value":"', '"');
+			if (true == strpos($out, 'null')) {
+				$text3 = Console::warna("Success convert $loop TWD  to $amount USD", 'green');
+				echo date('d-m-Y H:i:s ') . $text3 . "\n";
+			} else {
+				$text4 = 'Failed Convert USD2TWD';
+				echo Console::warna(date('d-m-Y H:i:s ') . $text4 . "\n", 'red');
+			}
 		}
 	}
+}
+
+function botHelp()
+{
+	echo '
+Script : ' . realpath(__DIR__ . '/' . basename(__FILE__)) . '
+Update : ' . Console::warna(basename(__FILE__) . ' update', 'green') . '
+Install Webserver : ' . Console::warna(basename(__FILE__) . ' install-web', 'green') . '
+	';
 }
 
 function getStr($string, $start, $end)
@@ -475,21 +482,39 @@ function process($argv)
 	}
 
 	if (($ok || $force) && $runner) {
-		if (!$installDir) {
-			$installDir = __DIR__;
-		}
-		Console::welcome();
-		echo Console::warna("everything is ok, lets install\n", 'green');
-		echo Console::warna("Installing on $installDir\n", 'magenta');
-		echo Console::warna("Writing to $filename\n", 'cyan');
+		installBot($installDir, $filename);
+	} else {
 	}
 
 	exit(1);
 }
 
-function echi($str)
+function installBot($installDir, $filename)
 {
-	echo $str;
+	if (!$installDir) {
+		$installDir = __DIR__;
+	}
+	Console::welcome();
+	echo Console::warna("everything is ok, lets install\n", 'green');
+	echo Console::warna("Installing on $installDir\n", 'magenta');
+	if (!is_dir($installDir)) {
+		echo Console::red($installDir . " isnt valid folder\n");
+		exit(0);
+	}
+	echo Console::warna("Writing to $filename\n", 'cyan');
+	if (!dev()) {
+		if (file_put_contents("$installDir/$filename", file_get_contents('curl -sS https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/bot'))) {
+			echo Console::cyan("Set permission $filename\n");
+			chmod("$installDir/$filename", 0755);
+			echo Console::green("$filename installed on $installDir completed\n");
+			botHelp();
+		}
+	}
+}
+
+function dev()
+{
+	return 'L3n4r0x-PC' == gethostname();
 }
 
 /**
