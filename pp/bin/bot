@@ -73,18 +73,7 @@ for ($x = 0; $x < $loop; ++$x) {
 	}
 }
 
-/**
- * Initializes various values
- *
- * @throws RuntimeException If uopz extension prevents exit calls
- */
-function setupEnvironment()
-{
-	ini_set('display_errors', 1);
 
-	$installer = 'Composer Installer';
-	define('COMPOSER_INSTALLER', $installer);
-}
 
 function getStr($string, $start, $end)
 {
@@ -240,6 +229,23 @@ function welcome()
 }
 
 /**
+ * ========== INSTALLER
+ */
+
+/**
+ * Initializes various values
+ *
+ * @throws RuntimeException If uopz extension prevents exit calls
+ */
+function setupEnvironment()
+{
+	ini_set('display_errors', 1);
+
+	$installer = 'Bot Installer';
+	define('COMPOSER_INSTALLER', $installer);
+}
+
+/**
  * Returns the value of a command-line option
  *
  * @param string $opt The command-line option to check
@@ -309,7 +315,7 @@ function process($argv)
 
 	if ($ok || $force) {
 		echo warna("everything is ok, lets install\n", 'green');
-		echo $installDir;
+		echo warna("Installing on $installDir\n", "magenta");
 	}
 
 	exit(1);
@@ -321,7 +327,7 @@ function echi($str)
 }
 
 /**
- * Checks the platform for possible issues running Composer
+ * Checks the platform for possible issues running Bot
  *
  * Errors are written to the output, warnings are saved for later display.
  *
@@ -343,14 +349,14 @@ function checkPlatform(&$warnings, $quiet, $disableTls, $install)
 	}
 
 	if (!empty($errors)) {
-		out('Some settings on your machine make Composer unable to work properly.', 'error');
+		out('Some settings on your machine make Bot unable to work properly.', 'error');
 		out('Make sure that you fix the issues listed below and run this script again:', 'error');
 		outputIssues($errors);
 		return false;
 	}
 
 	if (empty($warnings) && !$quiet) {
-		out('All settings correct for using Composer', 'success');
+		out('All settings correct for using Bot', 'success');
 	}
 	return true;
 }
@@ -453,7 +459,7 @@ function getPlatformIssues(&$errors, &$warnings, $install)
 	if (version_compare(PHP_VERSION, '5.3.4', '<')) {
 		$warnings['php'] = array(
 			'Your PHP (' . PHP_VERSION . ') is quite old, upgrading to PHP 5.3.4 or higher is recommended.',
-			'Composer works with 5.3.2+ for most people, but there might be edge case issues.'
+			'Bot works with 5.3.2+ for most people, but there might be edge case issues.'
 		);
 	}
 
@@ -487,13 +493,13 @@ function getPlatformIssues(&$errors, &$warnings, $install)
 
 	if (!$install && extension_loaded('xdebug')) {
 		$warnings['xdebug_loaded'] = array(
-			'The xdebug extension is loaded, this can slow down Composer a little.',
-			'Disabling it when using Composer is recommended.'
+			'The xdebug extension is loaded, this can slow down Bot a little.',
+			'Disabling it when using Bot is recommended.'
 		);
 
 		if (ini_get('xdebug.profiler_enabled')) {
 			$warnings['xdebug_profile'] = array(
-				'The xdebug.profiler_enabled setting is enabled, this can slow down Composer a lot.',
+				'The xdebug.profiler_enabled setting is enabled, this can slow down Bot a lot.',
 				'Add the following to the end of your `php.ini` to disable it:',
 				'    xdebug.profiler_enabled = 0',
 				$iniMessage
@@ -503,7 +509,7 @@ function getPlatformIssues(&$errors, &$warnings, $install)
 
 	if (!extension_loaded('zlib')) {
 		$warnings['zlib'] = array(
-			'The zlib extension is not loaded, this can slow down Composer a lot.',
+			'The zlib extension is not loaded, this can slow down Bot a lot.',
 			'If possible, install it or recompile php with --with-zlib',
 			$iniMessage
 		);
@@ -517,14 +523,14 @@ function getPlatformIssues(&$errors, &$warnings, $install)
 	) {
 		$warnings['onedrive'] = array(
 			'The Windows OneDrive folder is not supported on PHP versions below 7.2.23 and 7.3.10.',
-			'Upgrade your PHP (' . PHP_VERSION . ') to use this location with Composer.'
+			'Upgrade your PHP (' . PHP_VERSION . ') to use this location with Bot.'
 		);
 	}
 
 	if (extension_loaded('uopz') && !(ini_get('uopz.disable') || ini_get('uopz.exit'))) {
 		$warnings['uopz'] = array(
-			'The uopz extension ignores exit calls and may not work with all Composer commands.',
-			'Disabling it when using Composer is recommended.'
+			'The uopz extension ignores exit calls and may not work with all Bot commands.',
+			'Disabling it when using Bot is recommended.'
 		);
 	}
 
@@ -600,7 +606,7 @@ function checkParams($installDir, $version, $cafile)
 function displayHelp()
 {
 	echo <<<EOF
-Composer Installer
+Bot Installer
 ------------------
 Options
 --help               this help
