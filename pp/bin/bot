@@ -3,7 +3,7 @@
 //error_reporting(0);
 
 setupEnvironment();
-process(is_array($argv) ? $argv : array());
+process(is_array($argv) ? $argv : []);
 
 if (defined('STDIN')) {
 	if (isset($argv[1])) {
@@ -13,15 +13,15 @@ if (defined('STDIN')) {
 				file_put_contents('content.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/content.php'));
 				file_put_contents('func.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/func.php'));
 				file_put_contents('index.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/index.php'));
-				echo Console::warna("Webserver initialized\n", "green");
+				echo Console::warna("Webserver initialized\n", 'green');
 				exit;
 				break;
 			case 'help':
-				echo "
-Script : " . realpath(__DIR__ . '/' . basename(__FILE__)) . "
-Update : " . Console::warna(basename(__FILE__) . " update", "green") . "
-Install Webserver : " . Console::warna(basename(__FILE__) . " install-web", "green") . "
-      ";
+				echo '
+Script : ' . realpath(__DIR__ . '/' . basename(__FILE__)) . '
+Update : ' . Console::warna(basename(__FILE__) . ' update', 'green') . '
+Install Webserver : ' . Console::warna(basename(__FILE__) . ' install-web', 'green') . '
+      ';
 				exit;
 				break;
 			case 'update':
@@ -36,7 +36,7 @@ welcome();
 echo 'berapa kali: ';
 $loop = trim(fgets(STDIN));
 if (!is_numeric($loop)) {
-	die(Console::warna("Harus nomor, serah lu lah\n", "red"));
+	die(Console::warna("Harus nomor, serah lu lah\n", 'red'));
 }
 $cookie = getCookie('cookie.txt');
 $csrf = getCsrf('csrf.txt');
@@ -193,7 +193,6 @@ function isJson($string)
 	return JSON_ERROR_NONE == json_last_error();
 }
 
-
 function welcome()
 {
 	Console::welcome();
@@ -239,7 +238,7 @@ class Console
 		'red' => '12', 'white' => '15',
 		'pink' => '13', 'cyan' => '11',
 		'grey' => '8', 'lightgrey' => '7',
-		'yellow' => '14', 'blue' => '9'
+		'yellow' => '14', 'blue' => '9',
 	];
 
 	public static $options = [
@@ -254,7 +253,7 @@ class Console
 		self::$win = ('WIN' === strtoupper(substr(PHP_OS, 0, 3)));
 	}
 
-	static function welcome()
+	public static function welcome()
 	{
 		echo "\n\n";
 		echo "\033[36m###############################################\n#                  @⁨L3N4R0X  ⁩               #\n#                SHADOW FAMILY                #\n#        SEMOGA SELAMAT SAMPAI TUJUAN         #\n###############################################\n";
@@ -275,8 +274,12 @@ class Console
 		$list['CYAN'] = "\033[36m";
 		$list['WHITE'] = "\033[37m";
 		$list['RESET'] = "\033[39m";
-		if (!isset($list[$warna]) && isset(self::$foreground_colors[strtolower($warna)])) {
-			return call_user_func([__CLASS__, strtolower($warna)], $text);
+		if (!isset($list[$warna])) {
+			if (isset(self::$foreground_colors[strtolower($warna)])) {
+				return call_user_func([__CLASS__, strtolower($warna)], $text);
+			} else {
+				return $text;
+			}
 		}
 		$warna = $list[$warna];
 		$reset = $list['RESET'];
@@ -325,20 +328,20 @@ class Console
 	 *
 	 * @param string $func
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function isEnabled($func)
 	{
 		return is_callable($func) && false === stripos(ini_get('disable_functions'), $func);
 	}
+
 	/**
 	 * is mac ?
-	 *
-	 * @return void
 	 */
 	public static function ismac()
 	{
 		$user_agent = getenv('HTTP_USER_AGENT');
+
 		return false !== strpos($user_agent, 'Mac');
 	}
 
@@ -356,10 +359,10 @@ class Console
 		$printenv = shell_exec('printenv >nul 2>&1 && ( echo found ) || ( echo fail )');
 		$string = $args[0];
 		$colored_string = '';
-		if (self::$win && trim($printenv) == 'fail') {
+		if (self::$win && 'fail' == trim($printenv)) {
 			//Windows
 			return $string;
-		} elseif (!self::ismac() || trim($printenv) == 'found') {
+		} elseif (!self::ismac() || 'found' == trim($printenv)) {
 			// Linux
 			if (isset(self::$foreground_colors[$foreground_color])) {
 				$colored_string .= "\033[" . self::$foreground_colors[$foreground_color] . 'm';
@@ -400,14 +403,12 @@ class Console
 	}
 }
 
-
-
 /**
- * ========== INSTALLER
+ * ========== INSTALLER.
  */
 
 /**
- * Initializes various values
+ * Initializes various values.
  *
  * @throws RuntimeException If uopz extension prevents exit calls
  */
@@ -420,11 +421,11 @@ function setupEnvironment()
 }
 
 /**
- * Returns the value of a command-line option
+ * Returns the value of a command-line option.
  *
- * @param string $opt The command-line option to check
- * @param array $argv Command-line arguments
- * @param mixed $default Default value to be returned
+ * @param string $opt     The command-line option to check
+ * @param array  $argv    Command-line arguments
+ * @param mixed  $default Default value to be returned
  *
  * @return mixed The command-line value or the default
  */
@@ -446,10 +447,8 @@ function getOptValue($opt, $argv, $default)
 	return $default;
 }
 
-
-
 /**
- * Processes the installer
+ * Processes the installer.
  */
 function process($argv)
 {
@@ -461,16 +460,16 @@ function process($argv)
 		exit(0);
 	}
 
-	$check      = in_array('--check', $argv);
-	$help       = in_array('--help', $argv);
-	$force      = in_array('--force', $argv);
-	$quiet      = in_array('--quiet', $argv);
-	$channel    = in_array('--snapshot', $argv) ? 'snapshot' : (in_array('--preview', $argv) ? 'preview' : 'stable');
+	$check = in_array('--check', $argv);
+	$help = in_array('--help', $argv);
+	$force = in_array('--force', $argv);
+	$quiet = in_array('--quiet', $argv);
+	$channel = in_array('--snapshot', $argv) ? 'snapshot' : (in_array('--preview', $argv) ? 'preview' : 'stable');
 	$disableTls = in_array('--disable-tls', $argv);
 	$installDir = getOptValue('--install-dir', $argv, false);
-	$version    = getOptValue('--version', $argv, false);
-	$filename   = getOptValue('--filename', $argv, 'bot.phar');
-	$cafile     = getOptValue('--cafile', $argv, false);
+	$version = getOptValue('--version', $argv, false);
+	$filename = getOptValue('--filename', $argv, 'bot.phar');
+	$cafile = getOptValue('--cafile', $argv, false);
 
 	if (!checkParams($installDir, $version, $cafile)) {
 		exit(1);
@@ -488,9 +487,13 @@ function process($argv)
 	}
 
 	if ($ok || $force) {
+		if (!$installDir) {
+			$installDir = __DIR__;
+		}
+		Console::welcome();
 		echo Console::warna("everything is ok, lets install\n", 'green');
-		echo Console::warna("Installing on $installDir\n", "magenta");
-		echo Console::warna("Writing $filename\n", "purple");
+		echo Console::warna("Installing on $installDir\n", 'magenta');
+		echo Console::warna("Writing to $filename\n", 'cyan');
 	}
 
 	exit(1);
@@ -502,14 +505,14 @@ function echi($str)
 }
 
 /**
- * Checks the platform for possible issues running Bot
+ * Checks the platform for possible issues running Bot.
  *
  * Errors are written to the output, warnings are saved for later display.
  *
- * @param array $warnings Populated by method, to be shown later
- * @param bool $quiet Quiet mode
- * @param bool $disableTls Bypass tls
- * @param bool $install If we are installing, rather than diagnosing
+ * @param array $warnings   Populated by method, to be shown later
+ * @param bool  $quiet      Quiet mode
+ * @param bool  $disableTls Bypass tls
+ * @param bool  $install    If we are installing, rather than diagnosing
  *
  * @return bool True if there are no errors
  */
@@ -527,30 +530,30 @@ function checkPlatform(&$warnings, $quiet, $disableTls, $install)
 		out('Some settings on your machine make Bot unable to work properly.', 'error');
 		out('Make sure that you fix the issues listed below and run this script again:', 'error');
 		outputIssues($errors);
+
 		return false;
 	}
 
 	if (empty($warnings) && !$quiet) {
 		out('All settings correct for using Bot', 'success');
 	}
+
 	return true;
 }
 
-
-
 /**
- * Checks platform configuration for common incompatibility issues
+ * Checks platform configuration for common incompatibility issues.
  *
- * @param array $errors Populated by method
+ * @param array $errors   Populated by method
  * @param array $warnings Populated by method
- * @param bool $install If we are installing, rather than diagnosing
+ * @param bool  $install  If we are installing, rather than diagnosing
  *
  * @return bool If any errors or warnings have been found
  */
 function getPlatformIssues(&$errors, &$warnings, $install)
 {
-	$errors = array();
-	$warnings = array();
+	$errors = [];
+	$warnings = [];
 
 	if ($iniPath = php_ini_loaded_file()) {
 		$iniMessage = PHP_EOL . 'The php.ini used by your command-line PHP is: ' . $iniPath;
@@ -560,89 +563,89 @@ function getPlatformIssues(&$errors, &$warnings, $install)
 	$iniMessage .= PHP_EOL . 'If you can not modify the ini file, you can also run `php -d option=value` to modify ini values on the fly. You can use -d multiple times.';
 
 	if (ini_get('detect_unicode')) {
-		$errors['unicode'] = array(
+		$errors['unicode'] = [
 			'The detect_unicode setting must be disabled.',
 			'Add the following to the end of your `php.ini`:',
 			'    detect_unicode = Off',
-			$iniMessage
-		);
+			$iniMessage,
+		];
 	}
 
 	if (extension_loaded('suhosin')) {
 		$suhosin = ini_get('suhosin.executor.include.whitelist');
 		$suhosinBlacklist = ini_get('suhosin.executor.include.blacklist');
 		if (false === stripos($suhosin, 'phar') && (!$suhosinBlacklist || false !== stripos($suhosinBlacklist, 'phar'))) {
-			$errors['suhosin'] = array(
+			$errors['suhosin'] = [
 				'The suhosin.executor.include.whitelist setting is incorrect.',
 				'Add the following to the end of your `php.ini` or suhosin.ini (Example path [for Debian]: /etc/php5/cli/conf.d/suhosin.ini):',
 				'    suhosin.executor.include.whitelist = phar ' . $suhosin,
-				$iniMessage
-			);
+				$iniMessage,
+			];
 		}
 	}
 
 	if (!function_exists('json_decode')) {
-		$errors['json'] = array(
+		$errors['json'] = [
 			'The json extension is missing.',
-			'Install it or recompile php without --disable-json'
-		);
+			'Install it or recompile php without --disable-json',
+		];
 	}
 
 	if (!extension_loaded('Phar')) {
-		$errors['phar'] = array(
+		$errors['phar'] = [
 			'The phar extension is missing.',
-			'Install it or recompile php without --disable-phar'
-		);
+			'Install it or recompile php without --disable-phar',
+		];
 	}
 
 	if (!extension_loaded('filter')) {
-		$errors['filter'] = array(
+		$errors['filter'] = [
 			'The filter extension is missing.',
-			'Install it or recompile php without --disable-filter'
-		);
+			'Install it or recompile php without --disable-filter',
+		];
 	}
 
 	if (!extension_loaded('hash')) {
-		$errors['hash'] = array(
+		$errors['hash'] = [
 			'The hash extension is missing.',
-			'Install it or recompile php without --disable-hash'
-		);
+			'Install it or recompile php without --disable-hash',
+		];
 	}
 
 	if (!extension_loaded('iconv') && !extension_loaded('mbstring')) {
-		$errors['iconv_mbstring'] = array(
+		$errors['iconv_mbstring'] = [
 			'The iconv OR mbstring extension is required and both are missing.',
-			'Install either of them or recompile php without --disable-iconv'
-		);
+			'Install either of them or recompile php without --disable-iconv',
+		];
 	}
 
 	if (!ini_get('allow_url_fopen')) {
-		$errors['allow_url_fopen'] = array(
+		$errors['allow_url_fopen'] = [
 			'The allow_url_fopen setting is incorrect.',
 			'Add the following to the end of your `php.ini`:',
 			'    allow_url_fopen = On',
-			$iniMessage
-		);
+			$iniMessage,
+		];
 	}
 
 	if (version_compare(PHP_VERSION, '5.3.2', '<')) {
-		$errors['php'] = array(
-			'Your PHP (' . PHP_VERSION . ') is too old, you must upgrade to PHP 5.3.2 or higher.'
-		);
+		$errors['php'] = [
+			'Your PHP (' . PHP_VERSION . ') is too old, you must upgrade to PHP 5.3.2 or higher.',
+		];
 	}
 
 	if (version_compare(PHP_VERSION, '5.3.4', '<')) {
-		$warnings['php'] = array(
+		$warnings['php'] = [
 			'Your PHP (' . PHP_VERSION . ') is quite old, upgrading to PHP 5.3.4 or higher is recommended.',
-			'Bot works with 5.3.2+ for most people, but there might be edge case issues.'
-		);
+			'Bot works with 5.3.2+ for most people, but there might be edge case issues.',
+		];
 	}
 
 	if (!extension_loaded('openssl')) {
-		$warnings['openssl'] = array(
+		$warnings['openssl'] = [
 			'The openssl extension is missing, which means that secure HTTPS transfers are impossible.',
-			'If possible you should enable it or recompile php with --with-openssl'
-		);
+			'If possible you should enable it or recompile php with --with-openssl',
+		];
 	}
 
 	if (extension_loaded('openssl') && OPENSSL_VERSION_NUMBER < 0x1000100f) {
@@ -651,43 +654,43 @@ function getPlatformIssues(&$errors, &$warnings, $install)
 		$opensslVersion = substr($opensslVersion, 0, strpos($opensslVersion, ' '));
 		$opensslVersion = $opensslVersion ? $opensslVersion : OPENSSL_VERSION_TEXT;
 
-		$warnings['openssl_version'] = array(
+		$warnings['openssl_version'] = [
 			'The OpenSSL library (' . $opensslVersion . ') used by PHP does not support TLSv1.2 or TLSv1.1.',
-			'If possible you should upgrade OpenSSL to version 1.0.1 or above.'
-		);
+			'If possible you should upgrade OpenSSL to version 1.0.1 or above.',
+		];
 	}
 
 	if (!defined('HHVM_VERSION') && !extension_loaded('apcu') && ini_get('apc.enable_cli')) {
-		$warnings['apc_cli'] = array(
+		$warnings['apc_cli'] = [
 			'The apc.enable_cli setting is incorrect.',
 			'Add the following to the end of your `php.ini`:',
 			'    apc.enable_cli = Off',
-			$iniMessage
-		);
+			$iniMessage,
+		];
 	}
 
 	if (!$install && extension_loaded('xdebug')) {
-		$warnings['xdebug_loaded'] = array(
+		$warnings['xdebug_loaded'] = [
 			'The xdebug extension is loaded, this can slow down Bot a little.',
-			'Disabling it when using Bot is recommended.'
-		);
+			'Disabling it when using Bot is recommended.',
+		];
 
 		if (ini_get('xdebug.profiler_enabled')) {
-			$warnings['xdebug_profile'] = array(
+			$warnings['xdebug_profile'] = [
 				'The xdebug.profiler_enabled setting is enabled, this can slow down Bot a lot.',
 				'Add the following to the end of your `php.ini` to disable it:',
 				'    xdebug.profiler_enabled = 0',
-				$iniMessage
-			);
+				$iniMessage,
+			];
 		}
 	}
 
 	if (!extension_loaded('zlib')) {
-		$warnings['zlib'] = array(
+		$warnings['zlib'] = [
 			'The zlib extension is not loaded, this can slow down Bot a lot.',
 			'If possible, install it or recompile php with --with-zlib',
-			$iniMessage
-		);
+			$iniMessage,
+		];
 	}
 
 	if (
@@ -696,17 +699,17 @@ function getPlatformIssues(&$errors, &$warnings, $install)
 			|| (version_compare(PHP_VERSION, '7.3.0', '>=')
 				&& version_compare(PHP_VERSION, '7.3.10', '<')))
 	) {
-		$warnings['onedrive'] = array(
+		$warnings['onedrive'] = [
 			'The Windows OneDrive folder is not supported on PHP versions below 7.2.23 and 7.3.10.',
-			'Upgrade your PHP (' . PHP_VERSION . ') to use this location with Bot.'
-		);
+			'Upgrade your PHP (' . PHP_VERSION . ') to use this location with Bot.',
+		];
 	}
 
 	if (extension_loaded('uopz') && !(ini_get('uopz.disable') || ini_get('uopz.exit'))) {
-		$warnings['uopz'] = array(
+		$warnings['uopz'] = [
 			'The uopz extension ignores exit calls and may not work with all Bot commands.',
-			'Disabling it when using Bot is recommended.'
-		);
+			'Disabling it when using Bot is recommended.',
+		];
 	}
 
 	ob_start();
@@ -716,18 +719,18 @@ function getPlatformIssues(&$errors, &$warnings, $install)
 		$configure = $match[1];
 
 		if (false !== strpos($configure, '--enable-sigchild')) {
-			$warnings['sigchild'] = array(
+			$warnings['sigchild'] = [
 				'PHP was compiled with --enable-sigchild which can cause issues on some platforms.',
 				'Recompile it without this flag if possible, see also:',
-				'    https://bugs.php.net/bug.php?id=22999'
-			);
+				'    https://bugs.php.net/bug.php?id=22999',
+			];
 		}
 
 		if (false !== strpos($configure, '--with-curlwrappers')) {
-			$warnings['curlwrappers'] = array(
+			$warnings['curlwrappers'] = [
 				'PHP was compiled with --with-curlwrappers which will cause issues with HTTP authentication and GitHub.',
-				'Recompile it without this flag if possible'
-			);
+				'Recompile it without this flag if possible',
+			];
 		}
 	}
 
@@ -743,14 +746,12 @@ function getPlatformIssues(&$errors, &$warnings, $install)
 	return !empty($errors) || !empty($warnings);
 }
 
-
-
 /**
- * Checks that user-supplied params are valid
+ * Checks that user-supplied params are valid.
  *
  * @param mixed $installDir The required istallation directory
- * @param mixed $version The required bot version to install
- * @param mixed $cafile Certificate Authority file
+ * @param mixed $version    The required bot version to install
+ * @param mixed $cafile     Certificate Authority file
  *
  * @return bool True if the supplied params are okay
  */
@@ -772,11 +773,12 @@ function checkParams($installDir, $version, $cafile)
 		out("The defined Certificate Authority (CA) cert file ({$cafile}) does not exist or is not readable.", 'info');
 		$result = false;
 	}
+
 	return $result;
 }
 
 /**
- * Displays the help
+ * Displays the help.
  */
 function displayHelp()
 {
@@ -801,9 +803,8 @@ Options
 EOF;
 }
 
-
 /**
- * Sets the USE_ANSI define for colorizing output
+ * Sets the USE_ANSI define for colorizing output.
  *
  * @param array $argv Command-line arguments
  */
