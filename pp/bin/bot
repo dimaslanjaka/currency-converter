@@ -503,7 +503,7 @@ function installBot($installDir, $filename)
 	}
 	echo Console::warna("Writing to $filename\n", 'cyan');
 	if (!dev()) {
-		if (file_put_contents("$installDir/$filename", file_get_contents('curl -sS https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/bot'))) {
+		if (file_put_contents("$installDir/$filename", file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/bot'))) {
 			echo Console::cyan("Set permission $filename\n");
 			chmod("$installDir/$filename", 0755);
 			echo Console::green("$filename installed on $installDir completed\n");
