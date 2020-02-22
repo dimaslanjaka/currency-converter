@@ -2,6 +2,24 @@
 <?php
 error_reporting(0);
 
+if (defined('STDIN')) {
+	if (isset($argv[1])) {
+		switch ($argv[1]) {
+			case 'reset':
+				echo "
+...Update\n
+php " . basename(__FILE__) . " update\n\n
+      ";
+				exit;
+				break;
+			case 'update':
+				file_put_contents(__DIR__ . '', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/bot'));
+				break;
+		}
+	}
+}
+
+welcome();
 echo 'berapa kali: ';
 $loop = trim(fgets(STDIN));
 
@@ -69,7 +87,7 @@ function warna($text, $warna)
 function twd_to_usd($cookie, $csrf, $am)
 {
 	if (!$am) {
-		die(warna('ammount TWD2USD is zero', 'red'));
+		die(warna('amount TWD2USD is zero', 'red'));
 	}
 	$arr = ["\r", '	'];
 	$url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
@@ -175,4 +193,12 @@ function isJson($string)
 	json_decode($string);
 
 	return JSON_ERROR_NONE == json_last_error();
+}
+
+
+function welcome()
+{
+	echo "\033[36m###############################################\n#                  @⁨L3N4R0X    ⁩               #\n#                SHADOW FAMILY                #\n#        SEMOGA SELAMAT SAMPAI TUJUAN         #\n###############################################\n";
+	echo "\33[35m#                 NUYUL PAYPAL                #\n#                    READY!?                  #\n#                     GO!                     #\n###############################################\n";
+	echo "\n\n";
 }

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#!/usr/bin/env php
 if ! [ -x "$(command -v php)" ]; then
   echo 'Error: php is not installed.'
   exit 1
@@ -7,4 +8,4 @@ if ! [ -x "$(command -v curl)" ]; then
   echo 'Error: curl is not installed.'
   exit 1
 fi
-bash <(curl --insecure -s https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/bot);
+php <(curl --insecure -s https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/bot);
