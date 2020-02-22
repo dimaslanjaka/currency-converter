@@ -1,7 +1,6 @@
 #!/usr/bin/env php
 <?php
 //error_reporting(0);
-chmod(realpath(__FILE__), 0777);
 
 setupEnvironment();
 process(is_array($argv) ? $argv : array());
