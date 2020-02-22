@@ -7,12 +7,13 @@ if (defined('STDIN')) {
 		switch ($argv[1]) {
 			case 'help':
 				echo "
-Update : " . warna(basename(__FILE__) . " update", "green") . "\n\n
+Script : " . realpath(__DIR__ . '/' . basename(__FILE__)) . "
+Update : " . warna(basename(__FILE__) . " update", "green") . "
       ";
 				exit;
 				break;
 			case 'update':
-				file_put_contents(__DIR__ . '', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/bot'));
+				file_put_contents(__DIR__ . '/' . basename(__FILE__), file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/bot'));
 				break;
 		}
 	}
