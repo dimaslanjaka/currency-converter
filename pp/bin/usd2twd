@@ -1,24 +1,10 @@
-#!/data/data/com.termux/files/usr/bin/sh
-command -v wget >/dev/null 2>&1 || {
-apt install wget -y;
-}
-command -v php >/dev/null 2>&1 || {
-apt install php -y;
-}
-
-
-if command -v wget >/dev/null 2>&1; then
-if [ ! -f bot.php ] || [ test `find "bot.php" -mmin +120` ]; then
-wget -q -O bot.php  https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bot.php
-#chmod 777 bot.php
+#!/usr/bin/env bash
+if ! [ -x "$(command -v php)" ]; then
+  echo 'Error: php is not installed.'
+  exit 1
 fi
+if ! [ -x "$(command -v curl)" ]; then
+  echo 'Error: curl is not installed.'
+  exit 1
 fi
-
-if [[ -f "cookie.txt" && -f "csrf.txt" ]]; then
-#chmod 777 cookie.txt
-#chmod 777 csrf.txt
-php bot.php
-else
-echo "" > cookie.txt;
-echo "" > csrf.txt
-fi
+bash <(curl --insecure -s https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/bot);
