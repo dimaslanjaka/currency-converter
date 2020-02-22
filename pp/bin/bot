@@ -92,7 +92,7 @@ function twd_to_usd($cookie, $csrf, $am)
 {
 	global $ua;
 	if (!$am) {
-		die(Console::warna('amount TWD2USD is zero', 'red'));
+		die(Console::warna("amount TWD2USD is zero\n", 'red'));
 	}
 	$arr = ["\r", '	'];
 	$url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
