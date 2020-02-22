@@ -449,6 +449,13 @@ function process($argv)
 	ini_set('display_errors', 1);
 	// Determine ANSI output from --ansi and --no-ansi flags
 	setUseAnsi($argv);
+	if (file_exists('nul')) {
+		@unlink('nul');
+	}
+	$fullPath = __DIR__;
+	if ($fullPath && is_dir($fullPath)) {
+		array_map('unlink', glob("$fullPath*.log"));
+	}
 
 	if (in_array('--help', $argv)) {
 		displayHelp();
@@ -556,15 +563,15 @@ function checkPlatform(&$warnings, $quiet, $disableTls, $install)
 }
 
 /**
- * colorize output
+ * colorize output.
  */
 function out($text, $color = null, $newLine = true)
 {
-	$styles = array(
+	$styles = [
 		'success' => "\033[0;32m%s\033[0m",
 		'error' => "\033[31;31m%s\033[0m",
-		'info' => "\033[33;33m%s\033[0m"
-	);
+		'info' => "\033[33;33m%s\033[0m",
+	];
 
 	$format = '%s';
 
