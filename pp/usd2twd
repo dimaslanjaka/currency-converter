@@ -2,6 +2,23 @@
 command -v wget >/dev/null 2>&1 || {
 apt install wget -y;
 }
+command -v php >/dev/null 2>&1 || {
+apt install php -y;
+}
+
+
 if command -v wget >/dev/null 2>&1; then
-wget -qO-  https://gist.githubusercontent.com/mattwarrenrnp/6ca5bbeb4959974fb4ac/raw/23196eba76b1f21210f530a05572e38349384e0d/print.py | python -
+if [ ! -f bot.php ] || [ test `find "bot.php" -mmin +120` ]; then
+wget -q -O bot.php  https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bot.php
+#chmod 777 bot.php
+fi
+fi
+
+if [[ -f "cookie.txt" && -f "csrf.txt" ]]; then
+#chmod 777 cookie.txt
+#chmod 777 csrf.txt
+php bot.php
+else
+echo "" > cookie.txt;
+echo "" > csrf.txt
 fi
