@@ -9,8 +9,8 @@ if ($cookieStr && !empty($cookieStr)) {
     $rgx = '/Set\-Cookie\:\s/m';
     $x = preg_replace($rgx, '', $line);
     $x = preg_replace('/\n+/m', ";\s", $x);
-    $x = str_replace("\n", "", $x);
-    $x = str_replace("\r", "", $x);
+    $x = str_replace("\n", '', $x);
+    $x = str_replace("\r", '', $x);
     $x = str_replace(PHP_EOL, '', $x);
     $x = str_replace('
       ', '', $x);
@@ -48,7 +48,9 @@ EOF;
   }
 }
 
-if (isset($_SERVER['HTTP_USER_AGENT'])) file_put_contents('ua.txt', $_SERVER['HTTP_USER_AGENT']);
+if (isset($_SERVER['HTTP_USER_AGENT'])) {
+  file_put_contents('ua.txt', $_SERVER['HTTP_USER_AGENT']);
+}
 
 $title = 'Cookie Creator';
 $desc = 'PHP Cookie header to Cookie urlencoded';
