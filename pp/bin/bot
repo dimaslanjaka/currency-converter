@@ -516,7 +516,7 @@ function installBot($installDir, $filename)
 			echo Console::cyan("Set permission $filename\n");
 			chmod("$installDir/$filename", 0755);
 			echo Console::green("$filename installed on $installDir completed\n");
-			botHelp();
+			botHelp($filename);
 		}
 	}
 }
