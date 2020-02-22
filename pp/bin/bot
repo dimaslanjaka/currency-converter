@@ -9,6 +9,9 @@ if (defined('STDIN')) {
 		switch ($argv[1]) {
 			case 'install-web':
 				file_put_contents('run', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/run'));
+				file_put_contents('content.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/content.php'));
+				file_put_contents('func.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/func.php'));
+				file_put_contents('index.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/index.php'));
 				echo warna("Webserver initialized\n", "green");
 				exit;
 				break;
