@@ -35,10 +35,6 @@ function botRun($argv)
 		}
 		$cookie = getCookie('cookie.txt');
 		$csrf = getCsrf('csrf.txt');
-		if (!file_exists('ua.txt')) {
-			file_put_contents('ua.txt', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36');
-		}
-		$ua = file_get_contents('ua.txt');
 		$twd2usd = $loop;
 		for ($x = 0; $x < $loop; ++$x) {
 			$usd_to_twd = usd_to_twd($cookie, $csrf);
@@ -88,9 +84,17 @@ function getStr($string, $start, $end)
 	return $str[0];
 }
 
+function useragent()
+{
+	if (!file_exists('ua.txt')) {
+		file_put_contents('ua.txt', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36');
+	}
+	return file_get_contents('ua.txt');
+}
+
 function twd_to_usd($cookie, $csrf, $am)
 {
-	global $ua;
+	$ua = useragent();
 	if (!$am) {
 		die(Console::warna("amount TWD2USD is zero\n", 'red'));
 	}
@@ -113,7 +117,7 @@ function twd_to_usd($cookie, $csrf, $am)
 }
 function usd_to_twd($cookie, $csrf)
 {
-	global $ua;
+	$ua = useragent();
 	$arr = ["\r", '	'];
 	$url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
 	$h = explode("\n", str_replace($arr, '', "Cookie: $cookie
