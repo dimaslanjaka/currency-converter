@@ -23,6 +23,7 @@ Install Webserver : " . warna(basename(__FILE__) . " install-web", "green") . "
 				break;
 			case 'update':
 				file_put_contents(__DIR__ . '/' . basename(__FILE__), file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/bot'));
+				echo warna("Updated successfully\n", 'green');
 				break;
 		}
 	}
