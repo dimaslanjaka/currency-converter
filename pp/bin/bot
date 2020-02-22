@@ -4,7 +4,7 @@
 
 process(is_array($argv) ? $argv : []);
 
-function botRun()
+function botRun($argv)
 {
 	if (defined('STDIN')) {
 		if (isset($argv[1])) {
@@ -491,7 +491,7 @@ function process($argv)
 	if (($ok || $force) && $runner) {
 		installBot($installDir, $filename);
 	} else {
-		botRun();
+		botRun($argv);
 	}
 
 	exit(1);
