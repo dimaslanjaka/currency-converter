@@ -2,17 +2,21 @@
 <?php
 error_reporting(0);
 
-if (!file_exists('run')) {
-	file_put_contents('run', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/run'));
-}
+
 
 if (defined('STDIN')) {
 	if (isset($argv[1])) {
 		switch ($argv[1]) {
+			case 'install-web':
+				file_put_contents('run', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/run'));
+				echo warna("Webserver initialized\n", "green");
+				exit;
+				break;
 			case 'help':
 				echo "
 Script : " . realpath(__DIR__ . '/' . basename(__FILE__)) . "
 Update : " . warna(basename(__FILE__) . " update", "green") . "
+Install Webserver : " . warna(basename(__FILE__) . " install-web", "green") . "
       ";
 				exit;
 				break;
