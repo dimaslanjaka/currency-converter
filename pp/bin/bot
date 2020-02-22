@@ -75,7 +75,7 @@ function botHelp()
 Script : ' . realpath(__DIR__ . '/' . basename(__FILE__)) . '
 Update : ' . Console::warna(basename(__FILE__) . ' update', 'green') . '
 Install Webserver : ' . Console::warna(basename(__FILE__) . ' install-web', 'green') . '
-	';
+	' . "\n\n";
 }
 
 function getStr($string, $start, $end)
