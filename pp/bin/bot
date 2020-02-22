@@ -2,8 +2,6 @@
 <?php
 error_reporting(0);
 
-
-
 if (defined('STDIN')) {
 	if (isset($argv[1])) {
 		switch ($argv[1]) {
