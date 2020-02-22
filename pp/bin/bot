@@ -2,7 +2,7 @@
 <?php
 //error_reporting(0);
 
-setupEnvironment();
+
 process(is_array($argv) ? $argv : []);
 
 if (defined('STDIN')) {
@@ -203,7 +203,7 @@ function welcome()
  * Used to log strings with custom colors to console using php.
  *
  * Copyright (C) 2013 Sallar Kaboli <sallar.kaboli@gmail.com>
- * MIT Liencesed
+ * MIT Lincesed
  * http://opensource.org/licenses/MIT
  *
  * Original colored CLI output script:
@@ -408,19 +408,6 @@ class Console
  */
 
 /**
- * Initializes various values.
- *
- * @throws RuntimeException If uopz extension prevents exit calls
- */
-function setupEnvironment()
-{
-	ini_set('display_errors', 1);
-
-	$installer = 'Bot Installer';
-	define('COMPOSER_INSTALLER', $installer);
-}
-
-/**
  * Returns the value of a command-line option.
  *
  * @param string $opt     The command-line option to check
@@ -452,6 +439,7 @@ function getOptValue($opt, $argv, $default)
  */
 function process($argv)
 {
+	ini_set('display_errors', 1);
 	// Determine ANSI output from --ansi and --no-ansi flags
 	setUseAnsi($argv);
 
@@ -459,7 +447,7 @@ function process($argv)
 		displayHelp();
 		exit(0);
 	}
-
+	$runner = in_array('--install', $argv);
 	$check = in_array('--check', $argv);
 	$help = in_array('--help', $argv);
 	$force = in_array('--force', $argv);
@@ -486,7 +474,7 @@ function process($argv)
 		exit($ok ? 0 : 1);
 	}
 
-	if ($ok || $force) {
+	if (($ok || $force) && $runner) {
 		if (!$installDir) {
 			$installDir = __DIR__;
 		}
