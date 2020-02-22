@@ -29,7 +29,7 @@ function botRun()
 		}
 		welcome();
 		echo 'berapa kali: ';
-		$loop = trim(fgets('STDIN'));
+		$loop = trim(fgets(STDIN));
 		if (!is_numeric($loop)) {
 			die(Console::warna("Harus nomor, serah lu lah\n", 'red'));
 		}
