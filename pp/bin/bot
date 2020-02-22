@@ -484,6 +484,7 @@ function process($argv)
 	if (($ok || $force) && $runner) {
 		installBot($installDir, $filename);
 	} else {
+		botRun();
 	}
 
 	exit(1);
