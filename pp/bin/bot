@@ -5,10 +5,9 @@ error_reporting(0);
 if (defined('STDIN')) {
 	if (isset($argv[1])) {
 		switch ($argv[1]) {
-			case 'reset':
+			case 'help':
 				echo "
-...Update\n
-php " . basename(__FILE__) . " update\n\n
+Update : " . warna(basename(__FILE__) . " update", "green") . "\n\n
       ";
 				exit;
 				break;
