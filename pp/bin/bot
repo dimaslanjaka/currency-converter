@@ -14,20 +14,20 @@ if (defined('STDIN')) {
 				file_put_contents('content.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/content.php'));
 				file_put_contents('func.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/func.php'));
 				file_put_contents('index.php', file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/index.php'));
-				echo warna("Webserver initialized\n", "green");
+				echo Console::warna("Webserver initialized\n", "green");
 				exit;
 				break;
 			case 'help':
 				echo "
 Script : " . realpath(__DIR__ . '/' . basename(__FILE__)) . "
-Update : " . warna(basename(__FILE__) . " update", "green") . "
-Install Webserver : " . warna(basename(__FILE__) . " install-web", "green") . "
+Update : " . Console::warna(basename(__FILE__) . " update", "green") . "
+Install Webserver : " . Console::warna(basename(__FILE__) . " install-web", "green") . "
       ";
 				exit;
 				break;
 			case 'update':
 				file_put_contents(__DIR__ . '/' . basename(__FILE__), file_get_contents('https://raw.githubusercontent.com/dimaslanjaka/currency-converter/master/pp/bin/bot'));
-				echo warna("Updated successfully\n", 'green');
+				echo Console::warna("Updated successfully\n", 'green');
 				break;
 		}
 	}
@@ -37,7 +37,7 @@ welcome();
 echo 'berapa kali: ';
 $loop = trim(fgets(STDIN));
 if (!is_numeric($loop)) {
-	die(warna("Harus nomor, serah lu lah\n", "red"));
+	die(Console::warna("Harus nomor, serah lu lah\n", "red"));
 }
 $cookie = getCookie('cookie.txt');
 $csrf = getCsrf('csrf.txt');
@@ -52,10 +52,10 @@ for ($x = 0; $x < $loop; ++$x) {
 	$amount = getStr($out, '"value":"', '"');
 	if (true == strpos($out, 'null')) {
 		$text3 = "Success convert 0.02 USD  to $amount TWD";
-		echo warna(date('d-m-Y H:i:s ') . $text3 . "\n", 'green');
+		echo Console::warna(date('d-m-Y H:i:s ') . $text3 . "\n", 'green');
 	} else {
 		$text4 = 'Failed Convert USD2TWD';
-		echo warna(date('d-m-Y H:i:s ') . $text4 . "\n", 'red');
+		echo Console::warna(date('d-m-Y H:i:s ') . $text4 . "\n", 'red');
 		--$twd2usd;
 	}
 	sleep(1);
@@ -64,16 +64,14 @@ for ($x = 0; $x < $loop; ++$x) {
 		$out = json_encode($twd_to_usd);
 		$amount = getStr($out, '"value":"', '"');
 		if (true == strpos($out, 'null')) {
-			$text3 = warna("Success convert $loop TWD  to $amount USD", 'green');
+			$text3 = Console::warna("Success convert $loop TWD  to $amount USD", 'green');
 			echo date('d-m-Y H:i:s ') . $text3 . "\n";
 		} else {
 			$text4 = 'Failed Convert USD2TWD';
-			echo warna(date('d-m-Y H:i:s ') . $text4 . "\n", 'red');
+			echo Console::warna(date('d-m-Y H:i:s ') . $text4 . "\n", 'red');
 		}
 	}
 }
-
-
 
 function getStr($string, $start, $end)
 {
@@ -83,34 +81,11 @@ function getStr($string, $start, $end)
 	return $str[0];
 }
 
-function warna($text, $warna)
-{
-	$warna = strtoupper($warna);
-	$list = [];
-	$list['BLACK'] = "\033[30m";
-	$list['RED'] = "\033[31m";
-	$list['GREEN'] = "\033[32m";
-	$list['YELLOW'] = "\033[33m";
-	$list['BLUE'] = "\033[34m";
-	$list['MAGENTA'] = "\033[35m";
-	$list['CYAN'] = "\033[36m";
-	$list['WHITE'] = "\033[37m";
-	$list['RESET'] = "\033[39m";
-	$warna = $list[$warna];
-	$reset = $list['RESET'];
-	if (in_array($warna, $list)) {
-		$text = "$warna$text$reset";
-	} else {
-		$text = $text;
-	}
-
-	return $text;
-}
 function twd_to_usd($cookie, $csrf, $am)
 {
 	global $ua;
 	if (!$am) {
-		die(warna('amount TWD2USD is zero', 'red'));
+		die(Console::warna('amount TWD2USD is zero', 'red'));
 	}
 	$arr = ["\r", '	'];
 	$url = 'https://www.paypal.com/myaccount/money/api/currencies/transfer';
@@ -205,7 +180,7 @@ function getCsrf($file)
 	$str = file_get_contents($file);
 	if (isJson($str)) {
 		$j = (array) json_decode($str);
-		$str = isset($j['_csrf']) ? $j['_csrf'] : die(warna('CSRF invalid JSON format', 'red'));
+		$str = isset($j['_csrf']) ? $j['_csrf'] : die(Console::warna('CSRF invalid JSON format', 'red'));
 		file_put_contents($file, $str);
 	}
 
@@ -222,11 +197,211 @@ function isJson($string)
 
 function welcome()
 {
-	echo "\n\n";
-	echo "\033[36m###############################################\n#                  @⁨L3N4R0X  ⁩               #\n#                SHADOW FAMILY                #\n#        SEMOGA SELAMAT SAMPAI TUJUAN         #\n###############################################\n";
-	echo "\33[35m#                 NUYUL PAYPAL                #\n#                    READY!?                  #\n#                     GO!                     #\n###############################################\n";
-	echo "\n\n";
+	Console::welcome();
 }
+
+/**
+ * PHP Colored CLI
+ * Used to log strings with custom colors to console using php.
+ *
+ * Copyright (C) 2013 Sallar Kaboli <sallar.kaboli@gmail.com>
+ * MIT Liencesed
+ * http://opensource.org/licenses/MIT
+ *
+ * Original colored CLI output script:
+ * (C) Jesse Donat https://github.com/donatj
+ */
+class Console
+{
+	public static $foreground_colors = [
+		'bold' => '1',    'dim' => '2',
+		'black' => '0;30', 'dark_gray' => '1;30',
+		'blue' => '0;34', 'light_blue' => '1;34',
+		'green' => '0;32', 'light_green' => '1;32',
+		'cyan' => '0;36', 'light_cyan' => '1;36',
+		'red' => '0;31', 'light_red' => '1;31',
+		'purple' => '0;35', 'light_purple' => '1;35',
+		'brown' => '0;33', 'yellow' => '1;33',
+		'light_gray' => '0;37', 'white' => '1;37',
+		'normal' => '0;39',
+	];
+
+	public static $background_colors = [
+		'black' => '40',   'red' => '41',
+		'green' => '42',   'yellow' => '43',
+		'blue' => '44',   'magenta' => '45',
+		'cyan' => '46',   'light_gray' => '47',
+	];
+
+	public static $win;
+
+	public static $win_color = [
+		'black' => '0', 'green' => '10',
+		'red' => '12', 'white' => '15',
+		'pink' => '13', 'cyan' => '11',
+		'grey' => '8', 'lightgrey' => '7',
+		'yellow' => '14', 'blue' => '9'
+	];
+
+	public static $options = [
+		'underline' => '4',    'blink' => '5',
+		'reverse' => '7',    'hidden' => '8',
+	];
+
+	public static $EOF = "\n";
+
+	public function __construct()
+	{
+		self::$win = ('WIN' === strtoupper(substr(PHP_OS, 0, 3)));
+	}
+
+	static function welcome()
+	{
+		echo "\n\n";
+		echo "\033[36m###############################################\n#                  @⁨L3N4R0X  ⁩               #\n#                SHADOW FAMILY                #\n#        SEMOGA SELAMAT SAMPAI TUJUAN         #\n###############################################\n";
+		echo "\33[35m#                 NUYUL PAYPAL                #\n#                    READY!?                  #\n#                     GO!                     #\n###############################################\n";
+		echo "\n\n";
+	}
+
+	public static function warna($text, $warna)
+	{
+		$warna = strtoupper($warna);
+		$list = [];
+		$list['BLACK'] = "\033[30m";
+		$list['RED'] = "\033[31m";
+		$list['GREEN'] = "\033[32m";
+		$list['YELLOW'] = "\033[33m";
+		$list['BLUE'] = "\033[34m";
+		$list['MAGENTA'] = "\033[35m";
+		$list['CYAN'] = "\033[36m";
+		$list['WHITE'] = "\033[37m";
+		$list['RESET'] = "\033[39m";
+		if (!isset($list[$warna]) && isset(self::$foreground_colors[strtolower($warna)])) {
+			return call_user_func([__CLASS__, strtolower($warna)], $text);
+		}
+		$warna = $list[$warna];
+		$reset = $list['RESET'];
+		if (in_array($warna, $list)) {
+			$text = "$warna$text$reset";
+		} else {
+			$text = $text;
+		}
+
+		return $text;
+	}
+
+	/**
+	 * Logs a string to console.
+	 *
+	 * @param string $str        Input String
+	 * @param string $color      Text Color
+	 * @param bool   $newline    Append EOF?
+	 * @param [type] $background Background Color
+	 *
+	 * @return [type] Formatted output
+	 */
+	public static function log($str = '', $color = 'normal', $newline = true, $background_color = null)
+	{
+		if (is_bool($color)) {
+			$newline = $color;
+			$color = 'normal';
+		} elseif (is_string($color) && is_string($newline)) {
+			$background_color = $newline;
+			$newline = true;
+		}
+		$str = $newline ? $str . self::$EOF : $str;
+
+		echo self::$color($str, $background_color);
+	}
+
+	/**
+	 * Anything below this point (and its related variables):
+	 * Colored CLI Output is: (C) Jesse Donat
+	 * https://gist.github.com/donatj/1315354
+	 * -------------------------------------------------------------.
+	 */
+
+	/**
+	 * Check function enabled.
+	 *
+	 * @param string $func
+	 *
+	 * @return boolean
+	 */
+	public static function isEnabled($func)
+	{
+		return is_callable($func) && false === stripos(ini_get('disable_functions'), $func);
+	}
+	/**
+	 * is mac ?
+	 *
+	 * @return void
+	 */
+	public static function ismac()
+	{
+		$user_agent = getenv('HTTP_USER_AGENT');
+		return false !== strpos($user_agent, 'Mac');
+	}
+
+	/**
+	 * Catches static calls (Wildcard).
+	 *
+	 * @param string $foreground_color Text Color
+	 * @param array  $args             Options
+	 *
+	 * @return string Colored string
+	 */
+	public static function __callStatic($foreground_color, $args)
+	{
+		self::$win = ('WIN' === strtoupper(substr(PHP_OS, 0, 3)));
+		$printenv = shell_exec('printenv >nul 2>&1 && ( echo found ) || ( echo fail )');
+		$string = $args[0];
+		$colored_string = '';
+		if (self::$win && trim($printenv) == 'fail') {
+			//Windows
+			return $string;
+		} elseif (!self::ismac() || trim($printenv) == 'found') {
+			// Linux
+			if (isset(self::$foreground_colors[$foreground_color])) {
+				$colored_string .= "\033[" . self::$foreground_colors[$foreground_color] . 'm';
+			} else {
+				throw new Exception($foreground_color . ' not a valid color');
+			}
+
+			array_shift($args);
+
+			foreach ($args as $option) {
+				// Check if given background color found
+				if (isset(self::$background_colors[$option])) {
+					$colored_string .= "\033[" . self::$background_colors[$option] . 'm';
+				} elseif (isset(self::$options[$option])) {
+					$colored_string .= "\033[" . self::$options[$option] . 'm';
+				}
+			}
+
+			// Add string and end coloring
+			$colored_string .= $string . "\033[0m";
+		} else {
+			$colored_string = $string;
+		}
+
+		return $colored_string;
+	}
+
+	/**
+	 * Plays a bell sound in console (if available).
+	 *
+	 * @param int $count Bell play count
+	 *
+	 * @return string Bell play string
+	 */
+	public static function bell($count = 1)
+	{
+		echo str_repeat("\007", $count);
+	}
+}
+
+
 
 /**
  * ========== INSTALLER
@@ -295,7 +470,7 @@ function process($argv)
 	$disableTls = in_array('--disable-tls', $argv);
 	$installDir = getOptValue('--install-dir', $argv, false);
 	$version    = getOptValue('--version', $argv, false);
-	$filename   = getOptValue('--filename', $argv, 'composer.phar');
+	$filename   = getOptValue('--filename', $argv, 'bot.phar');
 	$cafile     = getOptValue('--cafile', $argv, false);
 
 	if (!checkParams($installDir, $version, $cafile)) {
@@ -314,8 +489,9 @@ function process($argv)
 	}
 
 	if ($ok || $force) {
-		echo warna("everything is ok, lets install\n", 'green');
-		echo warna("Installing on $installDir\n", "magenta");
+		echo Console::warna("everything is ok, lets install\n", 'green');
+		echo Console::warna("Installing on $installDir\n", "magenta");
+		echo Console::warna("Writing $filename\n", "purple");
 	}
 
 	exit(1);
@@ -574,7 +750,7 @@ function getPlatformIssues(&$errors, &$warnings, $install)
  * Checks that user-supplied params are valid
  *
  * @param mixed $installDir The required istallation directory
- * @param mixed $version The required composer version to install
+ * @param mixed $version The required bot version to install
  * @param mixed $cafile Certificate Authority file
  *
  * @return bool True if the supplied params are okay
@@ -619,7 +795,7 @@ Options
 --preview            install the latest version from the preview (alpha/beta/rc) channel instead of stable
 --snapshot           install the latest version from the snapshot (dev builds) channel instead of stable
 --version="..."      accepts a specific version to install instead of the latest
---filename="..."     accepts a target filename (default: composer.phar)
+--filename="..."     accepts a target filename (default: bot.phar)
 --disable-tls        disable SSL/TLS security for file downloads
 --cafile="..."       accepts a path to a Certificate Authority (CA) certificate file for SSL/TLS verification
 
