@@ -5,7 +5,7 @@
   <PageMap>
     <DataObject type="website"></DataObject>
   </PageMap>
-  <base href="https://git.webmanajemen.com/Web-Manajemen/">
+  <base href="https://dimaslanjaka.github.io/Web-Manajemen/">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -23,24 +23,24 @@
   <meta property="og:description" content="<?= $desc ?>" />
   <meta property="og:url" content="<?= $canonical ?>" />
   <meta property="og:site_name" content="WMI GitLabs" />
-  <meta property="og:image" content="https://git.webmanajemen.com/Web-Manajemen/img/mlbb/selena.png" />
-  <meta property="og:image:secure_url" content="https://git.webmanajemen.com/Web-Manajemen/img/mlbb/selena.png" />
+  <meta property="og:image" content="https://dimaslanjaka.github.io/Web-Manajemen/img/mlbb/selena.png" />
+  <meta property="og:image:secure_url" content="https://dimaslanjaka.github.io/Web-Manajemen/img/mlbb/selena.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:description" content="<?= $desc ?>" />
   <meta name="twitter:title" content="WMI gitLabs" />
   <meta name="twitter:site" content="@WManajemen" />
-  <meta name="twitter:image" content="https://git.webmanajemen.com/Web-Manajemen/img/mlbb/selena.png" />
+  <meta name="twitter:image" content="https://dimaslanjaka.github.io/Web-Manajemen/img/mlbb/selena.png" />
   <meta name="google-site-verification" content="" />
   <link rel='dns-prefetch' href='//dimaslanjaka.github.io' />
-  <link rel='dns-prefetch' href='//git.webmanajemen.com' />
+  <link rel='dns-prefetch' href='//dimaslanjaka.github.io' />
   <link rel='dns-prefetch' href='//s.w.org' />
   <meta name="generator" content="WordPress 5.3.2" />
   <meta name="generator" content="WooCommerce 3.8.1" />
   <meta name="referrer" content="always" />
-  <link rel="icon" href="https://git.webmanajemen.com/Web-Manajemen/img/mlbb/selena.png" sizes="32x32" />
-  <link rel="icon" href="https://git.webmanajemen.com/Web-Manajemen/img/mlbb/selena.png" sizes="192x192" />
-  <link rel="apple-touch-icon-precomposed" href="https://git.webmanajemen.com/Web-Manajemen/img/mlbb/selena.png" sizes="180x180" />
-  <meta name="msapplication-TileImage" content="https://git.webmanajemen.com/Web-Manajemen/img/mlbb/selena.png" />
+  <link rel="icon" href="https://dimaslanjaka.github.io/Web-Manajemen/img/mlbb/selena.png" sizes="32x32" />
+  <link rel="icon" href="https://dimaslanjaka.github.io/Web-Manajemen/img/mlbb/selena.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="https://dimaslanjaka.github.io/Web-Manajemen/img/mlbb/selena.png" sizes="180x180" />
+  <meta name="msapplication-TileImage" content="https://dimaslanjaka.github.io/Web-Manajemen/img/mlbb/selena.png" />
   <meta name="p:domain_verify" content="ba4bb1f26dcf05eadc4ea92722eca381" />
   <link rel='stylesheet' href='css/compiled.block.css' type='text/css' media='all' />
   <link rel='stylesheet' href='css/compiled.min.css' type='text/css' media='all' />
@@ -80,7 +80,7 @@
       ],
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://git.webmanajemen.com/Web-Manajemen/search.html?q={q}",
+        "target": "https://dimaslanjaka.github.io/Web-Manajemen/search.html?q={q}",
         "query-input": "required name=q"
       },
       "description": "Mobile Legends Drone"
@@ -100,7 +100,7 @@
       "dateModified": "2020-01-21T00:22:35Z",
       "image": {
         "@type": "ImageObject",
-        "url": "https://git.webmanajemen.com/Web-Manajemen/img/mlbb/ling.jpg",
+        "url": "https://dimaslanjaka.github.io/Web-Manajemen/img/mlbb/ling.jpg",
         "height": 720,
         "width": 1280
       },
@@ -129,7 +129,7 @@
           "@type": "ListItem",
           "position": 1,
           "item": {
-            "@id": "https://git.webmanajemen.com",
+            "@id": "https://dimaslanjaka.github.io",
             "name": "Home"
           }
         },
@@ -137,7 +137,7 @@
           "@type": "ListItem",
           "position": 2,
           "item": {
-            "@id": "https://git.webmanajemen.com/Web-Manajemen",
+            "@id": "https://dimaslanjaka.github.io/Web-Manajemen",
             "name": "Web-Manajemen"
           }
         },
