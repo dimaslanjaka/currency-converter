@@ -214,7 +214,7 @@
         <li>
           <ul id="side-menu" class="collapsible collapsible-accordion">
             <li id="menu-item" class="menu-item menu-item-type-post_type menu-item-object-product  menu-item"><a class="collapsible-header waves-effect" id="link-menu-item" href="https://webmanajemen.com"><i class="far fa-gem"></i>WMI</a></li>
-            <li id="menu-item" class="menu-item menu-item-type-custom menu-item-object-custom  menu-item"><a class="collapsible-header waves-effect" id="link-menu-item" href="https://wp.webmanajemen.com/"><i class="fas fa-gem"></i> AGC</a></li>
+            <li id="menu-item" class="menu-item menu-item-type-custom menu-item-object-custom  menu-item"><a class="collapsible-header waves-effect" id="link-menu-item" href="https://dimaslanjaka.000webhostapp.com/"><i class="fas fa-gem"></i> AGC</a></li>
             <li id="menu-item" data-label="Android" data-type="menu-item" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children  menu-item">
               <a class="collapsible-header waves-effect arrow-r active"><i class="fab fa-android"></i>Android<i class="fa fa-angle-down rotate-icon"></i></a>
               <div class="collapsible-body" style="display: block;">
@@ -376,12 +376,12 @@
           <a class="nav-link dropdown-toggle" id="navbar-tools" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-wrench"></i><span class="d-none d-xl-inline-block ml-1">Tools</span></a>
           <div class="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbar-tools">
-            <a class="dropdown-item" href="https://wp.webmanajemen.com/AGC/proxy">Google proxy checker</a>
+            <a class="dropdown-item" href="https://dimaslanjaka.000webhostapp.com/AGC/proxy">Google proxy checker</a>
           </div>
         </li>
 
         <!-- Login / register -->
-        <a id="navbar-static-login" alt="Sign Up" class="btn btn-info btn-rounded btn-sm waves-effect waves-light" href="//wp.webmanajemen.com/AGC/login">LOGIN</a>
+        <a id="navbar-static-login" alt="Sign Up" class="btn btn-info btn-rounded btn-sm waves-effect waves-light" href="//dimaslanjaka.000webhostapp.com/AGC/login">LOGIN</a>
       </ul>
     </nav>
     <!-- /.Navbar-->
