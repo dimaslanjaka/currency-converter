@@ -1,4 +1,6 @@
 # currency-converter
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fdimaslanjaka%2Fcurrency-converter.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fdimaslanjaka%2Fcurrency-converter?ref=badge_shield)
+
 Currency Converter Tools
 
 # Get Script Project
@@ -95,3 +97,6 @@ php -S localhost:8000
 #for out from termux php server
 #CTRL+C on your termux tab runner
 ```
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fdimaslanjaka%2Fcurrency-converter.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fdimaslanjaka%2Fcurrency-converter?ref=badge_large)
